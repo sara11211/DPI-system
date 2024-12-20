@@ -76,12 +76,21 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
+
+        #SARA : 
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mydatabase',
-        'USER': 'root',
-        'PASSWORD': '26nouvembre2004/',
-        'HOST': 'localhost',
+        'NAME': 'dpi_db',  
+        'USER': 'root',  
+        'PASSWORD': 'Sara2004.',  
+        'HOST': '127.0.0.1',
         'PORT': '3306',
+        
+       # 'ENGINE': 'django.db.backends.mysql',
+       # 'NAME': 'mydatabase',
+       # 'USER': 'root',
+       # 'PASSWORD': '26nouvembre2004/',
+       # 'HOST': 'localhost',
+       # 'PORT': '3306',
     }
 }
 
