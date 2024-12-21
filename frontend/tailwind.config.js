@@ -8,9 +8,8 @@ module.exports = {
         'primary-blue': '#0F60FF', 
         'black': '#23272E', 
         'accent-blue': '#F4F7FE', 
-        'dark-gray': '8B909A',
-        'background-gray': 'FAFAFA',
-        'white' : 'FFFFFF',
+        'dark-gray': '#8B909A',
+        'background-gray': '#FAFAFA',
       },
       fontFamily: {
         'main': ['Public Sans', 'sans-serif'],
