@@ -1,0 +1,7 @@
+django==5.1.4;
+djangorestframework
+pyyaml
+django-cors-headers
+requests
+mysqlclient
+python-decouple
