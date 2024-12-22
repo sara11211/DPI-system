@@ -1,14 +1,12 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { HeaderComponent } from './components/header/header.component';
-import { ButtonComponent } from './components/utilities/button/button.component';
-import { SidebarComponent } from './components/utilities/sidebar/sidebar.component';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { SidebarComponent } from './dashboards/dashboard-administratif/sidebar/sidebar.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HomeComponent, HeaderComponent, ButtonComponent, SidebarComponent],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SidebarComponent],
   templateUrl: './app.component.html',
 })
 export class AppComponent {

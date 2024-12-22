@@ -3,3 +3,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.input {
+    @apply py-1.5 border rounded-xl bg-white w-full focus:outline-none text-black font-medium p-2 focus:border-primary-blue
+}
+
+.label {
+    @apply block mb-1 text-sm font-semibold text-black
+}
+
+.error { 
+    @apply text-[10px] text-red-500 pl-1
+}
+
+.white-card {
+    @apply bg-white p-4 rounded-xl flex flex-col gap-2
+}
+
+.form-category {
+    @apply text-base font-semibold text-black
+}
+
+.button-main {
+    @apply px-6 py-2 text-white rounded-md bg-primary-blue text-sm font-semibold hover:bg-blue-700
+}
