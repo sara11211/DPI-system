@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './recherche-dossier.component.html',
-  styleUrl: './recherche-dossier.component.css'
 })
 export class RechercheDossierComponent {
 
