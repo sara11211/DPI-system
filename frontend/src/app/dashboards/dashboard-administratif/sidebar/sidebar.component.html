@@ -18,11 +18,11 @@
     </div>
   
     <!-- Sidebar content -->
-    <nav class="flex flex-col justify-center h-full gap-10 transition-all duration-300">
+    <nav class="flex flex-col justify-start h-full gap-10 pt-20">
       <!-- First Section -->
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-6">
         <h3 class="px-4 text-xs uppercase text-dark-gray">Main Menu</h3>
-        <ul class="flex flex-col gap-2">
+        <ul class="flex flex-col gap-4">
           <li>
             <a
               routerLink="/dashboard" routerLinkActive="bg-accent-blue text-primary-blue font-semibold" ariaCurrentWhenActive="page"
@@ -64,18 +64,7 @@
               <span class="text-sm">Nouveau Dossier</span>
             </a>
           </li>
-          <li>
-            <a
-            routerLink="/recherche-dossier" routerLinkActive="bg-accent-blue text-primary-blue font-semibold"
-            ariaCurrentWhenActive="page"
-              class="flex items-center gap-2 px-2 py-2 mx-2 rounded-md cursor-pointer group hover:bg-accent-blue text-dark-gray hover:text-primary-blue hover:font-semibold"
-            >
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.62765 1.8335C5.32439 1.8335 1.83594 5.32194 1.83594 9.62516C1.83594 13.9284 5.32439 17.4168 9.62765 17.4168C11.4485 17.4168 13.1246 16.7913 14.4509 15.7448L18.8729 20.1668C19.2309 20.5248 19.8113 20.5248 20.1693 20.1668C20.5273 19.8089 20.5273 19.2284 20.1693 18.8705L15.7472 14.4485C16.7938 13.1222 17.4193 11.4461 17.4193 9.62516C17.4193 5.32194 13.9309 1.8335 9.62765 1.8335ZM3.66927 9.62516C3.66927 6.33447 6.33691 3.66683 9.62765 3.66683C12.9183 3.66683 15.586 6.33447 15.586 9.62516C15.586 11.2708 14.92 12.7591 13.8407 13.8383C12.7615 14.9176 11.2732 15.5835 9.62765 15.5835C6.33691 15.5835 3.66927 12.9159 3.66927 9.62516Z" fill="currentColor"/>
-              </svg>            
-              <span class="text-sm">Recherche Dossier</span>
-            </a>
-          </li>
+          
           <li>
             <a
             routerLink="/liste-dossiers" routerLinkActive="bg-accent-blue text-primary-blue font-semibold"
@@ -88,26 +77,8 @@
               <span class="text-sm">Liste Dossiers</span>
             </a>
           </li>
-        </ul>
-      </div>
-  
-      <!-- Second Section -->
-      <div class="flex flex-col gap-4">
-        <h3 class="px-4 text-xs uppercase text-dark-gray">Compte</h3>
-        <ul class="flex flex-col gap-2">
-          <li>
-            <a
-              class="flex items-center gap-2 px-2 py-2 mx-2 rounded-md cursor-pointer group hover:bg-accent-blue text-dark-gray hover:text-primary-blue hover:font-semibold"
-            >
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.46458 3.95725C9.85508 2.34758 12.1449 2.34758 12.5354 3.95725C12.6543 4.44772 13.0002 4.85194 13.4664 5.0451C13.9327 5.23826 14.4631 5.19713 14.894 4.93442C16.3084 4.07275 17.9282 5.69158 17.0665 7.10692C16.8042 7.53762 16.7631 8.06766 16.9561 8.5336C17.149 8.99954 17.5527 9.34542 18.0428 9.46458C19.6524 9.85508 19.6524 12.1449 18.0428 12.5354C17.5523 12.6543 17.1481 13.0002 16.9549 13.4664C16.7617 13.9327 16.8029 14.4631 17.0656 14.894C17.9272 16.3084 16.3084 17.9282 14.8931 17.0665C14.4624 16.8042 13.9323 16.7631 13.4664 16.9561C13.0005 17.149 12.6546 17.5527 12.5354 18.0428C12.1449 19.6524 9.85508 19.6524 9.46458 18.0428C9.34574 17.5523 8.9998 17.1481 8.53357 16.9549C8.06734 16.7617 7.53689 16.8029 7.106 17.0656C5.69158 17.9272 4.07183 16.3084 4.9335 14.8931C5.19584 14.4624 5.23687 13.9323 5.04393 13.4664C4.851 13.0005 4.44727 12.6546 3.95725 12.5354C2.34758 12.1449 2.34758 9.85508 3.95725 9.46458C4.44772 9.34574 4.85194 8.9998 5.0451 8.53357C5.23826 8.06734 5.19713 7.53689 4.93442 7.106C4.07275 5.69158 5.69158 4.07183 7.10692 4.9335C8.02358 5.49083 9.21158 4.99767 9.46458 3.95725Z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.46458 3.95725C9.85508 2.34758 12.1449 2.34758 12.5354 3.95725C12.6543 4.44772 13.0002 4.85194 13.4664 5.0451C13.9327 5.23826 14.4631 5.19713 14.894 4.93442C16.3084 4.07275 17.9282 5.69158 17.0665 7.10692C16.8042 7.53762 16.7631 8.06766 16.9561 8.5336C17.149 8.99954 17.5527 9.34542 18.0428 9.46458C19.6524 9.85508 19.6524 12.1449 18.0428 12.5354C17.5523 12.6543 17.1481 13.0002 16.9549 13.4664C16.7617 13.9327 16.8029 14.4631 17.0656 14.894C17.9272 16.3084 16.3084 17.9282 14.8931 17.0665C14.4624 16.8042 13.9323 16.7631 13.4664 16.9561C13.0005 17.149 12.6546 17.5527 12.5354 18.0428C12.1449 19.6524 9.85508 19.6524 9.46458 18.0428C9.34574 17.5523 8.9998 17.1481 8.53357 16.9549C8.06734 16.7617 7.53689 16.8029 7.106 17.0656C5.69158 17.9272 4.07183 16.3084 4.9335 14.8931C5.19584 14.4624 5.23687 13.9323 5.04393 13.4664C4.851 13.0005 4.44727 12.6546 3.95725 12.5354C2.34758 12.1449 2.34758 9.85508 3.95725 9.46458C4.44772 9.34574 4.85194 8.9998 5.0451 8.53357C5.23826 8.06734 5.19713 7.53689 4.93442 7.106C4.07275 5.69158 5.69158 4.07183 7.10692 4.9335C8.02358 5.49083 9.21158 4.99767 9.46458 3.95725Z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="11" cy="11" r="2.75" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="11" cy="11" r="2.75" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>                        
-              <span class="text-sm">Parametres</span>
-            </a>
-          </li>
+
+          
           <li>
             <a
               class="flex items-center gap-2 px-2 py-2 mx-2 rounded-md cursor-pointer group hover:bg-accent-blue text-dark-gray hover:text-primary-blue hover:font-semibold"
@@ -123,8 +94,10 @@
               <span class="text-sm">Deconnexion</span>
             </a>
           </li>
+          
         </ul>
       </div>
+
     </nav>
   </div>
   <div class="flex-1 bg-background-gray">
