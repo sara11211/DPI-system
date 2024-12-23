@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework'
+    'rest_framework' ,
+     'consultation_crud'
 ]
 
 MIDDLEWARE = [
@@ -76,21 +77,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-
-        #SARA : 
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dpi_db',  
-        'USER': 'root',  
-        'PASSWORD': 'Sara2004.',  
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-        
-       # 'ENGINE': 'django.db.backends.mysql',
-       # 'NAME': 'mydatabase',
-       # 'USER': 'root',
-       # 'PASSWORD': '26nouvembre2004/',
-       # 'HOST': 'localhost',
-       # 'PORT': '3306',
+        'NAME': 'defaultdb',
+        'USER': 'avnadmin',
+        'PASSWORD': 'AVNS_uFou8OIrCDzTn48X2XW',
+        'HOST': 'mysql-34106629-imanebouzeguella-260b.f.aivencloud.com',
+        'PORT': '26923',
     }
 }
 
