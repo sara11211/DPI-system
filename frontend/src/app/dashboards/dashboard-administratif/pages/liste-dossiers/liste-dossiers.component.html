@@ -52,7 +52,9 @@
         <td class="td">
           <div class="flex items-center w-full gap-2">
             <button class="hover:underline text-primary-blue">Voir details</button>
-            <button class="text-gray-300 hover:text-primary-blue">
+            <button 
+            (click)="editDossier(dossier.nss)"
+            class="text-gray-300 hover:text-primary-blue">
               <svg
                 width="24"
                 height="24"

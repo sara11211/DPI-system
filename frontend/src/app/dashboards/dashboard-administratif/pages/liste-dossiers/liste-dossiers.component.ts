@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
 
 interface Dossier {
   nom: string;
@@ -17,6 +19,9 @@ interface Dossier {
 })
 
 export class ListeDossiersComponent {
+  constructor(private router: Router
+    
+  ) {}
   dossiers: Dossier[] = [
     { nom: 'Braham Imad', nss: '0673222612', dateAjout: '2023-04-06' },
     { nom: 'Sarah Ali', nss: '0233222612', dateAjout: '2023-05-10' },
@@ -67,5 +72,9 @@ export class ListeDossiersComponent {
 
     // Reset to first page after filtering
     this.currentPage = 1;
+  }
+
+  editDossier(nss: string) {
+    this.router.navigate(['/modifier-dossier', nss]);
   }
 }
