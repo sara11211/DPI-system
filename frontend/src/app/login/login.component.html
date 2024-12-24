@@ -1,10 +1,14 @@
-<div class="flex items-center justify-center w-full h-screen min-h-screen font-main">
-  <div class="flex w-full max-w-[900px] px-6 gap-8 ">
+<div
+  class="flex items-center justify-center w-full h-screen min-h-screen font-main"
+>
+  <div class="flex w-full max-w-[900px] px-6 gap-8">
     <!-- picture part -->
-    <div class="flex flex-col w-full gap-2">
+    <div class="flex flex-col w-full gap-2 flex-end">
       <div class="flex items-center gap-2">
         <img src="assets/logo.svg" alt="logo" />
-        <p class="font-light tracking-wider"><span class="font-semibold">DPI</span> System</p>
+        <p class="font-light tracking-wider">
+          <span class="font-semibold">DPI</span> System
+        </p>
       </div>
       <div>
         <img src="assets/doctor-login.png" alt="doctor" />
@@ -12,7 +16,10 @@
     </div>
 
     <!-- form part -->
-    <div class="flex flex-col justify-between w-full px-10 text-center rounded-lg shadow-sm py-14 bg-background-gray">
+    <div
+      *ngIf="currentForm === 'chooseProfile'"
+      class="flex flex-col justify-between w-full px-10 text-center rounded-lg shadow-sm py-14 bg-background-gray"
+    >
       <div>
         <h2 class="text-2xl font-extrabold black lg:text-3xl font-main">
           Choisissez votre profil
@@ -22,6 +29,10 @@
 
       <div>
         <button
+          (click)="selectPatient()"
+          [ngClass]="{
+            'bg-accent-blue border-primary-blue': selectedProfile === 'patient'
+          }"
           class="flex items-center justify-center w-full px-2 py-4 mt-6 text-sm font-semibold text-black bg-white border border-white rounded-md shadow-md cursor-pointer hover:bg-accent-blue hover:border-primary-blue active:border-primary-blue focus:border-primary-blue focus:bg-accent-blue"
         >
           <img src="assets/icons/patient-icon.svg" alt="doctor" />
@@ -34,6 +45,11 @@
         </button>
 
         <button
+          (click)="selectPersonnel()"
+          [ngClass]="{
+            'bg-accent-blue border-primary-blue':
+              selectedProfile === 'personnel'
+          }"
           class="flex items-center justify-center w-full px-2 py-4 mt-6 text-sm font-semibold text-black bg-white border border-white rounded-md shadow-md cursor-pointer hover:bg-accent-blue hover:border-primary-blue active:border-primary-blue focus:border-primary-blue focus:bg-accent-blue"
         >
           <img src="assets/icons/personal-icon.svg" alt="doctor" />
@@ -47,10 +63,232 @@
       </div>
 
       <button
+        (click)="goToNextForm()"
+        [disabled]="selectedProfile === null"
         class="w-full px-6 py-3 text-sm font-semibold text-white rounded-md cursor-pointer bg-primary-blue hover:bg-blue-700"
       >
         Suivant
       </button>
+    </div>
+
+    <div
+      *ngIf="currentForm === 'patientForm'"
+      class="flex flex-col justify-center w-full gap-10 px-10 text-center rounded-lg shadow-sm py-14 bg-background-gray"
+    >
+      <div>
+        <h2 class="text-2xl font-extrabold black lg:text-3xl font-main">
+          Bienvenue!
+        </h2>
+        <p>Saisissez vos informations personnelles.</p>
+      </div>
+
+      <form
+        [formGroup]="patientForm"
+        (ngSubmit)="onSubmitPatient()"
+        class="flex flex-col gap-4"
+      >
+        <div class="flex flex-col gap-4 text-left">
+          <div>
+            <label for="nss" class="block mb-1 text-sm font-semibold text-black"
+              >NSS</label
+            >
+            <input
+              type="text"
+              id="nss"
+              name="nss"
+              formControlName="nss"
+              class="w-full p-3 text-black bg-white border rounded-lg focus:outline-none focus:border-primary-blue"
+              placeholder="Enter your NSS"
+              [ngClass]="{
+                'border-red-500':
+                  submitted && patientForm.controls['nss'].invalid
+              }"
+            />
+            <div
+              *ngIf="submitted && patientForm.controls['nss'].errors"
+              class="text-xs text-red-500"
+            >
+              <div *ngIf="patientForm.controls['nss'].errors?.['required']">
+                Ce champs est obligatoire.
+              </div>
+              <div *ngIf="patientForm.controls['nss'].errors?.['pattern']">
+                NSS doit contenir 18 chiffres.
+              </div>
+            </div>
+          </div>
+          <div>
+            <label
+              for="password"
+              class="block mb-1 text-sm font-semibold text-black"
+              >Mot de passe</label
+            >
+            <input
+              type="password"
+              id="password"
+              name="password"
+              formControlName="password"
+              class="w-full p-3 text-black bg-white border rounded-lg focus:outline-none focus:border-primary-blue"
+              placeholder="Enter your password"
+              [ngClass]="{
+                'border-red-500':
+                  submitted && patientForm.controls['password'].invalid
+              }"
+            />
+            <div
+              *ngIf="submitted && patientForm.controls['password'].errors"
+              class="text-xs text-red-500"
+            >
+              <div
+                *ngIf="patientForm.controls['password'].errors?.['required']"
+              >
+                Ce champs est obligatoire.
+              </div>
+              <div
+                *ngIf="patientForm.controls['password'].errors?.['minlength']"
+              >
+                Mot de passe doit contenir au moins 6 caractères.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full px-6 py-3 mt-4 text-sm font-semibold text-white rounded-md cursor-pointer bg-primary-blue hover:bg-blue-700"
+        >
+          Suivant
+        </button>
+      </form>
+    </div>
+
+    <div
+      *ngIf="currentForm === 'personnelForm'"
+      class="flex flex-col justify-center w-full gap-10 px-10 py-10 text-center rounded-lg shadow-sm bg-background-gray"
+    >
+      <div>
+        <h2 class="text-2xl font-extrabold black lg:text-3xl font-main">
+          Bienvenue!
+        </h2>
+        <p>Saisissez vos informations personnelles.</p>
+      </div>
+
+      <form
+        [formGroup]="personnelForm"
+        (ngSubmit)="onSubmitPersonnel()"
+        class="flex flex-col gap-2"
+      >
+        <div class="flex flex-col gap-2 text-left">
+          <!-- Role Selection -->
+          <div>
+            <label
+              for="role"
+              class="block mb-1 text-sm font-semibold text-black"
+              >Rôle</label
+            >
+            <select
+              id="role"
+              formControlName="role"
+              class="w-full p-3 text-black bg-white border rounded-lg focus:outline-none focus:border-primary-blue"
+              [ngClass]="{
+                'border-red-500':
+                  submitted && personnelForm.controls['role'].invalid
+              }"
+            >
+              <option value="" disabled selected>
+                Sélectionnez votre rôle
+              </option>
+              <option value="personnel administratif">
+                Personnel administratif
+              </option>
+              <option value="medecin">Médecin</option>
+              <option value="infirmier">Infirmier</option>
+              <option value="pharmacien">Pharmacien</option>
+              <option value="laborantin">Laborantin</option>
+              <option value="radiologue">Radiologue</option>
+            </select>
+            <div
+              *ngIf="submitted && personnelForm.controls['role'].errors"
+              class="text-xs text-red-500"
+            >
+              <div *ngIf="personnelForm.controls['role'].errors?.['required']">
+                Ce champ est obligatoire.
+              </div>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label
+              for="email"
+              class="block mb-1 text-sm font-semibold text-black"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="w-full p-3 text-black bg-white border rounded-lg focus:outline-none focus:border-primary-blue"
+              placeholder="Entrez votre email"
+              [ngClass]="{
+                'border-red-500':
+                  submitted && personnelForm.controls['email'].invalid
+              }"
+            />
+            <div
+              *ngIf="submitted && personnelForm.controls['email'].errors"
+              class="text-xs text-red-500"
+            >
+              <div *ngIf="personnelForm.controls['email'].errors?.['required']">
+                Ce champ est obligatoire.
+              </div>
+              <div *ngIf="personnelForm.controls['email'].errors?.['email']">
+                Adresse email invalide.
+              </div>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label
+              for="password"
+              class="block mb-1 text-sm font-semibold text-black"
+              >Mot de passe</label
+            >
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
+              class="w-full p-3 text-black bg-white border rounded-lg focus:outline-none focus:border-primary-blue"
+              placeholder="Entrez votre mot de passe"
+              [ngClass]="{
+                'border-red-500':
+                  submitted && personnelForm.controls['password'].invalid
+              }"
+            />
+            <div
+              *ngIf="submitted && personnelForm.controls['password'].errors"
+              class="text-xs text-red-500"
+            >
+              <div
+                *ngIf="personnelForm.controls['password'].errors?.['required']"
+              >
+                Ce champ est obligatoire.
+              </div>
+              <div
+                *ngIf="personnelForm.controls['password'].errors?.['minlength']"
+              >
+                Le mot de passe doit contenir au moins 6 caractères.
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="w-full px-6 py-3 mt-4 text-sm font-semibold text-white rounded-md cursor-pointer bg-primary-blue hover:bg-blue-700"
+        >
+          Soumettre
+        </button>
+      </form>
     </div>
   </div>
 </div>
