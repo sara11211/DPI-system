@@ -60,9 +60,7 @@
             <div>
               <label for="medecinTraitant" class="label">Médecin Traitant</label>
               <select id="medecinTraitant" formControlName="medecinTraitant" class="input">
-                <option *ngFor="let medecin of medecins" [value]="medecin.id">
-                  {{ medecin.name }}
-                </option>
+                <option *ngFor="let medecin of medecins" [value]="medecin.name">{{ medecin.name }}</option>
               </select>
               <div *ngIf="dossierForm.get('medecinTraitant')?.touched && dossierForm.get('medecinTraitant')?.invalid" class="error">
                 {{ getMedecinTraitantError() }}

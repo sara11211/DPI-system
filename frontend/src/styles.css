@@ -25,7 +25,7 @@
 }
 
 .button-main {
-    @apply px-6 py-2 text-white rounded-md bg-primary-blue text-sm font-semibold hover:bg-blue-700
+    @apply px-6 py-2 text-white rounded-md bg-primary-blue text-sm font-semibold hover:bg-blue-700 cursor-pointer
 }
 
 .header {

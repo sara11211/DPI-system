@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 interface Dossier {
   nom: string;
@@ -37,8 +38,8 @@ export class ModifierDossierComponent {
     { id: '3', name: 'Dr. C' },
   ];
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder) {
-    // Initialize the form group here
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {
+    
     this.dossierForm = this.fb.group({
       nom: ['', Validators.required],
       prenom: ['', Validators.required],
@@ -233,6 +234,7 @@ export class ModifierDossierComponent {
   onSubmit(): void {
     if (this.dossierForm.valid) {
       console.log('Form submitted:', this.dossierForm.value);
+      this.router.navigate(['/liste-dossiers']);
     }
   }
 }

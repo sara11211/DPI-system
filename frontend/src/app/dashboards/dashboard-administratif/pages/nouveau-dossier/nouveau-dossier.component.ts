@@ -6,6 +6,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-nouveau-dossier',
@@ -23,7 +25,7 @@ export class NouveauDossierComponent {
     { id: '3', name: 'Dr. C' },
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.dossierForm = this.fb.group({
       nss: [
         '',
@@ -198,6 +200,8 @@ export class NouveauDossierComponent {
   onSubmit() {
     if (this.dossierForm.valid) {
       console.log('Form Submitted', this.dossierForm.value);
+
+      this.router.navigate(['/liste-dossiers']);
     }
   }
 }

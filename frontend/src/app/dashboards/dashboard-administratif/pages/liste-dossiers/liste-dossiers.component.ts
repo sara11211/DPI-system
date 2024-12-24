@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-
 interface Dossier {
   nom: string;
   nss: string;
@@ -15,13 +14,14 @@ interface Dossier {
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './liste-dossiers.component.html',
-  styleUrl: './liste-dossiers.component.css'
+  styleUrl: './liste-dossiers.component.css',
 })
-
 export class ListeDossiersComponent {
-  constructor(private router: Router
-    
-  ) {}
+  constructor(private router: Router) {}
+
+  popupVisible: boolean = false;
+  dossierToDelete: Dossier | null = null;
+
   dossiers: Dossier[] = [
     { nom: 'Braham Imad', nss: '0673222612', dateAjout: '2023-04-06' },
     { nom: 'Sarah Ali', nss: '0233222612', dateAjout: '2023-05-10' },
@@ -47,7 +47,10 @@ export class ListeDossiersComponent {
 
   get paginatedDossiers() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredDossiers.slice(startIndex, startIndex + this.itemsPerPage);
+    return this.filteredDossiers.slice(
+      startIndex,
+      startIndex + this.itemsPerPage
+    );
   }
 
   get totalPages() {
@@ -77,4 +80,26 @@ export class ListeDossiersComponent {
   editDossier(nss: string) {
     this.router.navigate(['/modifier-dossier', nss]);
   }
+
+  openPopup(dossier: Dossier) {
+    this.popupVisible = true;
+    this.dossierToDelete = dossier;
+  }
+  
+  confirmDelete() {
+    if (this.dossierToDelete) {
+      this.dossiers = this.dossiers.filter(
+        (dossier) => dossier.nss !== this.dossierToDelete?.nss
+      );
+      this.applyFilters(); // Reapply filters after deletion
+      this.popupVisible = false;
+      this.dossierToDelete = null;
+    }
+  }
+  
+  cancelDelete() {
+    this.popupVisible = false;
+    this.dossierToDelete = null;
+  }
+  
 }

@@ -8,6 +8,8 @@ Chart.register(...registerables);
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements AfterViewInit {
+  userName: string = 'Sarah Abaziz';
+
   ngAfterViewInit() {
     this.renderChart();
     this.renderBarChart();
@@ -72,11 +74,11 @@ export class DashboardComponent implements AfterViewInit {
         datasets: [
           {
             label: 'Dossiers Created',
-            data: [5, 10, 8, 12, 15, 7, 11], // Replace with your data
-            backgroundColor: '#BF39FD99', // Purple bars
-            borderColor: '#BF39FD99', // Border color for bars
+            data: [5, 10, 8, 12, 15, 7, 11], 
+            backgroundColor: '#BF39FD99', 
+            borderColor: '#BF39FD99',
             borderWidth: 1,
-            borderRadius: 5, // Rounded corners
+            borderRadius: 5, 
           },
         ],
       },
@@ -110,6 +112,5 @@ export class DashboardComponent implements AfterViewInit {
         },
       },
     });
-  }
-  
+  } 
 }
