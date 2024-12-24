@@ -2,7 +2,7 @@
     Nouveau Dossier
 </header>
 
-<div class="px-8 py-5 bg-background-gray">
+<div class="flex items-center justify-center h-full px-6 py-5 bg-background-gray">
   <form [formGroup]="dossierForm" (ngSubmit)="onSubmit()" class="flex flex-col items-end gap-3">
     <div class="flex w-full gap-5">
       <div class="flex flex-col flex-1 gap-2">
@@ -23,7 +23,7 @@
             </div>
           </div>
           
-          <div class="flex justify-between">
+          <div class="flex justify-between gap-2">
             <!-- element -->
           <div>
             <label for="nom" class="label">Nom</label>
@@ -153,7 +153,7 @@
   
           <div class="white-card">
 
-            <div class="flex justify-between">
+            <div class="flex justify-between gap-2">
               <div>
                 <label for="nomContact" class="label">Nom</label>
                 <input
