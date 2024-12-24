@@ -1,7 +1,7 @@
 <div
   class="flex items-center justify-center w-full h-screen min-h-screen font-main"
 >
-  <div class="flex w-full max-w-[900px] px-6 gap-8">
+  <div class="flex w-full max-w-[900px] px-6 gap-8 items-center">
     <!-- picture part -->
     <div class="flex flex-col w-full gap-2 flex-end">
       <div class="flex items-center gap-2">
@@ -18,7 +18,7 @@
     <!-- form part -->
     <div
       *ngIf="currentForm === 'chooseProfile'"
-      class="flex flex-col justify-between w-full px-10 text-center rounded-lg shadow-sm py-14 bg-background-gray"
+      class="flex flex-col justify-between w-full gap-6 px-10 text-center rounded-lg shadow-sm py-14 bg-background-gray"
     >
       <div>
         <h2 class="text-2xl font-extrabold black lg:text-3xl font-main">
@@ -152,12 +152,20 @@
           </div>
         </div>
 
-        <button
-          type="submit"
-          class="w-full px-6 py-3 mt-4 text-sm font-semibold text-white rounded-md cursor-pointer bg-primary-blue hover:bg-blue-700"
-        >
-          Suivant
-        </button>
+        <div class="flex flex-col gap-2">
+          <button
+            type="submit"
+            class="w-full px-6 py-2.5 text-sm font-semibold text-white border rounded-md cursor-pointer border-primary-blue bg-primary-blue hover:bg-blue-700"
+          >
+            Suivant
+          </button>
+          <button
+            (click)="goBackToProfileChoice()"
+            class="w-full px-6 py-2.5 text-sm font-semibold bg-white border rounded-md cursor-pointer text-primary-blue border-primary-blue hover:bg-accent-blue hover:text-primary-blue"
+          >
+            Retour
+          </button>
+        </div>
       </form>
     </div>
 
@@ -282,12 +290,20 @@
             </div>
           </div>
         </div>
-        <button
-          type="submit"
-          class="w-full px-6 py-3 mt-4 text-sm font-semibold text-white rounded-md cursor-pointer bg-primary-blue hover:bg-blue-700"
-        >
-          Soumettre
-        </button>
+        <div class="flex flex-col gap-2">
+          <button
+            type="submit"
+            class="w-full px-6 py-2.5 mt-4 text-sm font-semibold text-white rounded-md cursor-pointer bg-primary-blue border border-primary-blue hover:bg-blue-700"
+          >
+            Suivant
+          </button>
+          <button
+            (click)="goBackToProfileChoice()"
+            class="w-full px-6 py-2.5 text-sm font-semibold bg-white border rounded-md cursor-pointer text-primary-blue border-primary-blue hover:bg-accent-blue hover:text-primary-blue"
+          >
+            Retour
+          </button>
+        </div>
       </form>
     </div>
   </div>

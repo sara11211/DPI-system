@@ -52,6 +52,7 @@ export class LoginComponent {
     this.patientForm.reset(); 
   }
 
+
   onSubmitPatient() {
     this.submitted = true;
 
