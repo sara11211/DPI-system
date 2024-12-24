@@ -3,12 +3,8 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from .serializers import UserSerializer, RegisterSerializer
-
-class RegisterView(generics.CreateAPIView):
-    serializer_class = RegisterSerializer
-    permission_classes = [AllowAny]
+from .models import Personnel
+from .serializers import UserSerializer
 
 class LoginView(APIView):
     def post(self, request):
@@ -17,6 +13,16 @@ class LoginView(APIView):
 
         user = authenticate(username=username, password=password)
         if user:
-            return Response({"message": "Login successful"})
+            personnel = Personnel.objects.get(users = user.id)
+            if personnel :
+                return Response({
+                    "status": "success",
+                    "personnel_id": personnel.id,
+                    "nom": personnel.nom,
+                    "prenom": personnel.prenom,
+                    "fonction": personnel.fonction,
+                })
+            else :
+                    return Response({"its a patient"}) #I'll treat this when I merge with imane
         else:
             return Response({"error": "Invalid credentials"}, status=400)

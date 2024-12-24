@@ -8,14 +8,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name']
 
-class RegisterSerializer(serializers.ModelSerializer):
-    password2 = serializers.CharField(write_only=True)
-
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password', 'password2']
-        extra_kwargs = {'password': {'write_only': True}}
-
     def validate(self, data):
         if data['password'] != data['password2']:
             raise serializers.ValidationError("Le mot de passe confirmé n'est pas le même")
