@@ -43,3 +43,41 @@ class Radiologues(models.Model):
     class Meta:
         managed = False
         db_table = 'radiologues'
+        
+class PersonnesContact(models.Model):
+    id = models.IntegerField(primary_key=True)
+    nom_contact = models.CharField(max_length=255, blank=True, null=True)
+    prenom_contact = models.CharField(max_length=255, blank=True, null=True)
+    numero_telephone = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'personnes_contact'
+        
+class Medecins(models.Model):
+    id = models.IntegerField(primary_key=True)
+    specialite = models.CharField(max_length=255, blank=True, null=True)
+    personnel = models.ForeignKey('Personnel', models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'medecins'
+        
+        
+class Dpis(models.Model):
+    id = models.IntegerField(primary_key=True)
+    nss = models.CharField(max_length=255, blank=True, null=True)
+    nom = models.CharField(max_length=255, blank=True, null=True)
+    prenom = models.CharField(max_length=255, blank=True, null=True)
+    date_naissance = models.DateField(blank=True, null=True)
+    adresse = models.CharField(max_length=255, blank=True, null=True)
+    num_telephone = models.CharField(max_length=255, blank=True, null=True)
+    medecins = models.ForeignKey('Medecins', models.DO_NOTHING, blank=True, null=True)
+    personnes_contact = models.ForeignKey('PersonnesContact', models.DO_NOTHING, blank=True, null=True)
+    users = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+    qr_url = models.CharField(max_length=255, blank=True, null=True)
+    antecedents = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'dpis'

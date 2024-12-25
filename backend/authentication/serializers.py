@@ -1,22 +1,39 @@
-from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from django.contrib.auth.models import User
+from .models import Dpis,Medecins,Laborantins,Radiologues,Infirmiers,Personnel
 
-User = get_user_model()
 
+class DpiSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dpis
+        fields = ['nss', 'nom', 'prenom', 'date_naissance', 'adresse', 'num_telephone', 'medecins_id', 'personnes_contact_id', 'users_id', 'qr_url', 'antecedents']
+
+class MedecinSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Medecins
+        fields = ['id','specialite']
+        
+class LaborantinSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Laborantins
+        fields = ['id']
+        
+class RadiologueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Radiologues
+        fields = ['id']
+        
+class InfirmierSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Infirmiers
+        fields = ['id']
+        
+class PersonnelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Personnel
+        fields = ['nom','prenom','fonction']
+        
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name']
-
-    def validate(self, data):
-        if data['password'] != data['password2']:
-            raise serializers.ValidationError("Le mot de passe confirmé n'est pas le même")
-        return data
-
-    def create(self, validated_data):
-        user = User.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password'],
-        )
-        return user
