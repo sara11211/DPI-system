@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { SidebarComponent } from './dashboards/dashboard-administratif/sidebar/sidebar.component';
+import { SidebarComponent } from './dashboards/dashboard-medecin/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
