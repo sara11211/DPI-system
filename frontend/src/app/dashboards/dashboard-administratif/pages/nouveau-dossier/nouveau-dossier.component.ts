@@ -31,8 +31,8 @@ export class NouveauDossierComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(18),
-          Validators.maxLength(18),
+          Validators.minLength(12),
+          Validators.maxLength(12),
           Validators.pattern('^[0-9]*$'),
         ],
       ],
@@ -97,7 +97,7 @@ export class NouveauDossierComponent {
       return 'NSS doit contenir uniquement des chiffres';
     }
     if (control?.hasError('minlength') || control?.hasError('maxlength')) {
-      return 'NSS doit avoir exactement 18 chiffres';
+      return 'NSS doit avoir exactement 12 chiffres';
     }
     return null;
   }

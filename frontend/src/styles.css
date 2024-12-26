@@ -41,5 +41,5 @@
 }
 
 .button-options {
-    @apply flex items-center gap-5 p-4 bg-white border shadow-sm rounded-xl hover:bg-accent-blue hover:border-primary-blue
+    @apply flex items-center gap-5 p-4 bg-white border shadow-sm rounded-xl hover:bg-accent-blue hover:border-primary-blue active:border-primary-blue focus:border-primary-blue active:bg-accent-blue focus:bg-accent-blue
 }
