@@ -1,7 +1,7 @@
 <header class="header">Recherche par QR Code</header>
 
 <div class="flex flex-col items-center justify-center gap-8 py-8">
-    
+  <!-- QR Code Import -->
   <div class="flex items-center justify-center">
     <div
       class="flex flex-col items-center justify-center gap-4 p-10 bg-white shadow-sm rounded-xl lg:px-20"
@@ -12,7 +12,17 @@
       >
         <img src="/assets/icons/qr-icon.svg" alt="qr code" />
       </div>
-      <button class="flex items-center gap-2 button-main">
+      <input
+        type="file"
+        accept="image/*"
+        id="qrInput"
+        class="hidden"
+        (change)="handleQRImport($event)"
+      />
+      <label
+        for="qrInput"
+        class="flex items-center gap-2 px-4 py-2 text-white rounded-lg cursor-pointer bg-primary-blue hover:bg-blue-700"
+      >
         <svg
           width="24"
           height="25"
@@ -30,31 +40,32 @@
           />
         </svg>
         Importer
-      </button>
+      </label>
     </div>
   </div>
+
   <!-- Dossier Found -->
-  <div class="flex flex-col gap-1">
+  <div *ngIf="dossierFound" class="flex flex-col gap-1">
     <p class="font-light text-center text-gray-600">
-      Resultat de votre recherche
+      Résultat de votre recherche
     </p>
 
     <div
       class="flex flex-col items-center gap-6 p-8 bg-white shadow-sm rounded-xl"
     >
       <div class="flex items-center justify-center gap-4">
-        <!-- user image -->
+        <!-- User Image -->
         <div>
           <img src="/assets/icons/user-found-icon.svg" alt="user" />
         </div>
-        <!-- user infos -->
+        <!-- User Infos -->
         <div class="flex flex-col gap-2 text-left">
-          <span class="font-semibold">Braham Imad</span>
-          <span class="font-light text-dark-gray">0700934666004</span>
+          <span class="font-semibold">{{ dossier.name }}</span>
+          <span class="font-light text-dark-gray">{{ dossier.nss }}</span>
         </div>
       </div>
 
-      <!-- details button -->
+      <!-- Details Button -->
       <button
         class="px-8 py-2 border text-primary-blue border-primary-blue rounded-xl hover:bg-accent-blue"
       >

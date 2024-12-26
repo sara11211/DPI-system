@@ -36,7 +36,6 @@ export class RechercheDossierNssComponent {
       return;
     }
 
-    // Simulate backend search
     const dossier = this.dossiers.find((d) => d.nss === this.nss);
 
     if (dossier) {
