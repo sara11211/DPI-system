@@ -8,6 +8,7 @@ import { RechercheDossierQrComponent } from './dashboards/dashboard-medecin/page
 import { InformationsPersonellesComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/informations-personelles/informations-personelles.component';
 import { ConsultationsComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/consultations/consultations.component';
 import { NouveauResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/nouveau-resume/nouveau-resume.component';
+import { ListeOrdonnancesComponent } from './dashboards/dashboard-medecin/pages/liste-ordonnances/liste-ordonnances.component';
 
 export const routes: Routes = [
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -38,4 +39,5 @@ export const routes: Routes = [
       },
     ],
   },
+  { path: 'liste-ordonnances', component: ListeOrdonnancesComponent },
 ];
