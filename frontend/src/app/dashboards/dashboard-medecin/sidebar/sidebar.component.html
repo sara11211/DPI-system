@@ -67,6 +67,20 @@
             
             <li>
               <a
+              routerLink="/recherche-dossier" routerLinkActive="bg-accent-blue text-primary-blue font-semibold"
+              ariaCurrentWhenActive="page"
+                class="flex items-center gap-2 px-2 py-2 mx-2 rounded-md cursor-pointer group hover:bg-accent-blue text-dark-gray hover:text-primary-blue hover:font-semibold"
+              >
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.62765 1.8335C5.32439 1.8335 1.83594 5.32194 1.83594 9.62516C1.83594 13.9284 5.32439 17.4168 9.62765 17.4168C11.4485 17.4168 13.1246 16.7913 14.4509 15.7448L18.8729 20.1668C19.2309 20.5248 19.8113 20.5248 20.1693 20.1668C20.5273 19.8089 20.5273 19.2284 20.1693 18.8705L15.7472 14.4485C16.7938 13.1222 17.4193 11.4461 17.4193 9.62516C17.4193 5.32194 13.9309 1.8335 9.62765 1.8335ZM3.66927 9.62516C3.66927 6.33447 6.33691 3.66683 9.62765 3.66683C12.9183 3.66683 15.586 6.33447 15.586 9.62516C15.586 11.2708 14.92 12.7591 13.8407 13.8383C12.7615 14.9176 11.2732 15.5835 9.62765 15.5835C6.33691 15.5835 3.66927 12.9159 3.66927 9.62516Z" fill="currentColor"/>
+                </svg>
+                            
+                <span class="text-sm">Recherche Dossier</span>
+              </a>
+            </li>
+            
+            <li>
+              <a
               routerLink="/liste-dossiers" routerLinkActive="bg-accent-blue text-primary-blue font-semibold"
               ariaCurrentWhenActive="page"
                 class="flex items-center gap-2 px-2 py-2 mx-2 rounded-md cursor-pointer group hover:bg-accent-blue text-dark-gray hover:text-primary-blue hover:font-semibold"
@@ -114,6 +128,6 @@
       </nav>
     </div>
     <div class="flex-1 h-full bg-background-gray">
-      <!-- <router-outlet></router-outlet> -->
+      <router-outlet></router-outlet>
     </div>
   </div>

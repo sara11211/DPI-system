@@ -39,3 +39,7 @@
 .small-white-card {
     @apply flex items-center justify-between bg-white rounded-2xl p-5 shadow-sm border
 }
+
+.button-options {
+    @apply flex items-center gap-5 p-4 bg-white border shadow-sm rounded-xl hover:bg-accent-blue hover:border-primary-blue
+}
