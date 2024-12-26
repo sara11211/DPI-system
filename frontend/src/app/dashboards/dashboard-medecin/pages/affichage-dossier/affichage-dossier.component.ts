@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet, Routes } from '@angular/router';
+import { InformationsPersonellesComponent } from './informations-personelles/informations-personelles.component';
+import { ConsultationsComponent } from './consultations/consultations.component';
 
 interface Dossier {
   nom: string;
@@ -12,100 +14,25 @@ interface Dossier {
 @Component({
   selector: 'app-liste-dossiers',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterOutlet],
   templateUrl: './affichage-dossier.component.html',
 })
 export class AffichageDossierComponent implements OnInit {
+  
+  activeTab: string = 'personal-info';
+
+  setActiveTab(tab: string): void {
+    this.activeTab = tab;
+    this.router.navigate([`./${tab}`], { relativeTo: this.route });
+}
+
   nss: string | null = null;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(public router: Router,public  route: ActivatedRoute) {}
 
   ngOnInit(): void {
     // Retrieve the NSS parameter from the route
     this.nss = this.route.snapshot.paramMap.get('nss');
   }
 
-  popupVisible: boolean = false;
-  dossierToDelete: Dossier | null = null;
-
-  dossiers: Dossier[] = [
-    { nom: 'Braham Imad', nss: '0673222612', dateAjout: '2023-04-06' },
-    { nom: 'Sarah Ali', nss: '0233222612', dateAjout: '2023-05-10' },
-    { nom: 'Ahmed Karim', nss: '0783222612', dateAjout: '2023-06-12' },
-
-    { nom: 'Braham Imad', nss: '0673222712', dateAjout: '2023-04-06' },
-    { nom: 'Sarah Ali', nss: '0233227612', dateAjout: '2023-05-10' },
-    { nom: 'Ahmed Karim', nss: '0783272612', dateAjout: '2023-06-12' },
-
-    { nom: 'Braham Imad', nss: '0573222712', dateAjout: '2023-04-06' },
-    { nom: 'Sarah Ali', nss: '0133227612', dateAjout: '2023-05-10' },
-    { nom: 'Ahmed Karim', nss: '0183272612', dateAjout: '2023-06-12' },
-  ];
-
-  displayedColumns: string[] = ['Date', 'Ordonnance', 'Bilan', 'Resultats', 'Resume'];
-
-  itemsPerPage = 8;
-  currentPage = 1;
-  searchTerm: string = '';
-  selectedDate: string | null = null;
-
-  filteredDossiers: Dossier[] = [...this.dossiers]; // Filtered list
-
-  get paginatedDossiers() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredDossiers.slice(
-      startIndex,
-      startIndex + this.itemsPerPage
-    );
-  }
-
-  get totalPages() {
-    return Math.ceil(this.filteredDossiers.length / this.itemsPerPage);
-  }
-
-  // Change page
-  changePage(page: number) {
-    this.currentPage = page;
-  }
-
-  // Apply filters
-  applyFilters() {
-    this.filteredDossiers = this.dossiers.filter((dossier) => {
-      const matchesSearch =
-        this.searchTerm.trim() === '' ||
-        dossier.nss.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchesDate =
-        !this.selectedDate || dossier.dateAjout === this.selectedDate;
-      return matchesSearch && matchesDate;
-    });
-
-    // Reset to first page after filtering
-    this.currentPage = 1;
-  }
-
-  editDossier(nss: string) {
-    this.router.navigate(['/modifier-dossier', nss]);
-  }
-
-  openPopup(dossier: Dossier) {
-    this.popupVisible = true;
-    this.dossierToDelete = dossier;
-  }
-  
-  confirmDelete() {
-    if (this.dossierToDelete) {
-      this.dossiers = this.dossiers.filter(
-        (dossier) => dossier.nss !== this.dossierToDelete?.nss
-      );
-      this.applyFilters(); // Reapply filters after deletion
-      this.popupVisible = false;
-      this.dossierToDelete = null;
-    }
-  }
-  
-  cancelDelete() {
-    this.popupVisible = false;
-    this.dossierToDelete = null;
-  }
-  
 }
