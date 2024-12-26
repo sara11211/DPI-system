@@ -1,11 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-interface Dossier {
+
+interface Consultation {
   nom: string;
   nss: string;
   dateAjout: string;
+  ordonnance: string;
+  bilanb: string;
+  bilanr: string;
+  resultatsb: string;
+  resultatsr: string;
+  resume: string;
 }
+
 @Component({
   selector: 'app-consultations',
   standalone: true,
@@ -15,22 +23,47 @@ interface Dossier {
 })
 export class ConsultationsComponent {
   popupVisible: boolean = false;
-  dossierToDelete: Dossier | null = null;
+  consultationToDelete: Consultation | null = null;
 
-  dossiers: Dossier[] = [
-    { nom: 'Braham Imad', nss: '0673222612', dateAjout: '2023-04-06' },
-    { nom: 'Sarah Ali', nss: '0233222612', dateAjout: '2023-05-10' },
-    { nom: 'Ahmed Karim', nss: '0783222612', dateAjout: '2023-06-12' },
-
-    { nom: 'Braham Imad', nss: '0673222712', dateAjout: '2023-04-06' },
-    { nom: 'Sarah Ali', nss: '0233227612', dateAjout: '2023-05-10' },
-    { nom: 'Ahmed Karim', nss: '0783272612', dateAjout: '2023-06-12' },
-
-    { nom: 'Braham Imad', nss: '0573222712', dateAjout: '2023-04-06' },
-    { nom: 'Sarah Ali', nss: '0133227612', dateAjout: '2023-05-10' },
-    { nom: 'Ahmed Karim', nss: '0183272612', dateAjout: '2023-06-12' },
+  // Updated array with example consultation data
+  consultations: Consultation[] = [
+    { 
+      nom: 'Braham Imad', 
+      nss: '0673222612', 
+      dateAjout: '2023-04-06', 
+      ordonnance: 'Ordonnance A', 
+      bilanb: 'Bilan A', 
+      bilanr: 'Bilan A', 
+      resultatsb: 'Resultats A', 
+      resultatsr: 'Resultats A', 
+      resume: 'Résumé A'
+    },
+    { 
+      nom: 'Sarah Ali', 
+      nss: '0233222612', 
+      dateAjout: '2023-05-10', 
+      ordonnance: 'Ordonnance B', 
+      bilanb: '', 
+      bilanr: 'Bilan A', 
+      resultatsb: 'Resultats B',
+      resultatsr: '',  
+      resume: 'Résumé B'
+    },
+    { 
+      nom: 'Ahmed Karim', 
+      nss: '0783222612', 
+      dateAjout: '2023-06-12', 
+      ordonnance: '', 
+      bilanb: 'Bilan C', 
+      bilanr: '', 
+      resultatsb: 'Resultats C', 
+      resultatsr: 'Resultats B', 
+      resume: ''
+    },
+    // Add more consultations as needed
   ];
 
+  // Updated displayed columns for consultations
   displayedColumns: string[] = ['Date', 'Ordonnance', 'Bilan', 'Resultats', 'Resume'];
 
   itemsPerPage = 8;
@@ -38,20 +71,20 @@ export class ConsultationsComponent {
   searchTerm: string = '';
   selectedDate: string | null = null;
 
-  filteredDossiers: Dossier[] = [...this.dossiers]; // Filtered list
+  filteredConsultations: Consultation[] = [...this.consultations]; // Filtered list
 
-  constructor(public router: Router,public  route: ActivatedRoute) {}
+  constructor(public router: Router, public route: ActivatedRoute) {}
 
-  get paginatedDossiers() {
+  get paginatedConsultations() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredDossiers.slice(
+    return this.filteredConsultations.slice(
       startIndex,
       startIndex + this.itemsPerPage
     );
   }
 
   get totalPages() {
-    return Math.ceil(this.filteredDossiers.length / this.itemsPerPage);
+    return Math.ceil(this.filteredConsultations.length / this.itemsPerPage);
   }
 
   // Change page
@@ -61,12 +94,12 @@ export class ConsultationsComponent {
 
   // Apply filters
   applyFilters() {
-    this.filteredDossiers = this.dossiers.filter((dossier) => {
+    this.filteredConsultations = this.consultations.filter((consultation) => {
       const matchesSearch =
         this.searchTerm.trim() === '' ||
-        dossier.nss.toLowerCase().includes(this.searchTerm.toLowerCase());
+        consultation.nss.toLowerCase().includes(this.searchTerm.toLowerCase());
       const matchesDate =
-        !this.selectedDate || dossier.dateAjout === this.selectedDate;
+        !this.selectedDate || consultation.dateAjout === this.selectedDate;
       return matchesSearch && matchesDate;
     });
 
@@ -74,28 +107,40 @@ export class ConsultationsComponent {
     this.currentPage = 1;
   }
 
-  editDossier(nss: string) {
-    this.router.navigate(['/modifier-dossier', nss]);
+  editConsultation(nss: string) {
+    this.router.navigate(['/modifier-consultation', nss]);
   }
 
-  openPopup(dossier: Dossier) {
+  openPopup(consultation: Consultation) {
     this.popupVisible = true;
-    this.dossierToDelete = dossier;
+    this.consultationToDelete = consultation;
   }
   
   confirmDelete() {
-    if (this.dossierToDelete) {
-      this.dossiers = this.dossiers.filter(
-        (dossier) => dossier.nss !== this.dossierToDelete?.nss
+    if (this.consultationToDelete) {
+      this.consultations = this.consultations.filter(
+        (consultation) => consultation.nss !== this.consultationToDelete?.nss
       );
       this.applyFilters(); // Reapply filters after deletion
       this.popupVisible = false;
-      this.dossierToDelete = null;
+      this.consultationToDelete = null;
     }
+  }
+  
+  viewDetails( nss: string) {
+    this.router.navigate(['/details-consultation', nss]);
   }
   
   cancelDelete() {
     this.popupVisible = false;
-    this.dossierToDelete = null;
+    this.consultationToDelete = null;
+  }
+
+  addOrUpdate(type: 'resume' | 'ordonnance', consultation: Consultation) {
+    if (type === 'resume') {
+      consultation.resume = 'New Resume'; // Add logic to handle resume addition
+    } else if (type === 'ordonnance') {
+      consultation.ordonnance = 'New Ordonnance'; // Add logic to handle ordonnance addition
+    }
   }
 }
