@@ -20,7 +20,7 @@ export const routes: Routes = [
   { path: 'nouveau-dossier', component: NouveauDossierComponent },
   { path: 'recherche-dossier', component: RechercheDossierComponent },
   { path: 'liste-dossiers', component: ListeDossiersComponent },
-  { path: 'recherche-dossier-nss', component: RechercheDossierNssComponent }, // Add your NSS Component
-  { path: 'recherche-dossier-qr', component: RechercheDossierQrComponent },   // Add your QR Component
+  { path: 'recherche-dossier/nss', component: RechercheDossierNssComponent }, 
+  { path: 'recherche-dossier/qr', component: RechercheDossierQrComponent },   
   // { path: 'modifier-dossier/:nss', component: ModifierDossierComponent, },
 ];

@@ -1,1 +1,65 @@
-<p>recherche-dossier-qr works!</p>
+<header class="header">Recherche par QR Code</header>
+
+<div class="flex flex-col items-center justify-center gap-8 py-8">
+    
+  <div class="flex items-center justify-center">
+    <div
+      class="flex flex-col items-center justify-center gap-4 p-10 bg-white shadow-sm rounded-xl lg:px-20"
+    >
+      <p>Importez le code QR du dossier patient</p>
+      <div
+        class="flex items-center justify-center p-5 rounded-full bg-accent-blue"
+      >
+        <img src="/assets/icons/qr-icon.svg" alt="qr code" />
+      </div>
+      <button class="flex items-center gap-2 button-main">
+        <svg
+          width="24"
+          height="25"
+          viewBox="0 0 24 25"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15.5896 8.49997L13.0039 5.91422V15.5C13.0039 16.0522 12.5562 16.5 12.0039 16.5C11.4516 16.5 11.0039 16.0522 11.0039 15.5V5.91422L8.41804 8.50003C8.02752 8.89056 7.39435 8.89056 7.00383 8.50003C6.95501 8.45122 6.9123 8.39861 6.87569 8.34316C6.61941 7.95501 6.66212 7.42753 7.00383 7.08582L11.2968 2.79289C11.4843 2.60536 11.7387 2.5 12.0039 2.5C12.2691 2.5 12.5235 2.60536 12.711 2.79289L17.0039 7.08576C17.3944 7.47628 17.3944 8.10945 17.0039 8.49997C16.6133 8.8905 15.9802 8.8905 15.5896 8.49997Z"
+            fill="white"
+          />
+          <path
+            d="M4.00391 14.5001C4.5562 14.5001 5.00391 14.9478 5.00391 15.5001V19.5001H19.0039V15.5001C19.0039 14.9478 19.4516 14.5001 20.0039 14.5001C20.5562 14.5001 21.0039 14.9478 21.0039 15.5001V19.5001C21.0039 20.6047 20.1085 21.5001 19.0039 21.5001H5.00391C3.89934 21.5001 3.00391 20.6047 3.00391 19.5001V15.5001C3.00391 14.9478 3.45163 14.5001 4.00391 14.5001Z"
+            fill="white"
+          />
+        </svg>
+        Importer
+      </button>
+    </div>
+  </div>
+  <!-- Dossier Found -->
+  <div class="flex flex-col gap-1">
+    <p class="font-light text-center text-gray-600">
+      Resultat de votre recherche
+    </p>
+
+    <div
+      class="flex flex-col items-center gap-6 p-8 bg-white shadow-sm rounded-xl"
+    >
+      <div class="flex items-center justify-center gap-4">
+        <!-- user image -->
+        <div>
+          <img src="/assets/icons/user-found-icon.svg" alt="user" />
+        </div>
+        <!-- user infos -->
+        <div class="flex flex-col gap-2 text-left">
+          <span class="font-semibold">Braham Imad</span>
+          <span class="font-light text-dark-gray">0700934666004</span>
+        </div>
+      </div>
+
+      <!-- details button -->
+      <button
+        class="px-8 py-2 border text-primary-blue border-primary-blue rounded-xl hover:bg-accent-blue"
+      >
+        Voir le dossier
+      </button>
+    </div>
+  </div>
+</div>

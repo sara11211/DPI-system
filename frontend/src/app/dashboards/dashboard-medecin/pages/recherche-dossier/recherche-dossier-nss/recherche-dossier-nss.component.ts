@@ -7,23 +7,23 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './recherche-dossier-nss.component.html',
-  styleUrls: ['./recherche-dossier-nss.component.css'], // Corrected property name
+  styleUrls: ['./recherche-dossier-nss.component.css']
 })
 export class RechercheDossierNssComponent {
-  nss: string = ''; 
-  errorMessage: string | null = null; 
+  nss: string = '';
+  errorMessage: string | null = null;
+  dossierFound: boolean = false;
+  dossier: any = null;
+
+  // Example dossier data for testing
+  dossiers = [
+    { name: 'Braham Imad', nss: '070093466600', details: 'Dossier details here' },
+    { name: 'Sarah Ahmed', nss: '123456789012', details: 'Another dossier details here' },
+  ];
 
   validateNSS() {
-    const isNumeric = /^\d+$/.test(this.nss); // Check if the input contains only numbers
-    const hasCorrectLength = this.nss.length === 12; // Check if the input length is 12 digits
-
-    if (!isNumeric) {
-      this.errorMessage = 'Veuillez entrer uniquement des chiffres.';
-    } else if (!hasCorrectLength) {
-      this.errorMessage = 'Le NSS doit contenir exactement 12 chiffres.';
-    } else {
-      this.errorMessage = null;
-    }
+    const isValid = /^\d+$/.test(this.nss) && this.nss.length === 12;
+    this.errorMessage = isValid ? null : 'Le NSS doit contenir uniquement 12 chiffres.';
   }
 
   searchNSS() {
@@ -32,17 +32,19 @@ export class RechercheDossierNssComponent {
       return;
     }
 
-    if (!/^\d+$/.test(this.nss)) {
-      this.errorMessage = 'Veuillez entrer uniquement des chiffres.';
+    if (this.errorMessage) {
       return;
     }
 
-    if (this.nss.length !== 12) {
-      this.errorMessage = 'Le NSS doit contenir exactement 12 chiffres.';
-      return;
-    }
+    // Simulate backend search
+    const dossier = this.dossiers.find((d) => d.nss === this.nss);
 
-    this.errorMessage = null; 
-    console.log('Recherche NSS:', this.nss);
+    if (dossier) {
+      this.dossier = dossier;
+      this.dossierFound = true;
+    } else {
+      this.dossierFound = false;
+      this.errorMessage = 'Aucun dossier trouvé pour ce NSS.';
+    }
   }
 }
