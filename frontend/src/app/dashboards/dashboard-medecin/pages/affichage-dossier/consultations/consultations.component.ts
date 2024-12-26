@@ -23,9 +23,9 @@ interface Consultation {
 })
 export class ConsultationsComponent {
   popupVisible: boolean = false;
+  deleteType: string = '';
   consultationToDelete: Consultation | null = null;
 
-  // Updated array with example consultation data
   consultations: Consultation[] = [
     { 
       nom: 'Braham Imad', 
@@ -111,20 +111,21 @@ export class ConsultationsComponent {
     this.router.navigate(['/modifier-consultation', nss]);
   }
 
-  openPopup(consultation: Consultation) {
-    this.popupVisible = true;
+  openPopup(type: string, consultation: Consultation) {
+    this.deleteType = type;  // Save whether we're dealing with ordonnance or resume
     this.consultationToDelete = consultation;
+    this.popupVisible = true;
   }
   
   confirmDelete() {
-    if (this.consultationToDelete) {
-      this.consultations = this.consultations.filter(
-        (consultation) => consultation.nss !== this.consultationToDelete?.nss
-      );
-      this.applyFilters(); // Reapply filters after deletion
-      this.popupVisible = false;
-      this.consultationToDelete = null;
+    if (this.deleteType && this.consultationToDelete) {
+      if (this.deleteType === 'ordonnance') {
+        this.consultationToDelete.ordonnance = '';  // Clear ordonnance
+      } else if (this.deleteType === 'resume') {
+        this.consultationToDelete.resume = '';  // Clear resume
+      }
     }
+    this.popupVisible = false;  // Hide the popup after deletion
   }
   
   viewDetails( nss: string) {
