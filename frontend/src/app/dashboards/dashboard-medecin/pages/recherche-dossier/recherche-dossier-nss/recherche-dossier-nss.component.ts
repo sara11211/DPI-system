@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-recherche-dossier-nss',
@@ -45,5 +47,10 @@ export class RechercheDossierNssComponent {
       this.dossierFound = false;
       this.errorMessage = 'Aucun dossier trouvé pour ce NSS.';
     }
+  }
+
+  constructor(private router: Router) {}
+  viewDossier() {
+    this.router.navigate(['/recherche-dossier', this.dossier.nss]);
   }
 }

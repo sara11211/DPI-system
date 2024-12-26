@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface Dossier {
   nom: string;
@@ -13,11 +13,17 @@ interface Dossier {
   selector: 'app-liste-dossiers',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './liste-dossiers.component.html',
-  styleUrl: './liste-dossiers.component.css',
+  templateUrl: './affichage-dossier.component.html',
 })
-export class ListeDossiersComponent {
-  constructor(private router: Router) {}
+export class AffichageDossierComponent implements OnInit {
+  nss: string | null = null;
+
+  constructor(private router: Router, private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    // Retrieve the NSS parameter from the route
+    this.nss = this.route.snapshot.paramMap.get('nss');
+  }
 
   popupVisible: boolean = false;
   dossierToDelete: Dossier | null = null;
@@ -36,7 +42,7 @@ export class ListeDossiersComponent {
     { nom: 'Ahmed Karim', nss: '0183272612', dateAjout: '2023-06-12' },
   ];
 
-  displayedColumns: string[] = ['Nom', 'NSS', 'Date Ajout', 'Actions'];
+  displayedColumns: string[] = ['Date', 'Ordonnance', 'Bilan', 'Resultats', 'Resume'];
 
   itemsPerPage = 8;
   currentPage = 1;

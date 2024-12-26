@@ -29,7 +29,9 @@
 
   <!-- Dossier Found -->
   <div *ngIf="dossierFound" class="flex flex-col gap-1">
-    <p class="font-light text-center text-gray-600">Résultat de votre recherche</p>
+    <p class="font-light text-center text-gray-600">
+      Résultat de votre recherche
+    </p>
 
     <div
       class="flex flex-col items-center gap-6 p-8 bg-white shadow-sm rounded-xl"
@@ -48,6 +50,7 @@
 
       <!-- details button -->
       <button
+        (click)="viewDossier()"
         class="px-8 py-2 border text-primary-blue border-primary-blue rounded-xl hover:bg-accent-blue"
       >
         Voir le dossier

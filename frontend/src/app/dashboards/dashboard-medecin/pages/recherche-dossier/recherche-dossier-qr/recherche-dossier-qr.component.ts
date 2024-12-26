@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-recherche-dossier-qr',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './recherche-dossier-qr.component.html',
-  styleUrl: './recherche-dossier-qr.component.css'
+  styleUrl: './recherche-dossier-qr.component.css',
 })
 export class RechercheDossierQrComponent {
   dossierFound = false;
@@ -34,5 +35,10 @@ export class RechercheDossierQrComponent {
         nss: '0700934666004',
       };
     }, 1000);
+  }
+
+  constructor(private router: Router) {}
+  viewDossier() {
+    this.router.navigate(['/recherche-dossier', this.dossier.nss]);
   }
 }

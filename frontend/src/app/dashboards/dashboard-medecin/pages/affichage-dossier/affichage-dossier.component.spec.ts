@@ -1,18 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AffichageDossierComponent } from './affichage-dossier.component';
 
-import { ListeDossierComponent } from './liste-dossiers.component';
+
 
 describe('ListeDossierComponent', () => {
-  let component: ListeDossierComponent;
-  let fixture: ComponentFixture<ListeDossierComponent>;
+  let component: AffichageDossierComponent;
+  let fixture: ComponentFixture<AffichageDossierComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ListeDossierComponent]
+      imports: [AffichageDossierComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ListeDossierComponent);
+    fixture = TestBed.createComponent(AffichageDossierComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
