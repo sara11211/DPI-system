@@ -144,4 +144,8 @@ export class ConsultationsComponent {
       consultation.ordonnance = 'New Ordonnance'; // Add logic to handle ordonnance addition
     }
   }
+
+  addNewResume() {
+    this.router.navigate(['/nouveau-resume']);
+  }
 }
