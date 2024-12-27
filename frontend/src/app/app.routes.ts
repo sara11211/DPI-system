@@ -64,5 +64,7 @@ export const routes: Routes = [
       },
     ],
   },
-  { path: 'liste-ordonnances', component: ListeOrdonnancesComponent },
+  { path: 'liste-ordonnances', component: ListeOrdonnancesComponent, children:[
+    { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
+  ] },
 ];

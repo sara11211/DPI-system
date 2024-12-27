@@ -67,7 +67,7 @@
           </td>
           <td class="td">
             <div class="flex items-center w-full gap-2">
-              <button class="hover:underline text-primary-blue">
+              <button (click)="openModalAffichageOrdonnance(ordonnance.id)" class="hover:underline text-primary-blue">
                 Voir details
               </button>
             </div>
@@ -118,5 +118,10 @@
       >
         Last
       </button>
+    </div>
+
+    <div *ngIf="isModalVisible" class="modal-overlay" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+    <router-outlet></router-outlet>
     </div>
   </div>
