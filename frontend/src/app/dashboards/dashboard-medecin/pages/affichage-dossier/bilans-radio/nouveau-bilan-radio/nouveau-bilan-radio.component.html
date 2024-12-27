@@ -1,1 +1,86 @@
-<p>nouveau-bilan-radio works!</p>
+<header class="header">Nouveau Bilan Radio</header>
+
+<div class="flex flex-col gap-4 px-8 py-4">
+  <form (ngSubmit)="onSubmit()">
+    <div class="flex items-center w-full gap-4">
+        <div class="flex-1">
+            <!-- Symptoms Input -->
+            <div class="form-group">
+              <label for="symptoms" class="label">Symptômes</label>
+              <textarea
+                id="symptoms"
+                [(ngModel)]="symptoms"
+                name="symptoms"
+                required
+                rows="3"
+                class="input"
+                placeholder="Entrez les symptômes"
+              ></textarea>
+              <p *ngIf="symptoms.trim() === ''" class="text-xs text-red-500">
+                Les symptômes sont obligatoires.
+              </p>
+            </div>
+      
+            <!-- Diagnostic Input -->
+            <div class="form-group">
+              <label for="diagnostic" class="label">Diagnostic</label>
+              <input
+                id="diagnostic"
+                type="text"
+                [(ngModel)]="diagnostic"
+                name="diagnostic"
+                required
+                class="input"
+                placeholder="Entrez le diagnostic"
+              />
+              <p *ngIf="diagnostic.trim() === ''" class="text-xs text-red-500">
+                Le diagnostic est obligatoire.
+              </p>
+            </div>
+          </div>
+      
+          <div class="flex-1">
+            <!-- Information on Measures Input -->
+            <div class="form-group">
+              <label for="measuresInfo" class="label"
+                >Informations sur les mesures</label
+              >
+              <textarea
+                id="measuresInfo"
+                [(ngModel)]="measuresInfo"
+                name="measuresInfo"
+                required
+                rows="3"
+                class="input"
+                placeholder="Entrez les informations sur les mesures"
+              ></textarea>
+              <p *ngIf="measuresInfo.trim() === ''" class="text-xs text-red-500">
+                Les informations sur les mesures sont obligatoires.
+              </p>
+            </div>
+      
+            <!-- Next Consultation Date Input -->
+            <div class="form-group">
+              <label for="nextConsultation" class="label"
+                >Date de la prochaine consultation</label
+              >
+              <input
+                id="nextConsultation"
+                type="date"
+                [(ngModel)]="nextConsultation"
+                name="nextConsultation"
+                required
+                class="input"
+              />
+              <p *ngIf="!nextConsultation" class="text-xs text-red-500">
+                La date de la prochaine consultation est obligatoire.
+              </p>
+            </div>
+          </div>
+    </div>
+    <!-- Submit Button -->
+    <button type="submit" [disabled]="!validateForm()" class="mt-3 button-main">
+      Enregistrer
+    </button>
+  </form>
+</div>
