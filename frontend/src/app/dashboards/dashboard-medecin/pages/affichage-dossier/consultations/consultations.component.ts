@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 
 interface Consultation {
   id: string;
@@ -17,7 +17,7 @@ interface Consultation {
 @Component({
   selector: 'app-consultations',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './consultations.component.html',
   styleUrl: './consultations.component.css'
 })
@@ -25,6 +25,7 @@ export class ConsultationsComponent {
   popupVisible: boolean = false;
   deleteType: string = '';
   consultationToDelete: Consultation | null = null;
+  isModalVisible: boolean = false;
 
   consultations: Consultation[] = [
     { 
@@ -76,6 +77,17 @@ export class ConsultationsComponent {
 
   constructor(public router: Router, public route: ActivatedRoute) {}
 
+  ngOnInit(): void {
+    this.router.events.subscribe(() => {
+      // Check if the current route matches the modal route
+      this.isModalVisible = this.router.url.includes('nouvelle-ordonnance');
+    });
+  }
+
+  closeModal() {
+    this.router.navigate(['..'], { relativeTo: this.route });
+  }
+
   get paginatedConsultations() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     return this.filteredConsultations.slice(
@@ -94,7 +106,7 @@ export class ConsultationsComponent {
   }
 
   openPopup(type: string, consultation: Consultation) {
-    this.deleteType = type;  // Save whether we're dealing with ordonnance or resume
+    this.deleteType = type;  
     this.consultationToDelete = consultation;
     this.popupVisible = true;
   }
@@ -115,7 +127,8 @@ export class ConsultationsComponent {
     this.consultationToDelete = null;
   }
 
-  navigateToOrdonnance(id: string): void {
-    this.router.navigate(['/nouvelle-ordonnance', id]);
+  openModal(id: string): void {
+    this.router.navigate(['nouvelle-ordonnance', id], { relativeTo: this.route });
   }
+  
 }

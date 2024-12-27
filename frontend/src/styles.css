@@ -43,3 +43,25 @@
 .button-options {
     @apply flex items-center gap-5 p-4 bg-white border shadow-sm rounded-xl hover:bg-accent-blue hover:border-primary-blue active:border-primary-blue focus:border-primary-blue active:bg-accent-blue focus:bg-accent-blue
 }
+
+/* modal-wrapper.component.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 4px;
+  border-radius: 8px;
+  margin: 16px;
+  width: 100%;
+}

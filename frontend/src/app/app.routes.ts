@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: 'recherche-dossier', component: RechercheDossierComponent },
   { path: 'recherche-dossier/nss', component: RechercheDossierNssComponent },
   { path: 'recherche-dossier/qr', component: RechercheDossierQrComponent },
-  { path: 'nouvelle-ordonnance/:id', component: NouvelleOrdonnanceComponent },
+
   
   {
     path: 'recherche-dossier/:nss',
@@ -38,6 +38,7 @@ export const routes: Routes = [
         component: ConsultationsComponent,
         children: [
           { path: 'nouveau-resume', component: NouveauResumeComponent },
+          { path: 'nouvelle-ordonnance/:id', component: NouvelleOrdonnanceComponent },
         ],
       },
     ],
