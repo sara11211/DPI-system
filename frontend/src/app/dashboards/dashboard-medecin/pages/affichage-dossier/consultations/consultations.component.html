@@ -27,6 +27,7 @@
           >
             <button
               class="hover:underline text-primary-blue"
+              (click)="openModalAffichageOrdonnance(consultation.id)"
             >
               Voir details
             </button>
@@ -86,7 +87,7 @@
           >
             <button
               class="text-gray-300 hover:text-green-500 hover:underline"
-              (click)="openModal(consultation.id)"
+              (click)="openModalNouvelleOrdonnance(consultation.id)"
             >
               Ajouter Ordonnance
             </button>

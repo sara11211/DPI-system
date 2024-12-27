@@ -26,6 +26,7 @@ export class ConsultationsComponent {
   deleteType: string = '';
   consultationToDelete: Consultation | null = null;
   isModalVisible: boolean = false;
+  consultation: any;
 
   consultations: Consultation[] = [
     { 
@@ -80,7 +81,7 @@ export class ConsultationsComponent {
   ngOnInit(): void {
     this.router.events.subscribe(() => {
       // Check if the current route matches the modal route
-      this.isModalVisible = this.router.url.includes('nouvelle-ordonnance');
+      this.isModalVisible = this.router.url.includes('nouvelle-ordonnance') || this.router.url.includes('affichage-ordonnance');
     });
   }
 
@@ -127,8 +128,11 @@ export class ConsultationsComponent {
     this.consultationToDelete = null;
   }
 
-  openModal(id: string): void {
+  openModalNouvelleOrdonnance(id: string): void {
     this.router.navigate(['nouvelle-ordonnance', id], { relativeTo: this.route });
   }
-  
+
+  openModalAffichageOrdonnance(id: string): void {
+    this.router.navigate(['affichage-ordonnance', id], { relativeTo: this.route });
+  }
 }

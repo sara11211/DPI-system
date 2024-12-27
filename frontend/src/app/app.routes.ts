@@ -10,6 +10,7 @@ import { ConsultationsComponent } from './dashboards/dashboard-medecin/pages/aff
 import { NouveauResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/nouveau-resume/nouveau-resume.component';
 import { ListeOrdonnancesComponent } from './dashboards/dashboard-medecin/pages/liste-ordonnances/liste-ordonnances.component';
 import { NouvelleOrdonnanceComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/ordonnance/nouvelle-ordonnance/nouvelle-ordonnance.component';
+import { AffichageOrdonnanceComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/ordonnance/affichage-ordonnance/affichage-ordonnance.component';
 
 export const routes: Routes = [
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -39,6 +40,7 @@ export const routes: Routes = [
         children: [
           { path: 'nouveau-resume', component: NouveauResumeComponent },
           { path: 'nouvelle-ordonnance/:id', component: NouvelleOrdonnanceComponent },
+          { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
         ],
       },
     ],

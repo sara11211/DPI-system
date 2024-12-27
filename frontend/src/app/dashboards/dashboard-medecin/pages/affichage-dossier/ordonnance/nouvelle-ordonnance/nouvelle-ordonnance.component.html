@@ -1,75 +1,41 @@
 <header class="header">Nouvelle Ordonnance</header>
 
 <div class="flex flex-col w-full gap-4 px-16 py-4">
-
   <div class="flex items-center justify-between w-full">
     <h2 class="font-semibold text-black font-main">Ordonnance</h2>
-    <button (click)="addMedication()">
+    <button type="button" (click)="addMedication()">
       <img src="/assets/icons/plus-icon.svg" alt="plus" />
     </button>
   </div>
 
   <div class="w-full">
-    <form (ngSubmit)="validateForm()">
+    <form (ngSubmit)="sauvegarder()" #ordonnanceForm="ngForm">
       <div *ngFor="let medication of medications; let i = index" class="pb-4 mb-4 border-b last:border-b-0">
         <div class="flex items-center justify-between w-full">
           <div>
             <label for="name{{ i }}" class="label">Nom du Médicament</label>
-            <input
-              type="text"
-              id="name{{ i }}"
-              name="name{{ i }}"
-              [(ngModel)]="medication.name"
-              class="input"
-              #name="ngModel"
-              required
-            />
-            <div *ngIf="name.invalid && name.touched" class="text-xs text-red-500">
-              Nom du médicament est obligatoire.
-            </div>
+            <input type="text" id="name{{ i }}" name="name{{ i }}" [(ngModel)]="medication.name" class="input" #name="ngModel" (ngModelChange)="validateForm()" required>
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-xs text-red-500">Nom du médicament est obligatoire.</div>
           </div>
           <div>
             <label for="dose{{ i }}" class="label">Dose</label>
-            <input
-              type="text"
-              id="dose{{ i }}"
-              name="dose{{ i }}"
-              [(ngModel)]="medication.dose"
-              class="input"
-              #dose="ngModel"
-              required
-            />
-            <div *ngIf="dose.invalid && dose.touched" class="text-xs text-red-500">
-              Dose est obligatoire.
-            </div>
+            <input type="text" id="dose{{ i }}" name="dose{{ i }}" [(ngModel)]="medication.dose" class="input" #dose="ngModel" (ngModelChange)="validateForm()" required>
+            <div *ngIf="dose.invalid && (dose.dirty || dose.touched)" class="text-xs text-red-500">Dose est obligatoire.</div>
           </div>
           <div>
             <label for="duration{{ i }}" class="label">Durée</label>
-            <input
-              type="text"
-              id="duration{{ i }}"
-              name="duration{{ i }}"
-              [(ngModel)]="medication.duration"
-              class="input"
-              #duration="ngModel"
-              required
-            />
-            <div *ngIf="duration.invalid && duration.touched" class="text-xs text-red-500">
-              Durée est obligatoire.
-            </div>
+            <input type="text" id="duration{{ i }}" name="duration{{ i }}" [(ngModel)]="medication.duration" class="input" #duration="ngModel" (ngModelChange)="validateForm()" required>
+            <div *ngIf="duration.invalid && (duration.dirty || duration.touched)" class="text-xs text-red-500">Durée est obligatoire.</div>
           </div>
-          <button *ngIf="medications.length > 1" (click)="removeMedication(i)" class="text-red-500 hover:text-red-700">
+          <button type="button" *ngIf="medications.length > 1" (click)="removeMedication(i)" class="text-red-500 hover:text-red-700">
             <img src="/assets/icons/minus-icon.svg" alt="minus">
           </button>
         </div>
       </div>
 
       <div class="flex justify-end">
-        <button class="button-main" [disabled]="!formValid" type="submit" (click)="sauvegarder()">
-          Sauvegarder
-        </button>
+        <button class="button-main" [disabled]="!formValid" type="submit">Sauvegarder</button>
       </div>
     </form>
   </div>
-
 </div>
