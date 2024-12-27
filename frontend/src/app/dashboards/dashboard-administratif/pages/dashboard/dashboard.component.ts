@@ -9,6 +9,9 @@ Chart.register(...registerables);
 })
 export class DashboardComponent implements AfterViewInit {
   userName: string = 'Sarah Abaziz';
+  nbDPIauj = 56;
+  nbDPIsema = 54;
+  nbDPImois = 53;
 
   ngAfterViewInit() {
     this.renderChart();
