@@ -45,9 +45,8 @@ export class NouvelleOrdonnanceComponent implements OnInit {
 
   sauvegarder(): void {
     if (this.formValid) {
-      console.log('Ordonnance data:', this.medications); // Log medication data
+      console.log('Ordonnance data:', this.medications); 
 
-      // Navigate back - Adjust the route as needed for your application
       this.router.navigate(['../../../consultations'], { relativeTo: this.route });
 
     } else {

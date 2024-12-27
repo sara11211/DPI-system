@@ -66,3 +66,56 @@
   max-width: 900px;
   width: 100%;
 }
+
+.form-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Mesures Styling */
+  .mesures-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .mesure-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .mesure-input {
+    width: 100px; /* Small width for one-word inputs */
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .add-button,
+  .remove-button {
+    padding: 0.4rem;
+    font-size: 1.2rem;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  

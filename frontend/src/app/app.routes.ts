@@ -7,10 +7,11 @@ import { RechercheDossierNssComponent } from './dashboards/dashboard-medecin/pag
 import { RechercheDossierQrComponent } from './dashboards/dashboard-medecin/pages/recherche-dossier/recherche-dossier-qr/recherche-dossier-qr.component';
 import { InformationsPersonellesComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/informations-personelles/informations-personelles.component';
 import { ConsultationsComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/consultations/consultations.component';
-import { NouveauResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/nouveau-resume/nouveau-resume.component';
 import { ListeOrdonnancesComponent } from './dashboards/dashboard-medecin/pages/liste-ordonnances/liste-ordonnances.component';
 import { NouvelleOrdonnanceComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/ordonnance/nouvelle-ordonnance/nouvelle-ordonnance.component';
 import { AffichageOrdonnanceComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/ordonnance/affichage-ordonnance/affichage-ordonnance.component';
+import { ResultatBioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/resultat-bio/resultat-bio.component';
+import { NouveauBilanBioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/nouveau-bilan-bio/nouveau-bilan-bio.component';
 
 export const routes: Routes = [
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -38,9 +39,10 @@ export const routes: Routes = [
         path: 'consultations',
         component: ConsultationsComponent,
         children: [
-          { path: 'nouveau-resume', component: NouveauResumeComponent },
           { path: 'nouvelle-ordonnance/:id', component: NouvelleOrdonnanceComponent },
           { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
+          { path: 'resultat-bio/:id', component: ResultatBioComponent },
+          { path: 'nouveau-bilan-bio/:id', component: NouveauBilanBioComponent },
         ],
       },
     ],
