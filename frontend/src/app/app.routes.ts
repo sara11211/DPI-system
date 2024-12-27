@@ -13,6 +13,9 @@ import { AffichageOrdonnanceComponent } from './dashboards/dashboard-medecin/pag
 import { ResultatBioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/resultat-bio/resultat-bio.component';
 import { NouveauBilanBioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/nouveau-bilan-bio/nouveau-bilan-bio.component';
 import { AffichageBilanBioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/affichage-bilan-bio/affichage-bilan-bio.component';
+import { ResultatRadioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-radio/resultat-radio/resultat-radio.component';
+import { NouveauBilanRadioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-radio/nouveau-bilan-radio/nouveau-bilan-radio.component';
+import { AffichageBilanRadioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-radio/affichage-bilan-radio/affichage-bilan-radio.component';
 
 export const routes: Routes = [
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -45,6 +48,10 @@ export const routes: Routes = [
           { path: 'resultat-bio/:id', component: ResultatBioComponent },
           { path: 'nouveau-bilan-bio/:id', component: NouveauBilanBioComponent },
           { path: 'affichage-bilan-bio/:id', component: AffichageBilanBioComponent },
+
+          { path: 'resultat-radio/:id', component: ResultatRadioComponent },
+          { path: 'nouveau-bilan-radio/:id', component: NouveauBilanRadioComponent },
+          { path: 'affichage-bilan-radio/:id', component: AffichageBilanRadioComponent },
         ],
       },
     ],
