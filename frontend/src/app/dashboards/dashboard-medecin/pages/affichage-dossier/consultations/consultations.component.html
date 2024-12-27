@@ -145,6 +145,31 @@
           </div>
         </td>
         <td class="td">
+          <div
+            *ngIf="consultation.bilanb"
+            class="flex items-center w-full gap-2"
+          >
+            <button
+              class="hover:underline text-primary-blue"
+              (click)="openModalVisualisation(consultation.id)"
+            >
+              Voir graphique
+            </button>
+          </div>
+
+          <div
+            *ngIf="!consultation.bilanb"
+            class="flex items-center w-full gap-2"
+          >
+            <p
+              class="text-red-500"
+              (click)="openModalNouveauResume(consultation.id)"
+            >
+              Auncune 
+        </p>
+          </div>
+        </td>
+        <td class="td">
           <div class="flex flex-col gap-2">
             <div
               *ngIf="consultation.resultatsb"
