@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-affichage-bilan-radio',
+  selector: 'app-affichage-resume',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './affichage-bilan-radio.component.html',
-  styleUrl: './affichage-bilan-radio.component.css'
+  templateUrl: './affichage-resume.component.html',
+  styleUrl: './affichage-resume.component.css'
 })
-export class AffichageBilanRadioComponent implements OnInit {
+export class AffichageResumeComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
@@ -18,8 +18,8 @@ export class AffichageBilanRadioComponent implements OnInit {
     const consultationId = this.route.snapshot.paramMap.get('id');
   } 
 
-  typeBilan: string = 'Radiographie';  
-  synthese: string = 'Le patient présente des douleurs aiguës au niveau du bas du dos. Une radiographie a été réalisée pour évaluer les causes sous-jacentes.';
-
-  typeBilanOptions: string[] = ['Radiographie', 'Scanner', 'IRM', 'Échographie'];
+  symptoms: string = 'Exemple de symptômes déjà renseignés';
+  diagnostic: string = 'Exemple de diagnostic déjà renseigné';
+  measuresInfo: string = 'Exemple des informations sur les mesures déjà renseignées';
+  nextConsultation: string = '2024-12-31';
 }

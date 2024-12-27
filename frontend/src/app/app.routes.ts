@@ -16,6 +16,8 @@ import { AffichageBilanBioComponent } from './dashboards/dashboard-medecin/pages
 import { ResultatRadioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-radio/resultat-radio/resultat-radio.component';
 import { NouveauBilanRadioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-radio/nouveau-bilan-radio/nouveau-bilan-radio.component';
 import { AffichageBilanRadioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-radio/affichage-bilan-radio/affichage-bilan-radio.component';
+import { NouveauResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/resume/nouveau-resume/nouveau-resume.component';
+import { AffichageResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/resume/affichage-resume/affichage-resume.component';
 
 export const routes: Routes = [
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -52,6 +54,9 @@ export const routes: Routes = [
           { path: 'resultat-radio/:id', component: ResultatRadioComponent },
           { path: 'nouveau-bilan-radio/:id', component: NouveauBilanRadioComponent },
           { path: 'affichage-bilan-radio/:id', component: AffichageBilanRadioComponent },
+
+          { path: 'nouveau-resume/:id', component: NouveauResumeComponent },
+          { path: 'affichage-resume/:id', component: AffichageResumeComponent },
         ],
       },
     ],

@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-nouveau-bilan-radio',
+  selector: 'app-nouveau-resume',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './nouveau-bilan-radio.component.html',
-  styleUrl: './nouveau-bilan-radio.component.css'
+  templateUrl: './nouveau-resume.component.html',
+  styleUrl: './nouveau-resume.component.css'
 })
-export class NouveauBilanRadioComponent implements OnInit {
+export class NouveauResumeComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
@@ -18,16 +18,19 @@ export class NouveauBilanRadioComponent implements OnInit {
     const consultationId = this.route.snapshot.paramMap.get('id');
   } 
 
-  // Form data
-  typeBilan: string = '';
-  synthese: string = '';
-
-  // Predefined options for "Type Bilan"
-  typeBilanOptions: string[] = ['Radiographie', 'Scanner', 'IRM', 'Échographie'];
+  symptoms: string = '';
+  diagnostic: string = '';
+  measuresInfo: string = '';
+  nextConsultation: string | null = null;
 
   // Validation method for the form
   validateForm(): boolean {
-    return this.typeBilan.trim() !== '' && this.synthese.trim() !== '';
+    return (
+      this.symptoms.trim() !== '' &&
+      this.diagnostic.trim() !== '' &&
+      this.measuresInfo.trim() !== '' &&
+      !!this.nextConsultation
+    );
   }
 
   // Submit handler
@@ -36,14 +39,12 @@ export class NouveauBilanRadioComponent implements OnInit {
       // Form submission logic
       console.log('Form submitted with the following data:');
       console.log({
-        typeBilan: this.typeBilan,
-        synthese: this.synthese,
+        symptoms: this.symptoms,
+        diagnostic: this.diagnostic,
+        measuresInfo: this.measuresInfo,
+        nextConsultation: this.nextConsultation,
       });
-
-      // Navigate or reset form
       this.router.navigate(['../../../consultations'], { relativeTo: this.route });
-    } else {
-      alert('Please fill all fields.');
     }
   }
 }

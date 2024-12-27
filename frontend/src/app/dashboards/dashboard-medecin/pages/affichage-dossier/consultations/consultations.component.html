@@ -200,6 +200,7 @@
           >
             <button
               class="hover:underline text-primary-blue"
+              (click)="openModalAffichageResume(consultation.id)"
             >
               Voir details
             </button>
@@ -259,6 +260,7 @@
           >
             <button
               class="text-gray-300 hover:text-green-500 hover:underline"
+              (click)="openModalNouveauResume(consultation.id)"
             >
               Ajouter resume
             </button>

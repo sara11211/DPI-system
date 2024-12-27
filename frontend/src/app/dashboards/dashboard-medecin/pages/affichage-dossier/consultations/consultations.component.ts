@@ -81,7 +81,7 @@ export class ConsultationsComponent {
   ngOnInit(): void {
     this.router.events.subscribe(() => {
       // Check if the current route matches the modal route
-      this.isModalVisible = this.router.url.includes('nouvelle-ordonnance') || this.router.url.includes('affichage-ordonnance') || this.router.url.includes('resultat-bio') || this.router.url.includes('nouveau-bilan-bio') || this.router.url.includes('affichage-bilan-bio') || this.router.url.includes('resultat-radio') || this.router.url.includes('nouveau-bilan-radio') || this.router.url.includes('affichage-bilan-radio') ;
+      this.isModalVisible = this.router.url.includes('nouvelle-ordonnance') || this.router.url.includes('affichage-ordonnance') || this.router.url.includes('resultat-bio') || this.router.url.includes('nouveau-bilan-bio') || this.router.url.includes('affichage-bilan-bio') || this.router.url.includes('resultat-radio') || this.router.url.includes('nouveau-bilan-radio') || this.router.url.includes('affichage-bilan-radio') || this.router.url.includes('nouveau-resume') || this.router.url.includes('affichage-resume') ;
     });
   }
 
@@ -157,5 +157,13 @@ export class ConsultationsComponent {
 
   openModalAffichageBilanRadio(id: string): void {
     this.router.navigate(['affichage-bilan-radio', id], { relativeTo: this.route });
+  }
+
+  openModalNouveauResume(id: string): void {
+    this.router.navigate(['nouveau-resume', id], { relativeTo: this.route });
+  }
+
+  openModalAffichageResume(id: string): void {
+    this.router.navigate(['affichage-resume', id], { relativeTo: this.route });
   }
 }
