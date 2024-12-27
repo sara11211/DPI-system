@@ -9,6 +9,7 @@ import { InformationsPersonellesComponent } from './dashboards/dashboard-medecin
 import { ConsultationsComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/consultations/consultations.component';
 import { NouveauResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/nouveau-resume/nouveau-resume.component';
 import { ListeOrdonnancesComponent } from './dashboards/dashboard-medecin/pages/liste-ordonnances/liste-ordonnances.component';
+import { NouvelleOrdonnanceComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/ordonnance/nouvelle-ordonnance/nouvelle-ordonnance.component';
 
 export const routes: Routes = [
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -24,6 +25,8 @@ export const routes: Routes = [
   { path: 'recherche-dossier', component: RechercheDossierComponent },
   { path: 'recherche-dossier/nss', component: RechercheDossierNssComponent },
   { path: 'recherche-dossier/qr', component: RechercheDossierQrComponent },
+  { path: 'nouvelle-ordonnance/:id', component: NouvelleOrdonnanceComponent },
+  
   {
     path: 'recherche-dossier/:nss',
     component: AffichageDossierComponent,

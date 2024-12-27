@@ -53,15 +53,15 @@
           <td class="td">{{ ordonnance.date }}</td>
           <td class="td">{{ ordonnance.nss }}</td>
           <td class="td">
-            <div *ngIf="ordonnance.etat == 'validee'" class="text-[#28C76F] bg-[#28C76F10] rounded-[4px] py-[5px] px-2.5 flex items-center justify-center w-fit text-xs">
+            <div *ngIf="ordonnance.etat == 'validee'" class="text-[#28C76F] bg-[#28C76F10] rounded-[4px] py-[5px] px-2.5 flex items-center justify-center w-fit text-xs font-medium">
                 Validée
             </div>
             
-            <div *ngIf="ordonnance.etat == 'en attente'" class="text-[#0FB7FF] bg-[#0FB7FF10] rounded-[4px] py-[5px] px-2.5 flex items-center justify-center w-fit text-xs">
+            <div *ngIf="ordonnance.etat == 'en attente'" class="text-[#0FB7FF] bg-[#0FB7FF10] rounded-[4px] py-[5px] px-2.5 flex items-center justify-center w-fit text-xs font-medium">
                 En attente
             </div>
 
-            <div *ngIf="ordonnance.etat == 'rejetee'" class="text-[#EA5455] bg-[#EA545510] rounded-[4px] py-[5px] px-2.5 flex items-center justify-center w-fit text-xs">
+            <div *ngIf="ordonnance.etat == 'rejetee'" class="text-[#EA5455] bg-[#EA545510] rounded-[4px] py-[5px] px-2.5 flex items-center justify-center w-fit text-xs font-medium">
                 Rejetée
             </div>
           </td>

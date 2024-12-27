@@ -27,7 +27,6 @@
           >
             <button
               class="hover:underline text-primary-blue"
-              (click)="viewDetails(consultation.nss)"
             >
               Voir details
             </button>
@@ -87,7 +86,7 @@
           >
             <button
               class="text-gray-300 hover:text-green-500 hover:underline"
-              (click)="viewDetails(consultation.nss)"
+              (click)="navigateToOrdonnance(consultation.id)"
             >
               Ajouter Ordonnance
             </button>
@@ -101,7 +100,7 @@
             >
               <button
                 class="text-pink-500 hover:underline"
-                (click)="editConsultation(consultation.nss)"
+                
               >
                 Biologique
               </button>
@@ -113,7 +112,7 @@
             >
               <button
                 class="text-gray-300 hover:text-green-500 hover:underline"
-                (click)="viewDetails(consultation.nss)"
+                
               >
                 Ajouter bilan biologique
               </button>
@@ -125,7 +124,6 @@
             >
               <button
                 class="text-gray-500 hover:underline"
-                (click)="editConsultation(consultation.nss)"
               >
                 Radiologique
               </button>
@@ -137,7 +135,6 @@
             >
               <button
                 class="text-gray-300 hover:text-green-500 hover:underline"
-                (click)="viewDetails(consultation.nss)"
               >
                 Ajouter bilan radiologique
               </button>
@@ -152,7 +149,6 @@
             >
               <button
                 class="text-pink-500 hover:underline"
-                (click)="editConsultation(consultation.nss)"
               >
                 Biologique
               </button>
@@ -164,7 +160,6 @@
             >
               <button
                 class="text-red-500"
-                (click)="viewDetails(consultation.nss)"
               >
                 Aucun resultat
               </button>
@@ -176,7 +171,6 @@
             >
               <button
                 class="text-gray-500 hover:underline"
-                (click)="editConsultation(consultation.nss)"
               >
                 Radiologique
               </button>
@@ -188,7 +182,6 @@
             >
               <button
                 class="text-red-500"
-                (click)="viewDetails(consultation.nss)"
               >
                 Aucun resultat
               </button>
@@ -202,7 +195,6 @@
           >
             <button
               class="hover:underline text-primary-blue"
-              (click)="viewDetails(consultation.nss)"
             >
               Voir details
             </button>
@@ -262,7 +254,6 @@
           >
             <button
               class="text-gray-300 hover:text-green-500 hover:underline"
-              (click)="addNewResume()"
             >
               Ajouter resume
             </button>

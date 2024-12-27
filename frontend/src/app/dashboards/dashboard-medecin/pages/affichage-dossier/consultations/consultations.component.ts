@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 interface Consultation {
+  id: string;
   nom: string;
-  nss: string;
   dateAjout: string;
   ordonnance: string;
   bilanb: string;
@@ -28,8 +28,8 @@ export class ConsultationsComponent {
 
   consultations: Consultation[] = [
     { 
+      id: '1',
       nom: 'Braham Imad', 
-      nss: '0673222612', 
       dateAjout: '2023-04-06', 
       ordonnance: 'Ordonnance A', 
       bilanb: 'Bilan A', 
@@ -39,8 +39,8 @@ export class ConsultationsComponent {
       resume: 'Résumé A'
     },
     { 
+      id: '2',
       nom: 'Sarah Ali', 
-      nss: '0233222612', 
       dateAjout: '2023-05-10', 
       ordonnance: 'Ordonnance B', 
       bilanb: '', 
@@ -50,8 +50,8 @@ export class ConsultationsComponent {
       resume: 'Résumé B'
     },
     { 
+      id: '3',
       nom: 'Ahmed Karim', 
-      nss: '0783222612', 
       dateAjout: '2023-06-12', 
       ordonnance: '', 
       bilanb: 'Bilan C', 
@@ -60,10 +60,8 @@ export class ConsultationsComponent {
       resultatsr: 'Resultats B', 
       resume: ''
     },
-    // Add more consultations as needed
   ];
 
-  // Updated displayed columns for consultations
   displayedColumns: string[] = ['Date', 'Ordonnance', 'Bilan', 'Resultats', 'Resume'];
 
   itemsPerPage = 8;
@@ -71,7 +69,10 @@ export class ConsultationsComponent {
   searchTerm: string = '';
   selectedDate: string | null = null;
 
-  filteredConsultations: Consultation[] = [...this.consultations]; // Filtered list
+  filteredConsultations: Consultation[] = [...this.consultations]; 
+
+  consultationToUpdate: Consultation | null = null;
+  ordonnanceToAdd: string = '';
 
   constructor(public router: Router, public route: ActivatedRoute) {}
 
@@ -92,25 +93,6 @@ export class ConsultationsComponent {
     this.currentPage = page;
   }
 
-  // Apply filters
-  applyFilters() {
-    this.filteredConsultations = this.consultations.filter((consultation) => {
-      const matchesSearch =
-        this.searchTerm.trim() === '' ||
-        consultation.nss.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchesDate =
-        !this.selectedDate || consultation.dateAjout === this.selectedDate;
-      return matchesSearch && matchesDate;
-    });
-
-    // Reset to first page after filtering
-    this.currentPage = 1;
-  }
-
-  editConsultation(nss: string) {
-    this.router.navigate(['/modifier-consultation', nss]);
-  }
-
   openPopup(type: string, consultation: Consultation) {
     this.deleteType = type;  // Save whether we're dealing with ordonnance or resume
     this.consultationToDelete = consultation;
@@ -120,16 +102,12 @@ export class ConsultationsComponent {
   confirmDelete() {
     if (this.deleteType && this.consultationToDelete) {
       if (this.deleteType === 'ordonnance') {
-        this.consultationToDelete.ordonnance = '';  // Clear ordonnance
+        this.consultationToDelete.ordonnance = '';  
       } else if (this.deleteType === 'resume') {
-        this.consultationToDelete.resume = '';  // Clear resume
+        this.consultationToDelete.resume = '';  
       }
     }
-    this.popupVisible = false;  // Hide the popup after deletion
-  }
-  
-  viewDetails( nss: string) {
-    this.router.navigate(['/details-consultation', nss]);
+    this.popupVisible = false; 
   }
   
   cancelDelete() {
@@ -137,15 +115,7 @@ export class ConsultationsComponent {
     this.consultationToDelete = null;
   }
 
-  addOrUpdate(type: 'resume' | 'ordonnance', consultation: Consultation) {
-    if (type === 'resume') {
-      consultation.resume = 'New Resume'; // Add logic to handle resume addition
-    } else if (type === 'ordonnance') {
-      consultation.ordonnance = 'New Ordonnance'; // Add logic to handle ordonnance addition
-    }
-  }
-
-  addNewResume() {
-    this.router.navigate(['/nouveau-resume']);
+  navigateToOrdonnance(id: string): void {
+    this.router.navigate(['/nouvelle-ordonnance', id]);
   }
 }

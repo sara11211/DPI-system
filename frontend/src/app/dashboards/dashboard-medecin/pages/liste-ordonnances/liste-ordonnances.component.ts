@@ -21,6 +21,8 @@ interface Ordonnance {
 export class ListeOrdonnancesComponent {
   constructor(private router: Router) {}
 
+  // note: make sure to write les etats the way they are written here to the color labels in the table, otherwise you can change the spelling but make sure to change it in the html file as well
+  
   ordonnances: Ordonnance[] = [
     { date: '2023-04-06', nss: '0673222612', etat: 'validee', details: 'Ordonnance A' },
     { date: '2023-05-10', nss: '0233222612', etat: 'en attente', details: 'Ordonnance B' },
