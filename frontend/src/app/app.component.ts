@@ -1,5 +1,7 @@
 import { Component, signal, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+
+// change sidebar component path to change the dashboard 
 import { SidebarComponent } from './dashboards/dashboard-medecin/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 import { DashboardRouteService } from './app.routes';
@@ -17,6 +19,7 @@ export class AppComponent implements OnInit {
   constructor(private dashboardService: DashboardRouteService) {}
   
   ngOnInit() {
+    // change userrole here 
     const userRole = 'medical'; 
     this.dashboardService.setDashboard(userRole as 'medical' | 'admin');
   }
