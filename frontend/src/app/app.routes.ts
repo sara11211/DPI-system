@@ -19,15 +19,22 @@ import { AffichageBilanRadioComponent } from './dashboards/dashboard-medecin/pag
 import { NouveauResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/resume/nouveau-resume/nouveau-resume.component';
 import { AffichageResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/resume/affichage-resume/affichage-resume.component';
 import { VisualisationComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/visualisation/visualisation.component';
+import { ListeDossiersComponent } from './dashboards/dashboard-administratif/pages/liste-dossiers/liste-dossiers.component';
+import { ModifierDossierComponent } from './dashboards/dashboard-administratif/pages/modifier-dossier/modifier-dossier.component';
 
-export const routes: Routes = [
-  // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  // { path: 'dashboard', component: DashboardComponent },
-  // { path: 'nouveau-dossier', component: NouveauDossierComponent },
-  // { path: 'recherche-dossier', component: RechercheDossierComponent },
-  // { path: 'liste-dossiers', component: ListeDossiersComponent },
-  // { path: 'modifier-dossier/:nss', component: ModifierDossierComponent, },
+export type DashboardType = 'medical' | 'admin';
 
+
+export const administratifRoutes: Routes = [
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'nouveau-dossier', component: NouveauDossierComponent },
+  { path: 'recherche-dossier', component: RechercheDossierComponent },
+  { path: 'liste-dossiers', component: ListeDossiersComponent },
+  { path: 'modifier-dossier/:nss', component: ModifierDossierComponent, },
+]
+
+export const medecinRoutes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'nouveau-dossier', component: NouveauDossierComponent },
@@ -68,3 +75,30 @@ export const routes: Routes = [
     { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
   ] },
 ];
+
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DashboardRouteService {
+  private currentDashboard = new BehaviorSubject<DashboardType>('medical');
+  
+  constructor(private router: Router) {}
+  
+  getCurrentDashboard() {
+    return this.currentDashboard.asObservable();
+  }
+  
+  setDashboard(type: DashboardType) {
+    this.currentDashboard.next(type);
+    this.updateRoutes();
+  }
+  
+  private updateRoutes() {
+    const routes = this.currentDashboard.value === 'medical' ? medecinRoutes : administratifRoutes;
+    this.router.resetConfig(routes);
+  }
+}
