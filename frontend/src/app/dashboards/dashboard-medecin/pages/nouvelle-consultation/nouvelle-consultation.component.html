@@ -1,0 +1,64 @@
+<header class="header">
+    Nouvelle Consultation
+</header>
+<div class="px-16 py-8">
+    <form [formGroup]="consultationForm" (ngSubmit)="onSubmit()" class="white-card">
+        <div class="form-group">
+          <label for="dateConsultation" class="label">Date Consultation</label>
+          <input
+            type="date"
+            id="dateConsultation"
+            formControlName="dateConsultation"
+            class="input"
+          />
+          <div *ngIf="consultationForm.get('dateConsultation')?.invalid && consultationForm.get('dateConsultation')?.touched" class="text-sm text-red-500">
+            Date is required.
+          </div>
+        </div>
+      
+        <div>
+          <label class="label" for="nomPatient">Nom Patient</label>
+          <input
+            type="text"
+            id="nomPatient"
+            formControlName="nomPatient"
+            class="input"
+          />
+          <div *ngIf="consultationForm.get('nomPatient')?.invalid && consultationForm.get('nomPatient')?.touched" class="text-sm text-red-500">
+            Valid name is required.
+          </div>
+        </div>
+      
+        <div>
+          <label for="prenomPatient" class="label">Prenom Patient</label>
+          <input
+            type="text"
+            id="prenomPatient"
+            formControlName="prenomPatient"
+            class="input"
+          />
+          <div *ngIf="consultationForm.get('prenomPatient')?.invalid && consultationForm.get('prenomPatient')?.touched" class="text-sm text-red-500">
+            Valid name is required.
+          </div>
+        </div>
+      
+        <div>
+          <label for="nss" class="label">NSS</label>
+          <input
+            type="text"
+            id="nss"
+            formControlName="nss"
+            class="input"
+          />
+          <div *ngIf="consultationForm.get('nss')?.invalid && consultationForm.get('nss')?.touched" class="text-sm text-red-500">
+            NSS must be a 15-digit number.
+          </div>
+        </div>
+      
+        <button type="submit" class="button-main" [disabled]="consultationForm.invalid">
+          Submit
+        </button>
+      </form> 
+</div>
+
+  

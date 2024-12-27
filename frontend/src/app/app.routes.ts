@@ -41,7 +41,7 @@ export const medecinRoutes: Routes = [
   { path: 'recherche-dossier', component: RechercheDossierComponent },
   { path: 'recherche-dossier/nss', component: RechercheDossierNssComponent },
   { path: 'recherche-dossier/qr', component: RechercheDossierQrComponent },
-
+  { path: 'nouvelle-consultation', component: NouvelleConsultationComponent },
   
   {
     path: 'recherche-dossier/:nss',
@@ -79,6 +79,7 @@ export const medecinRoutes: Routes = [
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { NouvelleConsultationComponent } from './dashboards/dashboard-medecin/pages/nouvelle-consultation/nouvelle-consultation.component';
 
 @Injectable({
   providedIn: 'root'
