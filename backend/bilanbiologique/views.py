@@ -10,8 +10,10 @@ from .serializers import BilansBiologiquesSerializer
 #.################################
 
 class create_bilan_bio(APIView):
-    def get(self,request):
-        serializer = BilansBiologiquesSerializer()
+    def get(self, request):
+        bilans = BilansBiologiques.objects.all()
+        serializer = BilansBiologiquesSerializer(bilans, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)  
     def post(self, request):
         serializer = BilansBiologiquesSerializer(data=request.data)
         if serializer.is_valid():
