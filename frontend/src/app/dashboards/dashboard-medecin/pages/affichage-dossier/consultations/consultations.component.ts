@@ -85,7 +85,7 @@ export class ConsultationsComponent {
   }
 
   closeModal() {
-    this.router.navigate(['..'], { relativeTo: this.route });
+    this.router.navigate(['../consultations'], { relativeTo: this.route });
   }
 
   get paginatedConsultations() {

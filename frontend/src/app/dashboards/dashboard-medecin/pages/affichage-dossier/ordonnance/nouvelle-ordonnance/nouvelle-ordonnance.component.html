@@ -9,7 +9,7 @@
     </button>
   </div>
 
-  <div class="w-full white-card">
+  <div class="w-full">
     <form (ngSubmit)="validateForm()">
       <div *ngFor="let medication of medications; let i = index" class="pb-4 mb-4 border-b last:border-b-0">
         <div class="flex items-center justify-between w-full">
@@ -65,7 +65,7 @@
       </div>
 
       <div class="flex justify-end">
-        <button class="button-main" [disabled]="!formValid" type="submit">
+        <button class="button-main" [disabled]="!formValid" type="submit" (click)="sauvegarder()">
           Sauvegarder
         </button>
       </div>
