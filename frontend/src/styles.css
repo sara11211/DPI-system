@@ -102,7 +102,7 @@
   }
   
   .mesure-input {
-    width: 100px; /* Small width for one-word inputs */
+    width: 150px;/* Small width for one-word inputs */
     padding: 0.4rem;
     border: 1px solid #ccc;
     border-radius: 4px;

@@ -81,7 +81,7 @@ export class ConsultationsComponent {
   ngOnInit(): void {
     this.router.events.subscribe(() => {
       // Check if the current route matches the modal route
-      this.isModalVisible = this.router.url.includes('nouvelle-ordonnance') || this.router.url.includes('affichage-ordonnance') || this.router.url.includes('resultat-bio') || this.router.url.includes('nouveau-bilan-bio');
+      this.isModalVisible = this.router.url.includes('nouvelle-ordonnance') || this.router.url.includes('affichage-ordonnance') || this.router.url.includes('resultat-bio') || this.router.url.includes('nouveau-bilan-bio') || this.router.url.includes('affichage-bilan-bio');
     });
   }
 
@@ -141,5 +141,9 @@ export class ConsultationsComponent {
 
   openModalNouveauBilanBio(id: string): void {
     this.router.navigate(['nouveau-bilan-bio', id], { relativeTo: this.route });
+  }
+
+  openModalAffichageBilanBio(id: string): void {
+    this.router.navigate(['affichage-bilan-bio', id], { relativeTo: this.route });
   }
 }

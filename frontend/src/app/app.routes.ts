@@ -12,6 +12,7 @@ import { NouvelleOrdonnanceComponent } from './dashboards/dashboard-medecin/page
 import { AffichageOrdonnanceComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/ordonnance/affichage-ordonnance/affichage-ordonnance.component';
 import { ResultatBioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/resultat-bio/resultat-bio.component';
 import { NouveauBilanBioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/nouveau-bilan-bio/nouveau-bilan-bio.component';
+import { AffichageBilanBioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/affichage-bilan-bio/affichage-bilan-bio.component';
 
 export const routes: Routes = [
   // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -43,6 +44,7 @@ export const routes: Routes = [
           { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
           { path: 'resultat-bio/:id', component: ResultatBioComponent },
           { path: 'nouveau-bilan-bio/:id', component: NouveauBilanBioComponent },
+          { path: 'affichage-bilan-bio/:id', component: AffichageBilanBioComponent },
         ],
       },
     ],
