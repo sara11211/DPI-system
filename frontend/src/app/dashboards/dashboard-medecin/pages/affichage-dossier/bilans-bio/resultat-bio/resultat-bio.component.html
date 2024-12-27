@@ -1,1 +1,21 @@
-<p>resultat-bio works!</p>
+<header class="header">
+    Resultat bilan biologique
+</header>
+
+<div class="white-card">
+    <div *ngFor="let resultat of resultats; let i = index" class="flex gap-2">
+      <input
+        type="text"
+        [value]="resultat.mesure"
+        class="resultat-mesure input"
+        readonly
+      />
+      <input
+        type="text"
+        [value]="resultat.value"
+        class="resultat-value input"
+        readonly
+      />
+    </div>
+  </div>
+  
