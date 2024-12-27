@@ -67,12 +67,18 @@ class ResumesConsultations(models.Model):
     info_supp = models.TextField(blank=True, null=True)
     date_prochaine_consultation = models.DateField(blank=True, null=True)
     dpis_id = models.IntegerField(blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'resumes_consultations'  # Specify the exact table name in the database
 
 class Consultations(models.Model):
     id = models.IntegerField(primary_key=True)
     dpis = models.ForeignKey('Dpis', models.DO_NOTHING, blank=True, null=True)
     resume_consultation = models.ForeignKey('ResumesConsultations', models.DO_NOTHING, blank=True, null=True)
     date_consultation = models.DateField(blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'consultations'  # Specify the exact table name in the database
 
 
 class AnalysesBiologiques(models.Model):
@@ -87,7 +93,6 @@ class AnalysesBiologiques(models.Model):
         db_table = 'analyses_biologiques'
 
 class BilansBiologiques(models.Model):
-    id = models.IntegerField(primary_key=True)
     synthese_bilan_bio = models.TextField(blank=True, null=True)
     date_bilan = models.DateField(blank=True, null=True)
     laborantins = models.ForeignKey('Laborantins', models.DO_NOTHING, blank=True, null=True)
