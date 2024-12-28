@@ -9,13 +9,15 @@ from .models import Personnel,Dpis,Medecins,Radiologues,Infirmiers,Laborantins
 from .serializers import DpiSerializer,UserSerializer,MedecinSerializer,LaborantinSerializer,InfirmierSerializer,RadiologueSerializer,PersonnelSerializer
 from django.contrib.auth.hashers import make_password
 
+
 class PASS(APIView):
-    [AllowAny]
     def get(self, request, password):
         hashed_password = make_password(password)
         return Response({"password": password, "hashed_password": hashed_password})
 
+
 class LoginView(APIView):
+    permission_classes=[AllowAny]
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
@@ -100,6 +102,6 @@ class LoginView(APIView):
                     })
                     
             except Personnel.DoesNotExist:
-                return Response({"error": "Aucun role n'est associé à cet utilisateur."}, status=404)
+                return Response({"detail": "Aucun role n'est associé à cet utilisateur."}, status=404)
         else:
-            return Response({"error": "Aucun utilisateur trouvé"}, status=400)
+            return Response({"detail": "Aucun utilisateur trouvé"}, status=400)
