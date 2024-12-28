@@ -82,7 +82,6 @@ class Consultations(models.Model):
 
 
 class AnalysesBiologiques(models.Model):
-    id = models.IntegerField(primary_key=True)
     nom_analyse = models.CharField(max_length=255, blank=True, null=True)
     quantite = models.CharField(max_length=255, blank=True, null=True)
     unite = models.CharField(max_length=255, blank=True, null=True)
