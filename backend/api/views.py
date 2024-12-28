@@ -70,17 +70,7 @@ class MUTUELLECreateView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
-# SEARCH: Searches for the id of the doctor given the name
-class SearchDoctorView(APIView):
-    def get(self, request, name):
-        try:
-            doctor = Medecin.objects.get(name=name)
-            return Response({'id': doctor.id}, status=status.HTTP_200_OK)
-        except Medecin.DoesNotExist:
-            return Response({'error': 'Medecin n''existe pas.'}, status=status.HTTP_404_NOT_FOUND)
-        
-        
+
 
 # CREATE: Create a new DPI (functionality for admin)
 class CONTACTCreateView(APIView):
@@ -93,26 +83,18 @@ class CONTACTCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
         
-        
 
 class GenerateQRCodeView(APIView):
-    """Generate and serve QR code for the provided nss value."""
 
     def get(self, request, nss):
         try:
-            # Generate the QR code for the nss value
             qr_data = str(nss)
             qr_code = qrcode.make(qr_data)
-
-            # Create an in-memory buffer to hold the image
             img_buffer = io.BytesIO()
             qr_code.save(img_buffer)
-            img_buffer.seek(0)  # Rewind the buffer to the beginning
-
-            # Set the response to be an image file download
+            img_buffer.seek(0)  
             response = HttpResponse(img_buffer, content_type="image/png")
             response['Content-Disposition'] = f'attachment; filename="qr_code_{nss}.png"'
-
             return response
 
         except Exception as e:
@@ -122,17 +104,13 @@ class GenerateQRCodeView(APIView):
 class GetDoctorsView(APIView):
     def get(self, request):
         try:
-            # Query the Doctors table and join with the Personnel table
             doctors = Medecin.objects.select_related('personnel_id').annotate(
                 nom=F('personnel_id__nom'),
                 prenom=F('personnel_id__prenom')
             ).values('id', 'nom', 'prenom')
 
-            # Convert the QuerySet to a list of dictionaries
             doctors_list = list(doctors)
 
-            # Return the response in JSON format
             return JsonResponse(doctors_list, safe=False)
         except Exception as e:
-            # Handle any potential errors
             return JsonResponse({'error': str(e)}, status=500)

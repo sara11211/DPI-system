@@ -3,37 +3,6 @@ from .models import DPI, Mutuelle, PersonneContact
 from django.contrib.auth.models import User
 import qrcode, io
 
-"""
-#Handles the creation of the DPI object to put in the database 
-class DPISerializer(serializers.ModelSerializer):
-    mutuelles_id = serializers.IntegerField(required=True)
-    medecins_id = serializers.IntegerField(required=True)
-    personnes_contact_id = serializers.IntegerField(required=True)
-
-    class Meta:
-        model = DPI
-        fields = ['nss', 'nom', 'prenom', 'date_naissance', 'adresse', 
-                 'num_telephone', 'medecins_id', 
-                 'personnes_contact_id']
-
-    def validate(self, data):
-        required_fks = ['medecins_id', 'personnes_contact_id']
-        for fk in required_fks:
-            if fk not in data or data[fk] is None:
-                raise serializers.ValidationError({
-                    fk: "This field cannot be null."
-                })
-        return data
-
-    def create(self, validated_data):
-        try:
-            return super().create(validated_data)
-        except Exception as e:
-            print("Create error:", str(e)) 
-            raise
- """      
- 
-
 # Handles the creation of the DPI object to put in the database 
 class DPISerializer(serializers.ModelSerializer):
     medecins_id = serializers.IntegerField(required=True)
@@ -42,7 +11,7 @@ class DPISerializer(serializers.ModelSerializer):
     class Meta:
         model = DPI
         fields = [
-            'nss', 'nom', 'prenom', 'date_naissance', 'adresse',
+            'id','nss', 'nom', 'prenom', 'date_naissance', 'adresse',
             'num_telephone', 'medecins_id', 'personnes_contact_id'
         ]
 
@@ -120,7 +89,6 @@ class CONTACTSerializer(serializers.ModelSerializer):
     class Meta:
         model = PersonneContact
         fields = '__all__'
-        #fields = ['nom_contact', 'prenom_contact', 'numero_telephone']
         
 
     def create(self, validated_data):
