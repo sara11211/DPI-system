@@ -103,9 +103,3 @@ class LoginView(APIView):
                 return Response({"error": "Aucun role n'est associé à cet utilisateur."}, status=404)
         else:
             return Response({"error": "Aucun utilisateur trouvé"}, status=400)
-
-class Redirect(APIView):
-    def get(self,request):
-        return Response({
-            "fof" : "afaf is a genius"
-        })

@@ -72,7 +72,7 @@ export class LoginComponent {
     const { nss, password } = this.patientForm.value;
     
     // Make the login request
-    this.authService.login(nss, password).subscribe({
+    this.authService.login(nss, password,'Patient').subscribe({
       next: (response) => {
         if (response.status === 'success') {
           console.log('Login successful:', response);
@@ -98,8 +98,29 @@ export class LoginComponent {
     if (this.personnelForm.invalid) {
       return;
     }
-  
-    console.log(this.personnelForm.value);
-    this.goBackToProfileChoice();
-  }
+  // Extract form values
+  const { username, password} = this.personnelForm.value;
+    
+  // Make the login request
+  this.authService.login(username, password).subscribe({
+    next: (response) => {
+      if (response.status === 'success') {
+        console.log('Login successful:', response);
+        localStorage.setItem('user', JSON.stringify(response)); // Save user data
+        this.router.navigate(['test']);
+        console.log("wechhhhhhh");
+      } else {
+        console.log('Login failed: ' + response.message); // Adjust based on your backend response
+      }
+    },
+    error: (error: HttpErrorResponse) => {
+      console.error('Login error:', error);
+      alert('An error occurred. Please try again.');
+    },
+  });
+
+  this.goBackToProfileChoice();
+}
+
+
 }

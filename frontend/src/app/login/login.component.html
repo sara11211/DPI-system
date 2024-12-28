@@ -196,6 +196,7 @@
             <select
               id="fonction"
               formControlName="fonction"
+              name="fonction"
               class="w-full p-3 text-black bg-white border rounded-lg focus:outline-none focus:border-primary-blue"
               [ngClass]="{
                 'border-red-500':
@@ -208,11 +209,11 @@
               <option value="personnel administratif">
                 Personnel administratif
               </option>
-              <option value="medecin">Médecin</option>
-              <option value="infirmier">Infirmier</option>
-              <option value="pharmacien">Pharmacien</option>
-              <option value="laborantin">Laborantin</option>
-              <option value="radiologue">Radiologue</option>
+              <option value="Medecin">Médecin</option>
+              <option value="Infirmier">Infirmier</option>
+              <option value="Pharmacien">Pharmacien</option>
+              <option value="Laborantin">Laborantin</option>
+              <option value="Radiologue">Radiologue</option>
             </select>
             <div
               *ngIf="submitted && personnelForm.controls['fonction'].errors"
