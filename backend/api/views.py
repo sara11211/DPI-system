@@ -7,6 +7,8 @@ from .serializers import DPISerializer, MUTUELLESerializer, CONTACTSerializer
 import qrcode, io
 from django.http import HttpResponse, JsonResponse
 from django.db.models import F
+from fpdf import FPDF
+import os
 
 # Ensure the user is an admin
 def is_admin(user):
@@ -64,6 +66,7 @@ class DPIDeleteView(APIView):
 class MUTUELLECreateView(APIView):
     #@user_passes_test(is_admin) --> we don't have an admin (we need authentification)
     def post(self, request):
+        print("Incoming request data:", request.data)  # Debug line
         serializer = MUTUELLESerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -82,25 +85,31 @@ class CONTACTCreateView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-        
-
+    
 class GenerateQRCodeView(APIView):
+    def post(self, request, nss):
+        if not nss:
+            return Response({'error': 'NSS is required'}, status=400)
 
-    def get(self, request, nss):
-        try:
-            qr_data = str(nss)
-            qr_code = qrcode.make(qr_data)
-            img_buffer = io.BytesIO()
-            qr_code.save(img_buffer)
-            img_buffer.seek(0)  
-            response = HttpResponse(img_buffer, content_type="image/png")
-            response['Content-Disposition'] = f'attachment; filename="qr_code_{nss}.png"'
-            return response
+        nom = request.data.get('nom')
+        prenom = request.data.get('prenom')
+        if not nom or not prenom:
+            return Response({'error': 'Nom and prenom are required in the request body'}, status=400)
+        parent_dir = os.path.abspath(os.path.join(os.getcwd(), '..'))
+        qr_dir = os.path.join(parent_dir, 'qr_patients')
+        os.makedirs(qr_dir, exist_ok=True)
+        qr = qrcode.make(nss)
+        qr_image_path = os.path.join(qr_dir, f'{nom}_{prenom}_{nss}.png')
+        qr.save(qr_image_path)
+        absolute_path = os.path.abspath(qr_image_path)
 
-        except Exception as e:
-            return HttpResponse(f"Error generating QR code: {str(e)}", status=500)
+        return JsonResponse({
+            'qr_url': absolute_path,
+            'nom': nom,
+            'prenom': prenom
+        }, status=200)
         
-
+        
 class GetDoctorsView(APIView):
     def get(self, request):
         try:

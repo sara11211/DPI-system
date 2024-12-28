@@ -47,8 +47,8 @@ fetchMedecins(): void {
         '',
         [
           Validators.required,
-          Validators.minLength(9),
-          Validators.maxLength(9),
+          Validators.minLength(18),
+          Validators.maxLength(18),
           Validators.pattern('^[0-9]*$'),
         ],
       ],
@@ -218,6 +218,7 @@ fetchMedecins(): void {
   readonly endpointSearchDoc = 'http://127.0.0.1:8000/api/recherche-docteur/';
   readonly endpointCreateContact = 'http://127.0.0.1:8000/api/personnes_contacts/create/'; 
   readonly endpointCreateMutuelle = 'http://127.0.0.1:8000/api/mutuelles/create/'; 
+  readonly endpointGenerateQrCode = 'http://127.0.0.1:8000/api/generate_qr_code/';
 
   onCreateContact(contactData: any): Promise<number> {
     return new Promise((resolve, reject) => {
@@ -236,56 +237,76 @@ fetchMedecins(): void {
     });
   }
 
-  async onSubmit() {
-  
-  
-      if (this.dossierForm.valid) {
-      const contactData = {
-        nom_contact: this.dossierForm.value.nomContact,
-        prenom_contact: this.dossierForm.value.prenomContact,
-        numero_telephone: this.dossierForm.value.numTelContact,
-      };
 
-      const contactId = await this.onCreateContact(contactData);
-      const medecinId = this.dossierForm.value.medecinTraitant;
-
-      //const qrCodeUrl = `/generate_qr_code/${this.dossierForm.value.nss}/`;
-      //const link = document.createElement('a');
-      //link.href = qrCodeUrl;
-      //link.download = `qr_code_${this.dossierForm.value.nom}_${this.dossierForm.value.prenom}_${this.dossierForm.value.nss}.png`;
-      //link.click();
-      //const qrCodePath = `downloads/${link.download}`;
-        const dossierData = {
-          nss: this.dossierForm.value.nss,
-          nom: this.dossierForm.value.nom,
-          prenom: this.dossierForm.value.prenom,
-          date_naissance: this.dossierForm.value.dateNaiss,
-          adresse: this.dossierForm.value.adresse,
-          num_telephone: this.dossierForm.value.numTel,
-          medecins_id: medecinId,
-          personnes_contact_id: contactId, 
-          //qr_url: qrCodePath 
-
-        };
-        this.http
-        .post<{ id: number }>(this.endpointCreateDpi, dossierData, {
+    async onCreateQRCode(nss: number, nom: string, prenom: string): Promise<string> {
+      try {
+        const requestPayload = { nom, prenom }; 
+        const response: any = await this.http.post(`${this.endpointGenerateQrCode}${nss}/`, requestPayload, {
           headers: { 'Content-Type': 'application/json' },
-        })
-        .subscribe({
-          next: (response) => {
-            console.log('Dossier successfully submitted:', response);
-            const dpiId = response.id; 
-            this.createMutuelle(dpiId); 
-          },
-          error: (error) => {
-            console.error('An error occurred during submission:', error);
-          },
-        });
+        }).toPromise();
+
+        if (response && response.qr_url) {
+          console.log('QR code generated successfully:', response.qr_url);
+          return response.qr_url;
+        } else {
+          console.error('Failed to generate QR code.');
+          throw new Error('Failed to generate QR code.');
+        }
+      } catch (error) {
+        console.error('Error generating QR code:', error);
+        throw error;
+      }
+    }
+
+   
+    async onSubmit() {
+      if (this.dossierForm.valid) {
+        const contactData = {
+          nom_contact: this.dossierForm.value.nomContact,
+          prenom_contact: this.dossierForm.value.prenomContact,
+          numero_telephone: this.dossierForm.value.numTelContact,
+        };
+
+        const contactId = await this.onCreateContact(contactData);
+        const medecinId = this.dossierForm.value.medecinTraitant;
+        const nom = this.dossierForm.value.nom;
+        const prenom = this.dossierForm.value.prenom;
+
+        try {
+          const qrUrl = await this.onCreateQRCode(this.dossierForm.value.nss, nom, prenom);
+
+          const dossierData = {
+            nss: this.dossierForm.value.nss,
+            nom: this.dossierForm.value.nom,
+            prenom: this.dossierForm.value.prenom,
+            date_naissance: this.dossierForm.value.dateNaiss,
+            adresse: this.dossierForm.value.adresse,
+            num_telephone: this.dossierForm.value.numTel,
+            medecins_id: medecinId,
+            personnes_contact_id: contactId,
+            qr_url: qrUrl,  
+          };
+
+          this.http.post<{ id: number }>(this.endpointCreateDpi, dossierData, {
+            headers: { 'Content-Type': 'application/json' },
+          })
+          .subscribe({
+            next: (response) => {
+              console.log('Dossier successfully submitted:', response);
+              const dpiId = response.id;
+              this.createMutuelle(dpiId);
+            },
+            error: (error) => {
+              console.error('An error occurred during submission:', error);
+            },
+          });
+        } catch (error) {
+          console.error('Error generating QR code:', error);
+        }
       } else {
         console.error('Form is invalid');
       }
-    } 
-
+    }
 
     createMutuelle(dpiId: number) {
       const mutuelleData = {

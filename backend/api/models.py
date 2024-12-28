@@ -46,7 +46,7 @@ class PersonneContact(models.Model):
 
 
 class DPI(models.Model):
-    nss = models.IntegerField()
+    nss = models.BigIntegerField()
     nom = models.CharField(max_length=255)
     prenom = models.CharField(max_length=255)
     date_naissance = models.DateField()
@@ -72,7 +72,7 @@ class Mutuelle(models.Model):
     nom_mutuelle = models.CharField(max_length=255)
     num_adherent = models.CharField(max_length=50)
     type_couverture = models.CharField(max_length=100)
-    dpis = models.ForeignKey(DPI, on_delete=models.CASCADE,null=False,  related_name='dpis') # Mutuelle must have dpi
+    dpis = models.ForeignKey(DPI, on_delete=models.CASCADE,  null = True, related_name='dpis')
 
     class Meta:
         app_label = 'api'

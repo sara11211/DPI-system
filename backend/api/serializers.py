@@ -12,7 +12,7 @@ class DPISerializer(serializers.ModelSerializer):
         model = DPI
         fields = [
             'id','nss', 'nom', 'prenom', 'date_naissance', 'adresse',
-            'num_telephone', 'medecins_id', 'personnes_contact_id'
+            'num_telephone', 'medecins_id', 'personnes_contact_id', 'qr_url'
         ]
 
     def validate(self, data):
@@ -54,23 +54,12 @@ class DPISerializer(serializers.ModelSerializer):
                 'dpi': f"Error creating DPI: {str(e)}"
             })
  
-        
-# Handles the creation of the MUTUELLE object to put in the database 
 class MUTUELLESerializer(serializers.ModelSerializer):
     dpis_id = serializers.IntegerField(required=True)
 
     class Meta:
         model = Mutuelle
-        fields = ['nom_mutuelle', 'type_couverture', 'num_adherent', 'dpis_id']
-
-    def validate(self, data):
-        required_fks = ['dpis_id']
-        for fk in required_fks:
-            if fk not in data or data[fk] is None:
-                raise serializers.ValidationError({
-                    fk: "This field cannot be null."
-                })
-        return data
+        fields = ['nom_mutuelle', 'num_adherent', 'type_couverture', 'dpis_id']
 
     def create(self, validated_data):
         try:
@@ -78,8 +67,7 @@ class MUTUELLESerializer(serializers.ModelSerializer):
         except Exception as e:
             print("Create error:", str(e)) 
             raise
-        
-        
+            
         
 
 
