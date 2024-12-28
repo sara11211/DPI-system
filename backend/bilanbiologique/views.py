@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import BilansBiologiques,AnalysesBiologiques
+from .models import BilansBiologiques,AnalysesBiologiques,Consultations
 from .serializers import BilansBiologiquesSerializer,AnalysesBiologiquesSerializer
 
 #.#################################
@@ -11,7 +11,7 @@ from .serializers import BilansBiologiquesSerializer,AnalysesBiologiquesSerializ
 
 class bilan_bio(APIView):
     def get(self, request):
-        bilans = BilansBiologiques.objects.all()
+        bilans = BilansBiologiques.objects.filter(date_bilan__isnull=True) #exams not yet done
         serializer = BilansBiologiquesSerializer(bilans, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)  
     def post(self, request):
@@ -40,6 +40,17 @@ class bilan_bio(APIView):
             return Response({"error": "Object not found"}, status=status.HTTP_404_NOT_FOUND)
         bilan.delete()
         return Response({"message": "Object deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+    
+class bilan_patient(APIView):
+    def get(self, request, patient_id):
+        consultations = Consultations.objects.filter(dpis=patient_id)
+        bilans = BilansBiologiques.objects.filter(consultations__in=consultations)
+        
+        if bilans.exists():
+            serializer = BilansBiologiquesSerializer(bilans, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"detail": "Ce patient n'a effectué aucun bilan biologique"}, status=status.HTTP_404_NOT_FOUND)
 
 
 #.#################################
