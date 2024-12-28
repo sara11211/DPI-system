@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from './auth.service'; 
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -16,15 +20,15 @@ export class LoginComponent {
   personnelForm!: FormGroup;
   submitted = false; 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.patientForm = this.fb.group({
-      nss: ['', [Validators.required, Validators.pattern(/^[0-9]{18}$/)]],
+      nss: ['', [Validators.required, Validators.pattern(/^[0-9]{12}$/)]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
 
     this.personnelForm = this.fb.group({
-      role: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
+      fonction: ['', [Validators.required]],
+      username: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
@@ -58,11 +62,33 @@ export class LoginComponent {
 
     if (this.currentForm === 'patientForm') {
       if (this.patientForm.invalid) {
+        console.error('Form is invalid:', this.patientForm.errors);
         return;
       }
+      
     } 
 
-    console.log(this.patientForm.value); 
+    // Extract form values
+    const { nss, password } = this.patientForm.value;
+    
+    // Make the login request
+    this.authService.login(nss, password).subscribe({
+      next: (response) => {
+        if (response.status === 'success') {
+          console.log('Login successful:', response);
+          localStorage.setItem('user', JSON.stringify(response)); // Save user data
+          this.router.navigate(['test']);
+          console.log("wechhhhhhh");
+        } else {
+          console.log('Login failed: ' + response.message); // Adjust based on your backend response
+        }
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Login error:', error);
+        alert('An error occurred. Please try again.');
+      },
+    });
+
     this.goBackToProfileChoice();
   }
 
