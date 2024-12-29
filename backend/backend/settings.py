@@ -58,8 +58,9 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    # URL of Angular frontend
+    'http://localhost:4200',
 ]
+
 
 
 ROOT_URLCONF = 'backend.urls'
