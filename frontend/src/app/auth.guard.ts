@@ -21,3 +21,20 @@ export class AuthGuard implements CanActivate {
     }
   }
 }
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UnauthGuard implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
+
+  canActivate(): boolean {
+    if (!this.authService.isLoggedIn()) {
+      return true;
+    } else {
+      //if the user is authenticated, redirect him to main page
+      this.router.navigate(['/test']);
+      return false;
+    }
+  }
+}
