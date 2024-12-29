@@ -41,6 +41,7 @@ class bilan_bio(APIView):
         bilan.delete()
         return Response({"message": "Object deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
     
+#afficher les bilans d'un patient donné :
 class bilan_patient(APIView):
     def get(self, request, patient_id):
         consultations = Consultations.objects.filter(dpis=patient_id)
