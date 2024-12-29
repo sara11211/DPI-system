@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from .models import Personnel,Dpis,Medecins,Radiologues,Infirmiers,Laborantins
 from .serializers import DpiSerializer,UserSerializer,MedecinSerializer,LaborantinSerializer,InfirmierSerializer,RadiologueSerializer,PersonnelSerializer
 from django.contrib.auth.hashers import make_password
+from rest_framework.permissions import IsAuthenticated
 
 
 class PASS(APIView):
@@ -104,4 +105,19 @@ class LoginView(APIView):
             except Personnel.DoesNotExist:
                 return Response({"detail": "Aucun role n'est associé à cet utilisateur."}, status=404)
         else:
-            return Response({"detail": "Aucun utilisateur trouvé"}, status=400)
+            return Response({"detail": "Nom d'utilisateur ou mot de passe incorrecte"}, status=400)
+        
+class CheckAuthView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({
+            "status": "success",
+            "user": {
+                "id": request.user.id,
+                "username": request.user.username,
+                "email": request.user.email,
+                "first_name": request.user.first_name,
+                "last_name": request.user.last_name,
+            }
+        })

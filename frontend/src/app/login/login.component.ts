@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule], 
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   currentForm: 'chooseProfile' | 'patientForm' | 'personnelForm' = 'chooseProfile';
@@ -19,6 +19,7 @@ export class LoginComponent {
   patientForm!: FormGroup; 
   personnelForm!: FormGroup;
   submitted = false; 
+  errorMessage: string | null = null;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.patientForm = this.fb.group({
@@ -72,7 +73,7 @@ export class LoginComponent {
     const { nss, password } = this.patientForm.value;
     
     // Make the login request
-    this.authService.login(nss, password,'Patient').subscribe({
+    this.authService.login(nss, password).subscribe({
       next: (response) => {
         if (response.status === 'success') {
           console.log('Login successful:', response);
@@ -85,11 +86,10 @@ export class LoginComponent {
       },
       error: (error: HttpErrorResponse) => {
         console.error('Login error:', error);
-        alert('An error occurred. Please try again.');
+        this.errorMessage = error.error.detail;
+        console.log(this.errorMessage);
       },
     });
-
-    this.goBackToProfileChoice();
   }
 
   onSubmitPersonnel() {
@@ -115,12 +115,14 @@ export class LoginComponent {
     },
     error: (error: HttpErrorResponse) => {
       console.error('Login error:', error);
-      alert('An error occurred. Please try again.');
+      this.errorMessage = error.error.detail;
+      console.log(this.errorMessage);
     },
   });
-
-  this.goBackToProfileChoice();
 }
 
+clearErrorMessage() {
+  this.errorMessage = null; // Clear the error message when the user starts typing
+}
 
 }

@@ -103,6 +103,7 @@
                 'border-red-500':
                   submitted && patientForm.controls['nss'].invalid
               }"
+              (input)="clearErrorMessage()"
             />
             <div
               *ngIf="submitted && patientForm.controls['nss'].errors"
@@ -133,6 +134,7 @@
                 'border-red-500':
                   submitted && patientForm.controls['password'].invalid
               }"
+              (input)="clearErrorMessage()"
             />
             <div
               *ngIf="submitted && patientForm.controls['password'].errors"
@@ -151,7 +153,9 @@
             </div>
           </div>
         </div>
-
+        <div *ngIf="errorMessage" class="text-xs text-red-500 mt-2">
+          {{ errorMessage }}
+        </div>
         <div class="flex flex-col gap-2">
           <button
             type="submit"
@@ -202,6 +206,7 @@
                 'border-red-500':
                   submitted && personnelForm.controls['fonction'].invalid
               }"
+              (input)="clearErrorMessage()"
             >
               <option value="" disabled selected>
                 Sélectionnez votre rôle
@@ -242,6 +247,7 @@
                 'border-red-500':
                   submitted && personnelForm.controls['username'].invalid
               }"
+              (input)="clearErrorMessage()"
             />
             <div
               *ngIf="submitted && personnelForm.controls['username'].errors"
@@ -255,7 +261,7 @@
               </div>
             </div>
           </div>
-
+          
           <!-- Password -->
           <div>
             <label
@@ -273,6 +279,7 @@
                 'border-red-500':
                   submitted && personnelForm.controls['password'].invalid
               }"
+              (input)="clearErrorMessage()"
             />
             <div
               *ngIf="submitted && personnelForm.controls['password'].errors"
@@ -290,6 +297,9 @@
               </div>
             </div>
           </div>
+        </div>
+        <div *ngIf="errorMessage" class="text-xs text-red-500 mt-2">
+          {{ errorMessage }}
         </div>
         <div class="flex flex-col gap-2">
           <button

@@ -1,1 +1,12 @@
-<p>test works!</p>
+<div *ngIf="authService.isLoggedIn()">
+    Welcome, {{ authService.getUser()?.username }}!
+  </div>
+  <div *ngIf="!authService.isLoggedIn()">
+    You logged out
+  </div>
+  <p>test works!</p>
+
+  <button (click)="authService.logout()">
+    Logout
+  </button>
+  
