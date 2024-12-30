@@ -90,3 +90,35 @@ class Radiologues(models.Model):
     class Meta:
         managed = False
         db_table = 'radiologues'
+
+class Laborantins(models.Model):
+    personnel = models.ForeignKey('Personnel', models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'laborantins'
+        
+class Infirmiers(models.Model):
+    personnel = models.ForeignKey('Personnel', models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'infirmiers'
+        
+class Mutuelles(models.Model):
+    nom_mutuelle = models.CharField(max_length=255, blank=True, null=True)
+    type_couverture = models.CharField(max_length=9, blank=True, null=True)
+    num_adherent = models.CharField(max_length=255, blank=True, null=True)
+    dpis = models.ForeignKey(Dpis, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'mutuelles'
+        
+        
+        
+        
+        
+        
+        
+
