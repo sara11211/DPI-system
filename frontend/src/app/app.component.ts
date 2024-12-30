@@ -5,7 +5,6 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from './dashboards/dashboard-medecin/sidebar/sidebar.component';
 import { SidebarPatientComponent } from './dashboards/dashboard-patient/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
-import { SidebarPatientComponent } from './dashboards/dashboard-patient/sidebar/sidebar.component';
 import { DashboardRouteService } from './app.routes';
 
 @Component({
@@ -22,7 +21,7 @@ export class AppComponent implements OnInit {
   
   ngOnInit() {
     // change userrole here 
-    const userRole = 'medical'; 
-    this.dashboardService.setDashboard(userRole as 'medical' | 'admin');
+    const userRole = 'patient'; 
+    this.dashboardService.setDashboard(userRole as 'medical' | 'admin'|'patient');
   }
 }
