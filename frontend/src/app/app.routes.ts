@@ -7,7 +7,14 @@ import { RechercheDossierNssComponent } from './dashboards/dashboard-medecin/pag
 import { RechercheDossierQrComponent } from './dashboards/dashboard-medecin/pages/recherche-dossier/recherche-dossier-qr/recherche-dossier-qr.component';
 import { InformationsPersonellesComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/informations-personelles/informations-personelles.component';
 import { ConsultationsComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/consultations/consultations.component';
+import { NouveauResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/nouveau-resume/nouveau-resume.component';
 import { ListeOrdonnancesComponent } from './dashboards/dashboard-medecin/pages/liste-ordonnances/liste-ordonnances.component';
+import { Component } from '@angular/core';
+import { DashboardPatientComponent } from './dashboards/dashboard-patient/dashboard-patient.component';
+import { InformationsPersonellesPatientComponent } from './dashboards/dashboard-patient/pages/informations-personelles/informations-personelles.component';
+import { ModifierDossierComponent } from './dashboards/dashboard-administratif/pages/modifier-dossier/modifier-dossier.component';
+import { ModifierInfoComponent } from './dashboards/dashboard-patient/pages/informations-personelles/modifier/modifier.component';
+
 import { NouvelleOrdonnanceComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/ordonnance/nouvelle-ordonnance/nouvelle-ordonnance.component';
 import { AffichageOrdonnanceComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/ordonnance/affichage-ordonnance/affichage-ordonnance.component';
 import { ResultatBioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/resultat-bio/resultat-bio.component';
@@ -35,14 +42,13 @@ export const administratifRoutes: Routes = [
 ]
 
 export const medecinRoutes: Routes = [
+  //{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'nouveau-dossier', component: NouveauDossierComponent },
   { path: 'recherche-dossier', component: RechercheDossierComponent },
   { path: 'recherche-dossier/nss', component: RechercheDossierNssComponent },
   { path: 'recherche-dossier/qr', component: RechercheDossierQrComponent },
-  { path: 'nouvelle-consultation', component: NouvelleConsultationComponent },
-  
   {
     path: 'recherche-dossier/:nss',
     component: AffichageDossierComponent,
@@ -53,20 +59,7 @@ export const medecinRoutes: Routes = [
         path: 'consultations',
         component: ConsultationsComponent,
         children: [
-          { path: 'nouvelle-ordonnance/:id', component: NouvelleOrdonnanceComponent },
-          { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
-          { path: 'resultat-bio/:id', component: ResultatBioComponent },
-          { path: 'nouveau-bilan-bio/:id', component: NouveauBilanBioComponent },
-          { path: 'affichage-bilan-bio/:id', component: AffichageBilanBioComponent },
-
-          { path: 'resultat-radio/:id', component: ResultatRadioComponent },
-          { path: 'nouveau-bilan-radio/:id', component: NouveauBilanRadioComponent },
-          { path: 'affichage-bilan-radio/:id', component: AffichageBilanRadioComponent },
-
-          { path: 'nouveau-resume/:id', component: NouveauResumeComponent },
-          { path: 'affichage-resume/:id', component: AffichageResumeComponent },
-
-          { path: 'visualisation/:id', component: VisualisationComponent },
+          { path: 'nouveau-resume', component: NouveauResumeComponent },
         ],
       },
     ],
@@ -74,32 +67,13 @@ export const medecinRoutes: Routes = [
   { path: 'liste-ordonnances', component: ListeOrdonnancesComponent, children:[
     { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
   ] },
+
+  { path: 'mes-informations-personnelles', component:InformationsPersonellesPatientComponent,
+    children: [
+      { path: '', redirectTo: 'mes-informations-personelles', pathMatch: 'full' },
+      {path: 'modifier', component: ModifierInfoComponent},
+    ]
+  },
+  //{ path: 'dashboard/:nss'}, Component: DashboardPatientComponent}
+
 ];
-
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { NouvelleConsultationComponent } from './dashboards/dashboard-medecin/pages/nouvelle-consultation/nouvelle-consultation.component';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class DashboardRouteService {
-  private currentDashboard = new BehaviorSubject<DashboardType>('medical');
-  
-  constructor(private router: Router) {}
-  
-  getCurrentDashboard() {
-    return this.currentDashboard.asObservable();
-  }
-  
-  setDashboard(type: DashboardType) {
-    this.currentDashboard.next(type);
-    this.updateRoutes();
-  }
-  
-  private updateRoutes() {
-    const routes = this.currentDashboard.value === 'medical' ? medecinRoutes : administratifRoutes;
-    this.router.resetConfig(routes);
-  }
-}
