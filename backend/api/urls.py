@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import DPICreateView, DPIListView, DPIViewView, DPIUpdateView, DPIDeleteView, MUTUELLECreateView, CONTACTCreateView, GenerateQRCodeView, GetDoctorsView
+from .views import DPICreateView, DPIListView, DPIViewView, DPIUpdateView, DPIDeleteView, MUTUELLECreateView, CONTACTCreateView, GenerateQRCodeView, GetDoctorsView, USERViewView
 
 urlpatterns = [
     path('dpis/', DPIListView.as_view(), name='dpis_list'), # GET all DPIS
@@ -11,4 +11,5 @@ urlpatterns = [
     path('generate_qr_code/<int:nss>/', GenerateQRCodeView.as_view(), name='generate_qr_code'),
     path('get-medecins/', GetDoctorsView.as_view(), name='get_doctors'),
     path('mutuelles/create/', MUTUELLECreateView.as_view(), name='create_mutuelle'),
+    path('users/<int:users_id>/', USERViewView.as_view(), name='get_user_data'),
 ]

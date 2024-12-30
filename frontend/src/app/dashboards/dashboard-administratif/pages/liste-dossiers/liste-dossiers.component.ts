@@ -1,37 +1,35 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 interface Dossier {
   nom: string;
+  prenom :string;
   nss: string;
+  users_id: BigInteger;
   dateAjout: string;
 }
+
 
 @Component({
   selector: 'app-liste-dossiers',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './liste-dossiers.component.html',
-  styleUrl: './liste-dossiers.component.css'
+  styleUrl: './liste-dossiers.component.css',
 })
+export class ListeDossiersComponent implements OnInit {
+  constructor(private router: Router, private http: HttpClient) {}
 
-export class ListeDossiersComponent {
-  dossiers: Dossier[] = [
-    { nom: 'Braham Imad', nss: '0673222612', dateAjout: '2023-04-06' },
-    { nom: 'Sarah Ali', nss: '0233222612', dateAjout: '2023-05-10' },
-    { nom: 'Ahmed Karim', nss: '0783222612', dateAjout: '2023-06-12' },
+  popupVisible: boolean = false;
+  dossierToDelete: Dossier | null = null;
 
-    { nom: 'Braham Imad', nss: '0673222712', dateAjout: '2023-04-06' },
-    { nom: 'Sarah Ali', nss: '0233227612', dateAjout: '2023-05-10' },
-    { nom: 'Ahmed Karim', nss: '0783272612', dateAjout: '2023-06-12' },
 
-    { nom: 'Braham Imad', nss: '0573222712', dateAjout: '2023-04-06' },
-    { nom: 'Sarah Ali', nss: '0133227612', dateAjout: '2023-05-10' },
-    { nom: 'Ahmed Karim', nss: '0183272612', dateAjout: '2023-06-12' },
-  ];
-
-  displayedColumns: string[] = ['Nom', 'NSS', 'Date Ajout', 'Actions'];
+  dossiers: Dossier[] = [];
+  displayedColumns: string[] = ['Nom', 'Prenom', 'NSS', 'Date Ajout', 'Actions'];
 
   itemsPerPage = 8;
   currentPage = 1;
@@ -40,9 +38,60 @@ export class ListeDossiersComponent {
 
   filteredDossiers: Dossier[] = [...this.dossiers]; // Filtered list
 
+
+  ngOnInit(): void {
+    this.fetchDossiers();
+  }
+
+  readonly endpointFetchDossiers = 'http://127.0.0.1:8000/api/dpis/';
+  fetchDossiers() {
+    this.http.get<any[]>(this.endpointFetchDossiers).subscribe(
+      (data) => {
+        this.dossiers = data;
+        this.fetchUserDatesForDossiers();
+      },
+      (error) => {
+        console.error('Failed to fetch dossiers:', error);
+      }
+    );
+  }
+  fetchUserDatesForDossiers() {
+    const userPromises = this.dossiers.map((dossier) => {
+      return this.http
+        .get<any>(`http://127.0.0.1:8000/api/users/${dossier.users_id}/`)
+        .toPromise()
+        .then((userData) => {
+          return {
+            nom: dossier.nom,
+            prenom: dossier.prenom,
+            nss: dossier.nss.toString(),
+            dateAjout: this.formatDate(userData.date_joined), 
+            users_id: dossier.users_id
+          };
+        });
+    });
+  
+    Promise.all(userPromises)
+      .then((dossiersWithDate) => {
+        this.dossiers = dossiersWithDate;
+        this.filteredDossiers = [...this.dossiers]; 
+      })
+      .catch((error) => {
+        console.error('Failed to fetch user dates:', error);
+      });
+  }
+
+  formatDate(date: string): string {
+    const formattedDate = new Date(date);
+    return formattedDate.toLocaleDateString('en-GB');  
+  }
+
   get paginatedDossiers() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredDossiers.slice(startIndex, startIndex + this.itemsPerPage);
+    return this.filteredDossiers.slice(
+      startIndex,
+      startIndex + this.itemsPerPage
+    );
   }
 
   get totalPages() {
@@ -68,4 +117,30 @@ export class ListeDossiersComponent {
     // Reset to first page after filtering
     this.currentPage = 1;
   }
+
+  editDossier(nss: string) {
+    this.router.navigate(['/modifier-dossier', nss]);
+  }
+
+  openPopup(dossier: Dossier) {
+    this.popupVisible = true;
+    this.dossierToDelete = dossier;
+  }
+  
+  confirmDelete() {
+    if (this.dossierToDelete) {
+      this.dossiers = this.dossiers.filter(
+        (dossier) => dossier.nss !== this.dossierToDelete?.nss
+      );
+      this.applyFilters(); // Reapply filters after deletion
+      this.popupVisible = false;
+      this.dossierToDelete = null;
+    }
+  }
+  
+  cancelDelete() {
+    this.popupVisible = false;
+    this.dossierToDelete = null;
+  }
+  
 }

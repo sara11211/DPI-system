@@ -3,12 +3,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from .models import DPI, Medecin
-from .serializers import DPISerializer, MUTUELLESerializer, CONTACTSerializer
+from .serializers import DPISerializer, MUTUELLESerializer, CONTACTSerializer, USERSerializer
 import qrcode, io
 from django.http import HttpResponse, JsonResponse
 from django.db.models import F
 from fpdf import FPDF
 import os
+from django.contrib.auth.models import User
+
 
 # Ensure the user is an admin
 def is_admin(user):
@@ -123,3 +125,13 @@ class GetDoctorsView(APIView):
             return JsonResponse(doctors_list, safe=False)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
+        
+        
+class USERViewView(APIView):
+    def get(self, request, users_id, format=None):
+        try:
+            user = User.objects.get(id=users_id)
+            serializer = USERSerializer(user)
+            return Response(serializer.data)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)

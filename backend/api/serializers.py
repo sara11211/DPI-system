@@ -12,7 +12,7 @@ class DPISerializer(serializers.ModelSerializer):
         model = DPI
         fields = [
             'id','nss', 'nom', 'prenom', 'date_naissance', 'adresse',
-            'num_telephone', 'medecins_id', 'personnes_contact_id', 'qr_url'
+            'num_telephone', 'medecins_id', 'personnes_contact_id', 'qr_url', 'users_id'
         ]
 
     def validate(self, data):
@@ -88,3 +88,7 @@ class CONTACTSerializer(serializers.ModelSerializer):
         
         
         
+class USERSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'date_joined']  
