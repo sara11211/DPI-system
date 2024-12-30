@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 // change sidebar component path to change the dashboard 
 import { SidebarComponent } from './dashboards/dashboard-medecin/sidebar/sidebar.component';
+import { SidebarPatientComponent } from './dashboards/dashboard-patient/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 import { SidebarPatientComponent } from './dashboards/dashboard-patient/sidebar/sidebar.component';
 import { DashboardRouteService } from './app.routes';
