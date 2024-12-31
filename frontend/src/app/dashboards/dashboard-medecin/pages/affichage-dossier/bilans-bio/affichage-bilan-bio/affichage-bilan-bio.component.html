@@ -1,0 +1,28 @@
+<header class="header">Afficher Bilan Biologique</header>
+
+<div class="flex flex-col gap-4 px-8 py-3">
+  <div class="form-group">
+    <label for="synthese" class="label">Synthèse</label>
+    <textarea
+      id="synthese"
+      [value]="synthese"
+      rows="3"
+      class="input"
+      readonly
+    ></textarea>
+  </div>
+
+  <div class="white-card">
+    <label class="label">Mesures</label>
+    <div class="mesures-container">
+      <div *ngFor="let mesure of mesures" class="mesure-item">
+        <input
+          type="text"
+          [value]="mesure.mesure"
+          class=" input"
+          readonly
+        />
+      </div>
+    </div>
+  </div>
+</div>

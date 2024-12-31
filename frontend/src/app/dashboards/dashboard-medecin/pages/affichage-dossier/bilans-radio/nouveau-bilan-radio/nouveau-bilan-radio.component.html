@@ -1,0 +1,55 @@
+<header class="header">Nouveau Bilan Radiologique</header>
+
+<div class="flex flex-col gap-4 px-8 py-4">
+  <form (ngSubmit)="onSubmit()">
+    <!-- Type Bilan Select Dropdown -->
+    <div class="form-group">
+      <label for="typeBilan" class="label">Type de Bilan</label>
+      <select
+        id="typeBilan"
+        [(ngModel)]="typeBilan"
+        name="typeBilan"
+        required
+        #typeBilanControl="ngModel"
+        class="input"
+      >
+        <option value="">Sélectionner un type de bilan</option>
+        <option *ngFor="let option of typeBilanOptions" [value]="option">{{ option }}</option>
+      </select>
+      <!-- Error Message for Type Bilan -->
+      <div *ngIf="typeBilanControl.invalid && typeBilanControl.touched" class="text-xs text-red-500">
+        <small class="error-message">Le type de bilan est obligatoire.</small>
+      </div>
+    </div>
+
+    <!-- Synthèse Textarea -->
+    <div class="form-group">
+      <label for="synthese" class="label">Synthèse</label>
+      <textarea
+        id="synthese"
+        [(ngModel)]="synthese"
+        name="synthese"
+        required
+        rows="4"
+        #syntheseControl="ngModel"
+        class="input"
+        placeholder="Entrez la synthèse du bilan"
+      ></textarea>
+      <!-- Error Message for Synthèse -->
+      <div *ngIf="syntheseControl.invalid && syntheseControl.touched" class="text-red-500 ">
+        <small class="error-message">La synthèse est obligatoire.</small>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="form-group">
+      <button
+        type="submit"
+        [disabled]="!validateForm()"
+        class="button-main"
+      >
+        Soumettre
+      </button>
+    </div>
+  </form>
+</div>
