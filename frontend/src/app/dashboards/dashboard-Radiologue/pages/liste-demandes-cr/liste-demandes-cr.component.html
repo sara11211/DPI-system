@@ -1,0 +1,128 @@
+<header class="header">
+    Liste Demandes Comptes Rendus
+</header>
+
+<div class="relative flex flex-col items-center h-full px-10 py-6 bg-background-gray">
+    <!-- Search and Filter Buttons -->
+    <div class="flex items-center justify-between w-full pb-4">
+        <!-- Search by NSS -->
+        <div>
+            <input
+                type="text"
+                [(ngModel)]="searchTerm"
+                (input)="applyFilters()"
+                placeholder="Rechercher par NSS"
+                class="px-4 py-1.5 drop-shadow-sm rounded-lg focus:outline-none"
+            />
+        </div>
+
+        <!-- Filter by Date -->
+        <div class="relative">
+            <input
+                type="date"
+                [(ngModel)]="selectedDate"
+                (change)="applyFilters()"
+                class="px-4 py-1.5 drop-shadow-sm rounded-lg focus:outline-none"
+            />
+        </div>
+
+        <!-- Filter by Type -->
+        <div class="relative">
+            
+            <select
+                [(ngModel)]="selectedType"
+                (change)="applyFilters()"
+                class="px-4 py-1.5 drop-shadow-sm rounded-lg focus:outline-none text-gray-500"
+            ><!-- Add a non-selectable label-like option -->
+        <optgroup label="Filtrer par type">
+            <option value="IRM">IRM</option>
+            <option value="Scanner">Scanner</option>
+            <option value="Radiographie">Radiographie</option>
+            <option value="Échographies">Échographies</option>
+        </optgroup>
+            </select>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <table class="w-full pb-4 overflow-hidden bg-white border-separate rounded-2xl">
+        <thead>
+            <tr>
+                <th class="px-4 py-3 text-xs font-medium text-left uppercase bg-white border-b border-gray-200 text-dark-gray font-main">NSS</th>
+                <th class="px-4 py-3 text-xs font-medium text-left uppercase bg-white border-b border-gray-200 text-dark-gray font-main">Nom Complet</th>
+                <th class="px-4 py-3 text-xs font-medium text-left uppercase bg-white border-b border-gray-200 text-dark-gray font-main">Type d'Examen</th>
+                <th class="px-4 py-3 text-xs font-medium text-left uppercase bg-white border-b border-gray-200 text-dark-gray font-main">Par Docteur</th>
+                <th class="px-4 py-3 text-xs font-medium text-left uppercase bg-white border-b border-gray-200 text-dark-gray font-main">Date</th>
+                <th class="px-4 py-3 text-xs font-medium text-left uppercase bg-white border-b border-gray-200 text-dark-gray font-main">Compte Rendu</th>
+                <th class="px-4 py-3 text-xs font-medium text-left uppercase bg-white border-b border-gray-200 text-dark-gray font-main">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let demande of paginatedDemandes" class="text-sm text-black hover:bg-gray-50">
+                <td class="td">{{ demande.nss }}</td>
+                <td class="td">{{ demande.nomComplet }}</td>
+                <td class="td">
+                    <span [class]="getClassByType(demande.typeExamen)">{{ demande.typeExamen }}</span>
+                </td>
+                <td class="td">{{ demande.parDocteur }}</td>
+                <td class="td">{{ demande.date }}</td>
+                <td class="td">
+                    <span *ngIf="demande.compteRendu">✔️</span>
+                    <span *ngIf="!demande.compteRendu" class="text-red-500">Aucun</span>
+                </td>
+                <td class="td">
+                    <div class="flex items-center w-full gap-2">
+                        <button
+                            *ngIf="demande.compteRendu"
+                            (click)="viewDetails(demande)"
+                            class="hover:underline text-primary-blue"
+                        >
+                            Voir plus
+                        </button>
+                        <button
+                        *ngIf="!demande.compteRendu"
+                        (click)="addCompteRendu(demande)"
+                        class="hover:underline text-green-600"
+                    >
+                        Ajouter
+                    </button>
+                    
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <div class="flex items-center justify-center py-2 space-x-2 text-black">
+        <button
+            class="px-4 py-2 text-xs font-semibold text-white rounded-md bg-primary-blue hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            (click)="changePage(1)"
+            [disabled]="currentPage === 1"
+        >
+            First
+        </button>
+        <button
+            class="px-4 py-2 text-xs font-medium bg-white border rounded-lg text-primary-blue border-primary-blue hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            (click)="changePage(currentPage - 1)"
+            [disabled]="currentPage === 1"
+        >
+            Prev
+        </button>
+        <span class="px-4 py-2 text-xs font-medium text-gray-800">Page {{ currentPage }} of {{ totalPages }}</span>
+        <button
+            class="px-4 py-2 text-xs font-medium bg-white border rounded-lg text-primary-blue border-primary-blue hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            (click)="changePage(currentPage + 1)"
+            [disabled]="currentPage === totalPages"
+        >
+            Next
+        </button>
+        <button
+            class="px-4 py-2 text-xs font-semibold text-white rounded-md bg-primary-blue hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            (click)="changePage(totalPages)"
+            [disabled]="currentPage === totalPages"
+        >
+            Last
+        </button>
+    </div>
+</div>

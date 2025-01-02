@@ -27,7 +27,18 @@ import { AffichageResumeComponent } from './dashboards/dashboard-medecin/pages/a
 import { VisualisationComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/visualisation/visualisation.component';
 import { ListeDossiersComponent } from './dashboards/dashboard-administratif/pages/liste-dossiers/liste-dossiers.component';
 
-export type DashboardType = 'medical' | 'admin' | 'patient';
+
+// Import the radio dashboard component
+import { DashboardRadioComponent } from './dashboards/dashboard-Radiologue/pages/dashboard/dashboard.component';
+import { RechercheDossierRadioComponent } from './dashboards/dashboard-Radiologue/pages/recherche-dossier/recherche-dossier.component';
+import { RechercheDossierNssRadioComponent } from './dashboards/dashboard-Radiologue/pages/recherche-dossier/recherche-dossier-nss/recherche-dossier-nss.component';
+import { RechercheDossierQrRadioComponent } from './dashboards/dashboard-Radiologue/pages/recherche-dossier/recherche-dossier-qr/recherche-dossier-qr.component';
+import { ListeDemandesCRComponent } from './dashboards/dashboard-Radiologue/pages/liste-demandes-cr/liste-demandes-cr.component';
+import { NouveauCrComponent } from './dashboards/dashboard-Radiologue/pages/liste-demandes-cr/nouveau-cr/nouveau-cr.component';
+import { CompteRenduComponent } from './dashboards/dashboard-Radiologue/pages/liste-demandes-cr/compte-rendu/compte-rendu.component';
+
+
+export type DashboardType = 'medical' | 'admin' | 'patient' | 'radio';
 
 
 export const administratifRoutes: Routes = [
@@ -92,6 +103,21 @@ export const patientRoutes: Routes = [
 
 ]
 
+// Routes for the radiology dashboard
+export const radioRoutes: Routes = [
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardRadioComponent },
+  { path: 'recherche-dossier', component: RechercheDossierRadioComponent },
+  { path: 'recherche-dossier/qr', component: RechercheDossierQrRadioComponent },
+  { path: 'recherche-dossier/:nss', component: RechercheDossierNssRadioComponent },
+ // { path: 'liste-demandes-cr', component: NouveauBilanRadioComponent }, 
+ // { path: 'nouveau-cr/:nss/:typeExamen/:synthese', component: CompteRenduComponent},
+   { path: 'liste-demandes-cr', component: ListeDemandesCRComponent},
+   { path: 'nouveau-cr/:nss/:typeExamen/:synthese', component: NouveauCrComponent },
+   { path: 'compte-rendu/:nss', component: CompteRenduComponent },
+
+];
+
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -122,7 +148,7 @@ export class DashboardRouteService {
       default: case 'medical':  r = medecinRoutes; break;
       case 'admin':  r = administratifRoutes; break;
       case 'patient':  r = patientRoutes; break;
-
+      case 'radio':  r = radioRoutes; break;
     }
     const routes=r;
     this.router.resetConfig(routes);
