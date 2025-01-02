@@ -71,22 +71,23 @@ export class LoginComponent {
 
     // Extract form values
     const { nss, password } = this.patientForm.value;
-    
-    // Make the login request
+
     this.authService.login(nss, password).subscribe({
       next: (response) => {
         if (response.status === 'success') {
           console.log('Login successful:', response);
-          localStorage.setItem('user', JSON.stringify(response)); // Save user data
+          localStorage.setItem('user', JSON.stringify(response));
           
           if(response.patient)
           {
             console.log("je suis un patient");
             this.router.navigate(['patient/dashboard']);
+          }else{
+            //this case must not be present or else I'll shot myself
           }
 
         } else {
-          console.log('Login failed: ' + response.message); // Adjust based on your backend response
+          console.log('Login failed: ' + response.message);
         }
       },
       error: (error: HttpErrorResponse) => {

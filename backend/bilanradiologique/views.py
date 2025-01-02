@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import BilansRadiologiques,Medecins,ResumesConsultations,Radiologues,Consultations,Personnel,PersonnesContact
-from .serializers import BilansRadiologiquesSerializer,MedecinsSerializer,ResumesConsultationsSerializer,RadiologuesSerializer,Consultations,PersonnelSerializer,PersonnesContactSerializer
+from .models import BilansRadiologiques,Dpis,Consultations,Personnel,PersonnesContact,Medecins
+from .serializers import BilansRadiologiquesSerializer,DpisSerializer,ResumesConsultationsSerializer,RadiologuesSerializer,Consultations,PersonnelSerializer,PersonnesContactSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -12,9 +12,39 @@ from rest_framework import status
 
 class bilan_radio(APIView):
     def get(self, request):
-        bilans = BilansRadiologiques.objects.filter(date_radiologie__isnull=True) #exams not yet done
-        serializer = BilansRadiologiquesSerializer(bilans, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)  
+        bilans = BilansRadiologiques.objects.all()
+        serializer1 = BilansRadiologiquesSerializer(bilans, many=True)
+        response_data = []
+        for bilan in bilans:
+            consultation = bilan.consultations
+            if consultation:
+                dpis_id = consultation.dpis_id
+                date = consultation.date_consultation
+                patient = Dpis.objects.filter(id=dpis_id).first()
+                nss = patient.nss if patient else None
+                nomComplet = patient.nom+" "+patient.prenom
+                medecin_id = patient.medecins_id
+                medecin = Medecins.objects.filter(id=medecin_id).first()
+                personnel_id = medecin.personnel_id
+                personnel = Personnel.objects.filter(id=personnel_id).first()
+                parDocteur = personnel.nom+" "+personnel.prenom
+                
+                response_data.append({
+                    "status": "success",
+                    "id": bilan.id,
+                    "synthese_bilan_radio": bilan.synthese_bilan_radio,
+                    "date_radiologie": bilan.date_radiologie,
+                    "type_radiologie": bilan.type_radiologie,
+                    "consultations": bilan.consultations.id if bilan.consultations else None,
+                    "radiologues": bilan.radiologues.id if bilan.radiologues else None,
+                    "image_url": bilan.image_url,
+                    "nss": nss,
+                    "nomComplet": nomComplet,
+                    "parDocteur": parDocteur,
+                    "date" : date,
+                })
+                
+        return Response(response_data)
     
     def post(self, request):
         serializer = BilansRadiologiquesSerializer(data=request.data)

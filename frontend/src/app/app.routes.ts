@@ -43,6 +43,7 @@ import { TestComponent } from './test/test.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
 import { UnauthGuard } from './auth.guard';
+import { LogoutComponent } from './logout/logout.component';
 
 
 
@@ -51,6 +52,7 @@ import { UnauthGuard } from './auth.guard';
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, canActivate: [UnauthGuard] },
+  { path: 'logout', component: LogoutComponent, canActivate: [AuthGuard] },
 
   { path: 'test', component: TestComponent, canActivate: [AuthGuard] }, //just a test route, ignore it
 
@@ -114,7 +116,7 @@ export const routes: Routes = [
           { path: 'nouveau-cr/:nss/:typeExamen/:synthese', component: NouveauCrComponent },
           { path: 'compte-rendu/:nss', component: CompteRenduComponent },
           ],
-          canActivate: [AuthGuard] },
+          canActivate: [AuthGuard]},
   ///////////////////////////////////////////laborantin routes////////////////////////////////////////////////////
   { path: 'laborantin', children:[
     { path: 'dashboard', component: TestComponent },

@@ -1,19 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ApiService } from '../../../../services/api.service';
 import { Router } from '@angular/router';
 
 interface Demande {
   nss: string;
   nomComplet: string;
-  typeExamen: string;
+  type_radiologie: string;
   parDocteur: string;
   date: string;
-  compteRendu: boolean; // True if the report exists, False otherwise
-  synthese?: string; // Optional synthesis property
-  dateExamen?: string; // Date when the report is completed
+  synthese_bilan_radio?: string; // Optional synthesis property
+  date_radiologie?: string; // Date when the report is completed
   resultat?: string; // Completed report result
-  uploadedImages?: string[]; // List of uploaded images
+  image_url?: string[]; // List of uploaded images
 }
 
 @Component({
@@ -24,41 +24,7 @@ interface Demande {
   styleUrls: ['./liste-demandes-cr.component.css'],
 })
 export class ListeDemandesCRComponent implements OnInit {
-  demandes: Demande[] = [
-    {
-      nss: '#6548',
-      nomComplet: 'Joe Will',
-      typeExamen: 'IRM',
-      parDocteur: 'D. Joseph Wheeler',
-      date: '2023-04-06',
-      compteRendu: true,
-      synthese: 'Synthèse pour IRM',
-      dateExamen: '2023-04-07',
-      resultat: 'Résultat de l\'IRM',
-      uploadedImages: ['path-to-image1.jpg', 'path-to-image2.jpg'], // Example images
-    },
-    {
-      nss: '#6549',
-      nomComplet: 'Sarah Lee',
-      typeExamen: 'Radiographie',
-      parDocteur: 'Joseph Wheeler',
-      date: '2023-04-06',
-      compteRendu: false,
-      synthese: 'Synthèse pour Radiographie',
-    },
-    {
-      nss: '#6550',
-      nomComplet: 'Mark Brown',
-      typeExamen: 'Scanner',
-      parDocteur: 'D. Joseph Wheeler',
-      date: '2023-04-07',
-      compteRendu: true,
-      synthese: 'Synthèse pour Scanner',
-      dateExamen: '2023-04-08',
-      resultat: 'Résultat de Scanner',
-      uploadedImages: ['path-to-image3.jpg'], // Example images
-    },
-  ];
+  demandes: Demande[] = []
 
   searchTerm: string = '';
   selectedDate: string | null = null;
@@ -69,9 +35,16 @@ export class ListeDemandesCRComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 10;
 
-  constructor(private router: Router) {}
+  constructor(private apiService: ApiService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // diplay demands
+    this.apiService.getBilanRadio().subscribe(response => {
+      this.demandes = response
+      console.log(this.demandes)
+    });
+  }
+
 
   // Apply filters to the demandes list
   applyFilters() {
@@ -82,7 +55,7 @@ export class ListeDemandesCRComponent implements OnInit {
       const matchesDate =
         !this.selectedDate || demande.date === this.selectedDate;
       const matchesType =
-        !this.selectedType || demande.typeExamen === this.selectedType;
+        !this.selectedType || demande.type_radiologie === this.selectedType;
       return matchesSearch && matchesDate && matchesType;
     });
 
@@ -104,21 +77,21 @@ export class ListeDemandesCRComponent implements OnInit {
 
   // Navigate to the "Nouveau Compte Rendu" component
   addCompteRendu(demande: Demande) {
-    this.router.navigate(['nouveau-cr', demande.nss, demande.typeExamen, demande.synthese]);
+    // this.router.navigate(['nouveau-cr', demande.nss, demande.typeExamen, demande.synthese]);
   }
 
   // Navigate to the "Compte Rendu" component with data
   viewDetails(demande: Demande) {
-    this.router.navigate(['compte-rendu', demande.nss], {
-      state: {
-        nss: demande.nss,
-        typeExamen: demande.typeExamen,
-        synthese: demande.synthese,
-        dateExamen: demande.dateExamen || '',
-        resultat: demande.resultat || '',
-        uploadedImages: demande.uploadedImages || [],
-      },
-    });
+    // this.router.navigate(['compte-rendu', demande.nss], {
+    //   state: {
+    //     nss: demande.nss,
+    //     typeExamen: demande.typeExamen,
+    //     synthese: demande.synthese,
+    //     dateExamen: demande.dateExamen || '',
+    //     resultat: demande.resultat || '',
+    //     uploadedImages: demande.uploadedImages || [],
+    //   },
+    // });
   }
 
   // Determine CSS class based on the type of exam
@@ -133,7 +106,7 @@ export class ListeDemandesCRComponent implements OnInit {
       case 'Échographies':
         return 'tag-red';
       default:
-        return '';
+        return 'tag-yellow';
     }
   }
 }

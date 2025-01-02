@@ -58,29 +58,29 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let demande of paginatedDemandes" class="text-sm text-black hover:bg-gray-50">
+            <tr *ngFor="let demande of demandes" class="text-sm text-black hover:bg-gray-50">
                 <td class="td">{{ demande.nss }}</td>
                 <td class="td">{{ demande.nomComplet }}</td>
                 <td class="td">
-                    <span [class]="getClassByType(demande.typeExamen)">{{ demande.typeExamen }}</span>
+                    <span [class]="getClassByType(demande.type_radiologie)">{{ demande.type_radiologie }}</span>
                 </td>
                 <td class="td">{{ demande.parDocteur }}</td>
                 <td class="td">{{ demande.date }}</td>
                 <td class="td">
-                    <span *ngIf="demande.compteRendu">✔️</span>
-                    <span *ngIf="!demande.compteRendu" class="text-red-500">Aucun</span>
+                    <span *ngIf="demande.date_radiologie">✔️</span>
+                    <span *ngIf="!demande.date_radiologie" class="text-red-500">Aucun</span>
                 </td>
                 <td class="td">
                     <div class="flex items-center w-full gap-2">
                         <button
-                            *ngIf="demande.compteRendu"
+                            *ngIf="demande.date_radiologie"
                             (click)="viewDetails(demande)"
                             class="hover:underline text-primary-blue"
                         >
                             Voir plus
                         </button>
                         <button
-                        *ngIf="!demande.compteRendu"
+                        *ngIf="!demande.date_radiologie"
                         (click)="addCompteRendu(demande)"
                         class="hover:underline text-green-600"
                     >
