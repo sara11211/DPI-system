@@ -1,0 +1,113 @@
+<header class="header">Nouveau Compte Rendu Radiologique</header>
+
+<div class="flex flex-col gap-6 px-8 py-6">
+  <form (ngSubmit)="onSubmit()">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- NSS -->
+      <div class="form-group">
+        <label for="nss" class="label">NSS</label>
+        <input
+          id="nss"
+          type="text"
+          [(ngModel)]="nss"
+          name="nss"
+          readonly
+          class="input bg-gray-100"
+        />
+      </div>
+
+      <!-- Type d'Examen -->
+      <div class="form-group">
+        <label for="typeExamen" class="label">Type d'Examen</label>
+        <input
+          id="typeExamen"
+          type="text"
+          [(ngModel)]="typeExamen"
+          name="typeExamen"
+          readonly
+          class="input bg-gray-100"
+        />
+      </div>
+
+      <!-- Date d'Examen -->
+      <div class="form-group">
+        <label for="dateExamen" class="label">Date d'Examen</label>
+        <input
+          id="dateExamen"
+          type="date"
+          [(ngModel)]="dateExamen"
+          name="dateExamen"
+          class="input"
+        />
+        <p *ngIf="dateExamen.trim() === ''" class="text-xs text-red-500">
+          La date de l'examen est obligatoire.
+        </p>
+      </div>
+
+      <!-- Type du Bilan -->
+      <div class="form-group">
+        <label for="typeBilan" class="label">Type du Bilan</label>
+        <input
+          id="typeBilan"
+          type="text"
+          value="Radiologique"
+          readonly
+          class="input bg-gray-100"
+        />
+      </div>
+    </div>
+
+    <!-- Synthèse -->
+    <div class="form-group">
+      <label for="synthese" class="label">Synthèse de l'Examen</label>
+      <textarea
+        id="synthese"
+        [(ngModel)]="synthese"
+        name="synthese"
+        readonly
+        rows="4"
+        class="input bg-gray-100"
+      ></textarea>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Résultat -->
+      <div class="form-group">
+        <label for="resultat" class="label">Résultat de l'Examen</label>
+        <textarea
+          id="resultat"
+          [(ngModel)]="resultat"
+          name="resultat"
+          rows="5"
+          class="input"
+          placeholder="Entrez le résultat de l'examen"
+        ></textarea>
+        <p *ngIf="resultat.trim() === ''" class="text-xs text-red-500">
+          Le résultat de l'examen est obligatoire.
+        </p>
+      </div>
+
+      <!-- Téléverser des Images -->
+      <div class="form-group">
+        <label for="files" class="label">Téléverser des Images</label>
+        <input
+          id="files"
+          type="file"
+          (change)="handleFileInput($event)"
+          multiple
+          accept=".png, .jpg, .jpeg, .dicom"
+          class="input"
+        />
+        <p *ngIf="files.length === 0" class="text-xs text-red-500">
+          La téléversement d'au moins une image est obligatoire.
+        </p>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="form-group flex justify-between mt-4">
+      <button type="button" (click)="goBack()" class="button-secondary">Retour</button>
+      <button type="submit" [disabled]="!validateForm()" class="button-main">Sauvegarder</button>
+    </div>
+  </form>
+</div>
