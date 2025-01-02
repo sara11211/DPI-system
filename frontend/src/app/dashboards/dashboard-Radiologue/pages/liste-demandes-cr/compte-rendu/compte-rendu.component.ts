@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common'; // Import Location
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-compte-rendu',
   templateUrl: './compte-rendu.component.html',
   styleUrls: ['./compte-rendu.component.css'],
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,CommonModule],
 })
 export class CompteRenduComponent implements OnInit {
   nss: string = '';

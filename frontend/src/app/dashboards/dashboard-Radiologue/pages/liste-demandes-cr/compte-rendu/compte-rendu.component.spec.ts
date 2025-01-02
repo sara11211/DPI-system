@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { CommonModule } from '@angular/common';
 import { CompteRenduComponent } from './compte-rendu.component';
 
 describe('CompteRenduComponent', () => {
