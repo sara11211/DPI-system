@@ -78,8 +78,13 @@ export class LoginComponent {
         if (response.status === 'success') {
           console.log('Login successful:', response);
           localStorage.setItem('user', JSON.stringify(response)); // Save user data
-          this.router.navigate(['test']);
-          console.log("wechhhhhhh");
+          
+          if(response.patient)
+          {
+            console.log("je suis un patient");
+            this.router.navigate(['patient/dashboard']);
+          }
+
         } else {
           console.log('Login failed: ' + response.message); // Adjust based on your backend response
         }
@@ -105,10 +110,36 @@ export class LoginComponent {
   this.authService.login(username, password).subscribe({
     next: (response) => {
       if (response.status === 'success') {
+        let path;
         console.log('Login successful:', response);
         localStorage.setItem('user', JSON.stringify(response)); // Save user data
-        this.router.navigate(['test']);
-        console.log("wechhhhhhh");
+        switch (response.fonction) {
+          case 'Infirmier':
+            path = 'infirmier'
+            break;
+            
+          case 'Medecin':
+            path='medecin'     
+          break;
+
+          case 'Radiologue':
+            path='radiologue'
+          break;
+
+          case 'Laborantin':
+           path = 'laborantin'
+          break;
+
+          case 'Personnel administratif':
+            path='admin'
+          break;
+
+          default:
+            // this.router.navigate(['login']);
+            console.log("no fonction found");
+        }
+        let route = path+'/dashboard'
+        this.router.navigate([route]);
       } else {
         console.log('Login failed: ' + response.message); // Adjust based on your backend response
       }

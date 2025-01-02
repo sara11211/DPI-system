@@ -12,6 +12,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   login(username: string, password: string): Observable<any> {
+    console.log(username,password);
     const loginData = { username, password };
     return this.http.post(`${this.apiUrl}/login/`, loginData);
   }
@@ -34,7 +35,6 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    console.log("hehehe",this.getUser());
     return !!this.getUser(); // Returns true if user data exists
   }
 }
