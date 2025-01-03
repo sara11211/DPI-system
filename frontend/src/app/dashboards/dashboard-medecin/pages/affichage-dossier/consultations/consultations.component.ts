@@ -91,6 +91,7 @@ export class ConsultationsComponent {
       this.isModalVisible =
         this.router.url.includes('nouvelle-ordonnance') ||
         this.router.url.includes('affichage-ordonnance') ||
+        this.router.url.includes('modifier-ordonnance') ||
         this.router.url.includes('resultat-bio') ||
         this.router.url.includes('nouveau-bilan-bio') ||
         this.router.url.includes('affichage-bilan-bio') ||
@@ -198,5 +199,11 @@ export class ConsultationsComponent {
 
   openModalVisualisation(id: string): void {
     this.router.navigate(['visualisation', id], { relativeTo: this.route });
+  }
+
+  openModalModifierOrdonnance(id: string): void {
+    this.router.navigate(['modifier-ordonnance', id], {
+      relativeTo: this.route,
+    });
   }
 }

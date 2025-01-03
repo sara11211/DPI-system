@@ -55,6 +55,10 @@ export const medecinRoutes: Routes = [
         children: [
           { path: 'nouvelle-ordonnance/:id', component: NouvelleOrdonnanceComponent },
           { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
+          {
+            path: 'modifier-ordonnance/:id',
+            component: ModifierOrdonnanceComponent
+          },
           { path: 'resultat-bio/:id', component: ResultatBioComponent },
           { path: 'nouveau-bilan-bio/:id', component: NouveauBilanBioComponent },
           { path: 'affichage-bilan-bio/:id', component: AffichageBilanBioComponent },
@@ -80,6 +84,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { NouvelleConsultationComponent } from './dashboards/dashboard-medecin/pages/nouvelle-consultation/nouvelle-consultation.component';
+import { ModifierOrdonnanceComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/ordonnance/modifier-ordonnance/modifier-ordonnance.component';
 
 @Injectable({
   providedIn: 'root'
