@@ -1,0 +1,14 @@
+.soin-admin-medicaments {
+    color: #28C76F;
+    background-color: #28C76F10;
+  }
+
+.soin-changement-pansements {
+    color: #0FB7FF; /* Couleur du texte */
+    background-color: #0FB7FF10;
+}
+
+.soin-mesures-parametres-medicaux {
+    color: #BD00FF; /* Couleur du texte */
+    background-color: #BD00FF29 /* Couleur de fond */
+  }

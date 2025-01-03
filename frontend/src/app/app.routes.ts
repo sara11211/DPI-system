@@ -10,8 +10,7 @@ import { ConsultationsComponent } from './dashboards/dashboard-medecin/pages/aff
 import { NouveauResumeComponent} from './dashboards/dashboard-medecin/pages/affichage-dossier/resume/nouveau-resume/nouveau-resume.component';
 import { ListeOrdonnancesComponent } from './dashboards/dashboard-medecin/pages/liste-ordonnances/liste-ordonnances.component';
 import { Component } from '@angular/core';
-import { DashboardPatientComponent } from './dashboards/dashboard-patient/dashboard-patient.component';
-import { InformationsPersonellesPatientComponent } from './dashboards/dashboard-patient/pages/informations-personelles/informations-personelles.component';
+
 import { ModifierDossierComponent } from './dashboards/dashboard-administratif/pages/modifier-dossier/modifier-dossier.component';
 import { ModifierInfoComponent } from './dashboards/dashboard-patient/pages/informations-personelles/modifier/modifier.component';
 
@@ -31,6 +30,8 @@ import { ListeDossiersComponent } from './dashboards/dashboard-administratif/pag
 import { AffichageDossierComponentPatient } from './dashboards/dashboard-patient/pages/affichage-dossier/affichage-dossier.component';
 import { ConsultationsComponentPatient } from './dashboards/dashboard-patient/pages/affichage-dossier/consultations/consultations.component';
 import { SoinsProdiguesComponentPatient } from './dashboards/dashboard-patient/pages/affichage-dossier/soins-prodigues/soins-prodigues.component';
+import { DashboardPatientComponent } from './dashboards/dashboard-patient/dashboard-patient.component';
+import { InformationsPersonellesPatientComponent } from './dashboards/dashboard-patient/pages/informations-personelles/informations-personelles.component';
 
 export type DashboardType = 'medical' | 'admin' | 'patient';
 
@@ -87,7 +88,7 @@ export const medecinRoutes: Routes = [
 ];
 
 export const patientRoutes: Routes = [
-  { path: 'dashboard', component:DashboardComponent},
+  { path: 'dashboard', component:DashboardPatientComponent},
   { path: 'mes-informations-personnelles', component:InformationsPersonellesPatientComponent,
     children: [
       { path: '', redirectTo: 'mes-informations-personnelles', pathMatch: 'full' },
@@ -112,8 +113,8 @@ export const patientRoutes: Routes = [
       { path: 'visualisation', component: VisualisationComponent },
       { path: 'soins-prodigues', component: SoinsProdiguesComponentPatient}
     ]
-  }
-  //{ path: 'dashboard/:nss'}, Component: DashboardPatientComponent}
+  },
+    //{path: 'dashboard/:nss', component: DashboardPatientComponent}
 
 ]
 

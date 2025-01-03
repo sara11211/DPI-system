@@ -10,5 +10,5 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarPatientComponent {
-
+  
 }
