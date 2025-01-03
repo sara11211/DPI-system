@@ -33,7 +33,7 @@ import { SoinsProdiguesComponentPatient } from './dashboards/dashboard-patient/p
 import { DashboardPatientComponent } from './dashboards/dashboard-patient/dashboard-patient.component';
 import { InformationsPersonellesPatientComponent } from './dashboards/dashboard-patient/pages/informations-personelles/informations-personelles.component';
 
-export type DashboardType = 'medical' | 'admin' | 'patient';
+export type DashboardType = 'medical' | 'admin' | 'patient' | 'infirmier';
 
 
 export const administratifRoutes: Routes = [
@@ -118,6 +118,37 @@ export const patientRoutes: Routes = [
 
 ]
 
+export const infirmierRoutes: Routes = [
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'recherche-dossier', component: RechercheDossierComponent },
+  { path: 'recherche-dossier/nss', component: RechercheDossierNssComponent },
+  { path: 'recherche-dossier/qr', component: RechercheDossierQrComponent },
+  { path: 'nouveau-soin', component: NouvelleConsultationComponent },
+  
+  {
+    path: 'recherche-dossier/:nss',
+    component: AffichageDossierComponent,
+    children: [
+      { path: '', redirectTo: 'personal-info', pathMatch: 'full' },
+      { path: 'personal-info', component: InformationsPersonellesComponent },
+      {
+        path: 'consultations',
+        component: ConsultationsComponent,
+        children: [
+          { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
+
+
+          { path: 'visualisation/:id', component: VisualisationComponent },
+        ],
+      },
+    ],
+  },
+  { path: 'liste-ordonnances', component: ListeOrdonnancesComponent, children:[
+    { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
+  ] },
+];
+
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -149,6 +180,7 @@ export class DashboardRouteService {
       default: case 'medical':  r = medecinRoutes; break;
       case 'admin':  r = administratifRoutes; break;
       case 'patient':  r = patientRoutes; break;
+      case 'infirmier': r=infirmierRoutes; break;
 
     }
     const routes=r;
