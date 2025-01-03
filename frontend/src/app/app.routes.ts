@@ -69,6 +69,10 @@ export const medecinRoutes: Routes = [
           { path: 'resultat-radio/:id', component: ResultatRadioComponent },
           { path: 'nouveau-bilan-radio/:id', component: NouveauBilanRadioComponent },
           { path: 'affichage-bilan-radio/:id', component: AffichageBilanRadioComponent },
+          {
+            path: 'modifier-bilan-radio/:id',
+            component: ModifierBilanRadioComponent
+          },
 
           { path: 'nouveau-resume/:id', component: NouveauResumeComponent },
           { path: 'affichage-resume/:id', component: AffichageResumeComponent },
@@ -94,6 +98,7 @@ import { ModifierOrdonnanceComponent } from './dashboards/dashboard-medecin/page
 import { ModifierResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/resume/modifier-resume/modifier-resume.component';
 import { NouveauResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/resume/nouveau-resume/nouveau-resume.component';
 import { ModifierBilanBioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/modifier-bilan-bio/modifier-bilan-bio.component';
+import { ModifierBilanRadioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-radio/modifier-bilan-radio/modifier-bilan-radio.component';
 
 @Injectable({
   providedIn: 'root'

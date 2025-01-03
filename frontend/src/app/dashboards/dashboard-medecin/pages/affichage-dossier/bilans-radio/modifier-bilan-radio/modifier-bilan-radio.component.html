@@ -1,0 +1,61 @@
+<!-- modifier-bilan-radio.component.html -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="w-full max-w-4xl p-6 bg-white rounded-lg">
+      <header class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold">Modifier Bilan Radiologique</h2>
+        <button type="button" (click)="annuler()" class="text-gray-500 hover:text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </header>
+  
+      <form (ngSubmit)="onSubmit()">
+        <!-- Type Bilan Select Dropdown -->
+        <div class="form-group">
+          <label for="typeBilan" class="label">Type de Bilan</label>
+          <select
+            id="typeBilan"
+            [(ngModel)]="typeBilan"
+            name="typeBilan"
+            required
+            #typeBilanControl="ngModel"
+            class="input"
+          >
+            <option value="">Sélectionner un type de bilan</option>
+            <option *ngFor="let option of typeBilanOptions" [value]="option">{{ option }}</option>
+          </select>
+          <div *ngIf="typeBilanControl.invalid && typeBilanControl.touched" class="text-xs text-red-500">
+            <small class="error-message">Le type de bilan est obligatoire.</small>
+          </div>
+        </div>
+  
+        <!-- Synthèse Textarea -->
+        <div class="form-group">
+          <label for="synthese" class="label">Synthèse</label>
+          <textarea
+            id="synthese"
+            [(ngModel)]="synthese"
+            name="synthese"
+            required
+            rows="4"
+            #syntheseControl="ngModel"
+            class="input"
+            placeholder="Entrez la synthèse du bilan"
+          ></textarea>
+          <div *ngIf="syntheseControl.invalid && syntheseControl.touched" class="text-red-500">
+            <small class="error-message">La synthèse est obligatoire.</small>
+          </div>
+        </div>
+  
+        <div class="flex justify-end gap-4 mt-6">
+          <button type="button" class="px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-100" (click)="annuler()">
+            Annuler
+          </button>
+          <button class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700" [disabled]="!validateForm()" type="submit">
+            Sauvegarder
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>

@@ -99,6 +99,7 @@ export class ConsultationsComponent {
         this.router.url.includes('resultat-radio') ||
         this.router.url.includes('nouveau-bilan-radio') ||
         this.router.url.includes('affichage-bilan-radio') ||
+        this.router.url.includes('modifier-bilan-radio') ||
         this.router.url.includes('nouveau-resume') ||
         this.router.url.includes('affichage-resume') ||
         this.router.url.includes('modifier-resume') ||
@@ -225,4 +226,9 @@ export class ConsultationsComponent {
     });
   }
   
+  openModalModifierBilanRadio(id: string): void {
+    this.router.navigate(['modifier-bilan-radio', id], {
+      relativeTo: this.route,
+    });
+  }
 }
