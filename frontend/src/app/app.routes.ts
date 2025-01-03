@@ -113,8 +113,8 @@ export const routes: Routes = [
           { path: 'recherche-dossier/qr', component: RechercheDossierQrRadioComponent },
           { path: 'recherche-dossier/:nss', component: RechercheDossierNssRadioComponent },
           { path: 'liste-demandes-cr', component: ListeDemandesCRComponent},
-          { path: 'nouveau-cr/:nss/:typeExamen/:synthese', component: NouveauCrComponent },
-          { path: 'compte-rendu/:nss', component: CompteRenduComponent },
+          { path: 'nouveau-cr/:consultation', component: NouveauCrComponent },
+          { path: 'compte-rendu/:consultation', component: CompteRenduComponent },
           ],
           canActivate: [AuthGuard]},
   ///////////////////////////////////////////laborantin routes////////////////////////////////////////////////////

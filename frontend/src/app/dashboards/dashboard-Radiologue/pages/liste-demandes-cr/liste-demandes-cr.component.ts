@@ -14,6 +14,7 @@ interface Demande {
   date_radiologie?: string; // Date when the report is completed
   resultat?: string; // Completed report result
   image_url?: string[]; // List of uploaded images
+  consultations?: string;
 }
 
 @Component({
@@ -35,7 +36,7 @@ export class ListeDemandesCRComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 10;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit(): void {
     // diplay demands
@@ -75,10 +76,22 @@ export class ListeDemandesCRComponent implements OnInit {
     this.currentPage = page;
   }
 
-  // Navigate to the "Nouveau Compte Rendu" component
   addCompteRendu(demande: Demande) {
-    // this.router.navigate(['nouveau-cr', demande.nss, demande.typeExamen, demande.synthese]);
+    this.router.navigate(['radiologue/nouveau-cr',demande.consultations], {
+      queryParams: {
+        nss: demande.nss,
+        type_radiologie: demande.type_radiologie,
+        synthese_bilan_radio: demande.synthese_bilan_radio, 
+        date_radiologie: demande.date_radiologie, 
+        resultat: demande.resultat,
+        image_url: demande.image_url,
+        consultations: demande.consultations,
+      }
+    });
   }
+  
+
+  
 
   // Navigate to the "Compte Rendu" component with data
   viewDetails(demande: Demande) {

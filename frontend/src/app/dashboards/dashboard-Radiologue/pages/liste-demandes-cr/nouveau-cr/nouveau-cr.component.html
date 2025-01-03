@@ -9,7 +9,7 @@
         <input
           id="nss"
           type="text"
-          [(ngModel)]="nss"
+          [(ngModel)]="demande.nss"
           name="nss"
           readonly
           class="input bg-gray-100"
@@ -18,12 +18,12 @@
 
       <!-- Type d'Examen -->
       <div class="form-group">
-        <label for="typeExamen" class="label">Type d'Examen</label>
+        <label for="type_radiologie" class="label">Type d'Examen</label>
         <input
-          id="typeExamen"
+          id="type_radiologie"
           type="text"
-          [(ngModel)]="typeExamen"
-          name="typeExamen"
+          [(ngModel)]="demande.type_radiologie"
+          name="type_radiologie"
           readonly
           class="input bg-gray-100"
         />
@@ -31,15 +31,15 @@
 
       <!-- Date d'Examen -->
       <div class="form-group">
-        <label for="dateExamen" class="label">Date d'Examen</label>
+        <label for="date_radiologie" class="label">Date d'Examen</label>
         <input
-          id="dateExamen"
+          id="date_radiologie"
           type="date"
-          [(ngModel)]="dateExamen"
-          name="dateExamen"
+          [(ngModel)]="date_radiologie"
+          name="date_radiologie"
           class="input"
         />
-        <p *ngIf="dateExamen.trim() === ''" class="text-xs text-red-500">
+        <p *ngIf="demande?.date_radiologie?.trim() === ''" class="text-xs text-red-500">
           La date de l'examen est obligatoire.
         </p>
       </div>
@@ -59,11 +59,11 @@
 
     <!-- Synthèse -->
     <div class="form-group">
-      <label for="synthese" class="label">Synthèse de l'Examen</label>
+      <label for="synthese_bilan_radio" class="label">Synthèse de l'Examen</label>
       <textarea
-        id="synthese"
-        [(ngModel)]="synthese"
-        name="synthese"
+        id="synthese_bilan_radio"
+        [(ngModel)]="demande.synthese_bilan_radio"
+        name="synthese_bilan_radio"
         readonly
         rows="4"
         class="input bg-gray-100"
@@ -107,7 +107,7 @@
     <!-- Buttons -->
     <div class="form-group flex justify-between mt-4">
       <button type="button" (click)="goBack()" class="button-secondary">Retour</button>
-      <button type="submit" [disabled]="!validateForm()" class="button-main">Sauvegarder</button>
+      <button type="submit" class="button-main" >Sauvegarder</button>
     </div>
   </form>
 </div>
