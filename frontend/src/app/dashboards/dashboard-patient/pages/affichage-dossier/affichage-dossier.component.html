@@ -3,16 +3,7 @@
 </header>
 <nav class="px-8 py-2 text-sm">
   <ul class="flex">
-      <li
-          class="relative px-4 py-2 cursor-pointer"
-          [ngClass]="{
-              'text-primary-blue border-b-2 border-primary-blue': activeTab === 'personal-info',
-              'text-dark-gray border-b border-dark-gray': activeTab !== 'personal-info'
-          }"
-          (click)="setActiveTab('personal-info')"
-      >
-          Informations Personnelles
-      </li>
+      
       <li
           class="relative px-4 py-2 cursor-pointer"
           [ngClass]="{
@@ -22,6 +13,26 @@
           (click)="setActiveTab('consultations')"
       >
           Consultations
+      </li>
+      <li
+          class="relative px-4 py-2 cursor-pointer"
+          [ngClass]="{
+              'text-primary-blue border-b-2 border-primary-blue': activeTab === 'visualisation',
+              'text-dark-gray border-b border-dark-gray': activeTab !== 'visualisation'
+          }"
+          (click)="setActiveTab('visualisation')"
+      >
+          Visualisation
+      </li>
+      <li
+          class="relative px-4 py-2 cursor-pointer"
+          [ngClass]="{
+              'text-primary-blue border-b-2 border-primary-blue': activeTab === 'soins-prodigues',
+              'text-dark-gray border-b border-dark-gray': activeTab !== 'soins-prodigues'
+          }"
+          (click)="setActiveTab('soins-prodigues')"
+      >
+          Soins Prodigués
       </li>
   </ul>
 </nav>

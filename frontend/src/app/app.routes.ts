@@ -27,6 +27,11 @@ import { AffichageResumeComponent } from './dashboards/dashboard-medecin/pages/a
 import { VisualisationComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/visualisation/visualisation.component';
 import { ListeDossiersComponent } from './dashboards/dashboard-administratif/pages/liste-dossiers/liste-dossiers.component';
 
+// Patient
+import { AffichageDossierComponentPatient } from './dashboards/dashboard-patient/pages/affichage-dossier/affichage-dossier.component';
+import { ConsultationsComponentPatient } from './dashboards/dashboard-patient/pages/affichage-dossier/consultations/consultations.component';
+import { SoinsProdiguesComponentPatient } from './dashboards/dashboard-patient/pages/affichage-dossier/soins-prodigues/soins-prodigues.component';
+
 export type DashboardType = 'medical' | 'admin' | 'patient';
 
 
@@ -82,12 +87,32 @@ export const medecinRoutes: Routes = [
 ];
 
 export const patientRoutes: Routes = [
+  { path: 'dashboard', component:DashboardComponent},
   { path: 'mes-informations-personnelles', component:InformationsPersonellesPatientComponent,
     children: [
       { path: '', redirectTo: 'mes-informations-personnelles', pathMatch: 'full' },
       {path: 'modifier', component: ModifierInfoComponent},
     ]
   },
+  {path: 'mon-dossier', component:AffichageDossierComponentPatient,
+    children: [
+      { path: '', redirectTo: 'consultations', pathMatch: 'full' },
+      {path : 'consultations', component: ConsultationsComponentPatient,
+        children: [
+          { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
+          { path: 'resultat-bio/:id', component: ResultatBioComponent },
+          { path: 'affichage-bilan-bio/:id', component: AffichageBilanBioComponent },
+
+          { path: 'resultat-radio/:id', component: ResultatRadioComponent },
+          { path: 'affichage-bilan-radio/:id', component: AffichageBilanRadioComponent },
+
+          { path: 'affichage-resume/:id', component: AffichageResumeComponent },
+        ],
+      },
+      { path: 'visualisation', component: VisualisationComponent },
+      { path: 'soins-prodigues', component: SoinsProdiguesComponentPatient}
+    ]
+  }
   //{ path: 'dashboard/:nss'}, Component: DashboardPatientComponent}
 
 ]
@@ -96,6 +121,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { NouvelleConsultationComponent } from './dashboards/dashboard-medecin/pages/nouvelle-consultation/nouvelle-consultation.component';
+import { DashboardAdministratifComponent } from './dashboards/dashboard-administratif/dashboard-administratif.component';
 
 @Injectable({
   providedIn: 'root'

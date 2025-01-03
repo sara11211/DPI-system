@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterOutlet, Routes } from '@angular/router';
-import { ConsultationsComponentPatient } from './consultations/consultations.component';
+import { InformationsPersonellesComponent } from './informations-personelles/informations-personelles.component';
+import { ConsultationsComponent } from './consultations/consultations.component';
 
 interface Dossier {
   nom: string;
@@ -16,9 +17,9 @@ interface Dossier {
   imports: [CommonModule, FormsModule, RouterOutlet],
   templateUrl: './affichage-dossier.component.html',
 })
-export class AffichageDossierComponentPatient implements OnInit {
+export class AffichageDossierComponent implements OnInit {
   
-  activeTab: string = 'consultations';
+  activeTab: string = 'personal-info';
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;
@@ -30,7 +31,6 @@ export class AffichageDossierComponentPatient implements OnInit {
   constructor(public router: Router,public  route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.setActiveTab(this.activeTab);
     // Retrieve the NSS parameter from the route
     this.nss = this.route.snapshot.paramMap.get('nss');
   }

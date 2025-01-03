@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DownloadIconComponent } from '../../../../../../assets/icons/download-icon/download-icon.component';
 
 interface Consultation {
   nom: string;
@@ -18,11 +17,11 @@ interface Consultation {
 @Component({
   selector: 'app-consultations',
   standalone: true,
-  imports: [CommonModule, DownloadIconComponent],
+  imports: [CommonModule],
   templateUrl: './consultations.component.html',
   styleUrl: './consultations.component.css'
 })
-export class ConsultationsComponentPatient {
+export class ConsultationsComponent {
   popupVisible: boolean = false;
   deleteType: string = '';
   consultationToDelete: Consultation | null = null;

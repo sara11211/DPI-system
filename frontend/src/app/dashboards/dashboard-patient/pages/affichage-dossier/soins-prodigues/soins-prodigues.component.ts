@@ -3,6 +3,23 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DownloadIconComponent } from '../../../../../../assets/icons/download-icon/download-icon.component';
 
+
+export type TypeSoin =
+  'Administration de medicaments' |
+  'Changement de pensements' |
+  'Mesures de Parametres Medicaux';
+
+const soinColorsText: Record<TypeSoin, string> = {
+    'Administration de medicaments': "text-[#FF5733]",        // Orange
+    'Changement de pensements': "text-[#33C1FF]",         // Blue
+    'Mesures de Parametres Medicaux': "text-[#28C76F]",    // Green
+  };
+  const soinColorsBg: Record<TypeSoin, string> = {
+    'Administration de medicaments': "#FF5733",        // Orange
+    'Changement de pensements': "#33C1FF",         // Blue
+    'Mesures de Parametres Medicaux': "#28C76F10",    // Green
+  };
+  
 interface Consultation {
   nom: string;
   nss: string;
@@ -14,15 +31,24 @@ interface Consultation {
   resultatsr: string;
   resume: string;
 }
+interface Dossier {
+  soins : Soin []
+}
+
+interface Soin {
+  dateAjout:string;
+  typeSoin: TypeSoin;
+  description:string;
+}
 
 @Component({
-  selector: 'app-consultations',
+  selector: 'app-soins-prodigues',
   standalone: true,
-  imports: [CommonModule, DownloadIconComponent],
-  templateUrl: './consultations.component.html',
-  styleUrl: './consultations.component.css'
+  imports: [CommonModule,DownloadIconComponent],
+  templateUrl: './soins-prodigues.component.html',
+  styleUrl: './soins-prodigues.component.css'
 })
-export class ConsultationsComponentPatient {
+export class SoinsProdiguesComponentPatient {
   popupVisible: boolean = false;
   deleteType: string = '';
   consultationToDelete: Consultation | null = null;
@@ -63,9 +89,25 @@ export class ConsultationsComponentPatient {
     },
     // Add more consultations as needed
   ];
-
+  listeSoins: Soin[]=[
+    {
+      dateAjout:'2024-12-23',
+      typeSoin: 'Administration de medicaments',
+      description:'une description random',
+    },
+    {
+      dateAjout:'2024-05-30',
+      typeSoin: 'Changement de pensements',
+      description:'une autre description random'
+    },
+    {
+      dateAjout:'2024-05-30',
+      typeSoin: 'Mesures de Parametres Medicaux',
+      description:'encore une autre description random'
+    }
+  ]
   // Updated displayed columns for consultations
-  displayedColumns: string[] = ['Date', 'Ordonnance', 'Bilan', 'Resultats', 'Resume'];
+  displayedColumns: string[] = ['Date', 'Type de soin','Description','Action' ];
 
   itemsPerPage = 8;
   currentPage = 1;
@@ -114,7 +156,7 @@ export class ConsultationsComponentPatient {
 
   openPopup(type: string, consultation: Consultation) {
     this.deleteType = type;  // Save whether we're dealing with ordonnance or resume
-    this.consultationToDelete = consultation;
+   // this.consultationToDelete = consultation;
     this.popupVisible = true;
   }
   
@@ -148,5 +190,13 @@ export class ConsultationsComponentPatient {
 
   addNewResume() {
     this.router.navigate(['/nouveau-resume']);
+  }
+
+
+   getSoinColorText(soin: TypeSoin): string {
+    return soinColorsText[soin];
+  }
+   getSoinColorBG(soin: TypeSoin): string {
+    return soinColorsBg[soin];
   }
 }

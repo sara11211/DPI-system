@@ -16,157 +16,64 @@
     </thead>
     <tbody>
       <tr
-        *ngFor="let consultation of consultations"
+        *ngFor="let soin of listeSoins"
         class="text-sm text-black hover:bg-gray-50"
       >
-        <td class="td">{{ consultation.dateAjout }}</td>
+        <td class="td">{{ soin.dateAjout }}</td>
         <td class="td">
           <div
-            *ngIf="consultation.ordonnance"
+            
             class="flex items-center w-full gap-2"
           >
-            <button
-              class="hover:underline text-primary-blue"
-              (click)="viewDetails(consultation.nss)"
-            >
-              Voir details
-            </button>
-            <button
-              class="text-gray-300 hover:text-primary-blue"
-              (click)="openPopup('ordonnance', consultation)"
-            >
-              <download-icon/>
-            </button>
-          </div>
-
-          <div
-            *ngIf="!consultation.ordonnance"
-            class="flex items-center w-full gap-2"
-          >
+            
             <div
-              class="text-gray-300  "
+            [ngClass]="{
+              'color: soin-admin-medicaments':(soin.typeSoin=='Administration de medicaments'),
+              'color: soin-changement-pansements':(soin.typeSoin == 'Changement de pensements'),
+              'color: soin-mesures-parametres-medicaux ':(soin.typeSoin=='Mesures de Parametres Medicaux'),
+              'rounded-[4px] py-[5px] px-2.5 flex items-center justify-center w-fit text-xs font-medium':true
+            }"
               
             >
-              Il n'y a pas d'ordonnance
-            </div>
+              {{soin.typeSoin}}
+        </div>
+            
           </div>
+
         </td>
         <td class="td">
           <div class="flex flex-col gap-2">
             <div
-              *ngIf="consultation.bilanb"
+             
               class="flex items-center w-full gap-2"
             >
               <button
-                class="text-pink-500 hover:underline"
-                (click)="editConsultation(consultation.nss)"
+                class="text-black"
+                
               >
-                Biologique
+                {{soin.description.slice(0,40)+'...'}}
               </button>
             </div>
 
-            <div
-              *ngIf="!consultation.bilanb"
-              class="flex items-center w-full gap-2"
-            >
-              <div class="text-gray-300  ">
-                Il n'y a pas de bilan biologique
-              </div>
-            </div>
-
-            <div
-              *ngIf="consultation.bilanr"
-              class="flex items-center w-full gap-2"
-            >
-              <button
-                class="text-gray-500 hover:underline"
-                (click)="editConsultation(consultation.nss)"
-              >
-                Radiologique
-              </button>
-            </div>
-
-            <div
-              *ngIf="!consultation.bilanr"
-              class="flex items-center w-full gap-2"
-            >
-              <div class="text-gray-300  ">
-                Il n'y a pas de bilan radiologique
-              </div>
-            </div>
-          </div>
-        </td>
-        <td class="td">
-          <div class="flex flex-col gap-2">
-            <div
-              *ngIf="consultation.resultatsb"
-              class="flex items-center w-full gap-2"
-            >
-              <button
-                class="text-pink-500 hover:underline"
-                (click)="editConsultation(consultation.nss)"
-              >
-                Biologique
-              </button>
-            </div>
-
-            <div
-              *ngIf="!consultation.resultatsb"
-              class="flex items-center w-full gap-2"
-            >
-              <div class="text-gray-300  ">
-                Aucun résultat
-              </div>
-            </div>
-
-            <div
-              *ngIf="consultation.resultatsr"
-              class="flex items-center w-full gap-2"
-            >
-              <button
-                class="text-gray-500 hover:underline"
-                (click)="editConsultation(consultation.nss)"
-              >
-                Radiologique
-              </button>
-            </div>
-
-            <div
-              *ngIf="!consultation.resultatsr"
-              class="flex items-center w-full gap-2"
-            >
-              <div class="text-gray-300  ">
-                Aucun résultat
-              </div>
-            </div>
           </div>
         </td>
         <td class="td">
           <div
-            *ngIf="consultation.resume"
             class="flex items-center w-full gap-2"
           >
             <button
               class="hover:underline text-primary-blue"
-              (click)="viewDetails(consultation.nss)"
+              
             >
-              Voir details
+              View details
+              
             </button>
             <button
               class="text-gray-300 hover:text-primary-blue"
-              (click)="openPopup('resume', consultation)"
+              
             >
-              <download-icon/>
+            <download-icon/>
             </button>
-          </div>
-
-          <div
-            *ngIf="!consultation.resume"
-            class="flex items-center w-full gap-2"
-          >
-            <div class="text-gray-300  ">
-              Aucun résultat
-            </div>
           </div>
         </td>
       </tr>
