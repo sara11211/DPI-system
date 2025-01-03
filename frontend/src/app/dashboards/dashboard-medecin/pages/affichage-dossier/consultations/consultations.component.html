@@ -1,6 +1,7 @@
 <div
   class="relative flex flex-col items-center h-full px-10 py-6 bg-background-gray"
 >
+  <!-- Tableau des consultations -->
   <table
     class="w-full pb-4 overflow-hidden bg-white border-separate rounded-2xl"
   >
@@ -16,89 +17,43 @@
     </thead>
     <tbody>
       <tr
-        *ngFor="let consultation of consultations"
+        *ngFor="let consultation of paginatedConsultations"
         class="text-sm text-black hover:bg-gray-50"
       >
-        <td class="td">{{ consultation.dateAjout }}</td>
+        <!-- Date -->
+        <td class="td">{{ consultation.date_consultation || 'Non disponible' }}</td>
+
+        <!-- Ordonnance -->
         <td class="td">
-          <div
-            *ngIf="consultation.ordonnance"
-            class="flex items-center w-full gap-2"
-          >
+          <div *ngIf="consultation.ordonnance; else addOrdonnance">
             <button
               class="hover:underline text-primary-blue"
               (click)="openModalAffichageOrdonnance(consultation.id)"
             >
-              Voir details
+              Voir détails
             </button>
             <button
               class="text-gray-300 hover:text-red-500"
               (click)="openPopup('ordonnance', consultation)"
             >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 7H20"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M10 11V17"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M14 11V17"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M5 7L6 19C6 20.1046 6.89543 21 8 21H16C17.1046 21 18 20.1046 18 19L19 7"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M9 7V4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V7"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+              Supprimer
             </button>
           </div>
-
-          <div
-            *ngIf="!consultation.ordonnance"
-            class="flex items-center w-full gap-2"
-          >
+          <ng-template #addOrdonnance>
             <button
               class="text-gray-300 hover:text-green-500 hover:underline"
               (click)="openModalNouvelleOrdonnance(consultation.id)"
             >
-              Ajouter Ordonnance
+              Ajouter ordonnance
             </button>
-          </div>
+          </ng-template>
         </td>
+
+        <!-- Bilan -->
         <td class="td">
           <div class="flex flex-col gap-2">
-            <div
-              *ngIf="consultation.bilanb"
-              class="flex items-center w-full gap-2"
-            >
+            <!-- Bilan biologique -->
+            <div *ngIf="consultation.bilanb; else addBilanBio">
               <button
                 class="text-pink-500 hover:underline"
                 (click)="openModalAffichageBilanBio(consultation.id)"
@@ -106,23 +61,17 @@
                 Biologique
               </button>
             </div>
-
-            <div
-              *ngIf="!consultation.bilanb"
-              class="flex items-center w-full gap-2"
-            >
+            <ng-template #addBilanBio>
               <button
                 class="text-gray-300 hover:text-green-500 hover:underline"
                 (click)="openModalNouveauBilanBio(consultation.id)"
               >
                 Ajouter bilan biologique
               </button>
-            </div>
+            </ng-template>
 
-            <div
-              *ngIf="consultation.bilanr"
-              class="flex items-center w-full gap-2"
-            >
+            <!-- Bilan radiologique -->
+            <div *ngIf="consultation.bilanr; else addBilanRadio">
               <button
                 class="text-gray-500 hover:underline"
                 (click)="openModalAffichageBilanRadio(consultation.id)"
@@ -130,51 +79,36 @@
                 Radiologique
               </button>
             </div>
-
-            <div
-              *ngIf="!consultation.bilanr"
-              class="flex items-center w-full gap-2"
-            >
+            <ng-template #addBilanRadio>
               <button
                 class="text-gray-300 hover:text-green-500 hover:underline"
                 (click)="openModalNouveauBilanRadio(consultation.id)"
               >
                 Ajouter bilan radiologique
               </button>
-            </div>
+            </ng-template>
           </div>
         </td>
-        <td class="td">
-          <div
-            *ngIf="consultation.bilanb"
-            class="flex items-center w-full gap-2"
-          >
-            <button
-              class="hover:underline text-primary-blue"
-              (click)="openModalVisualisation(consultation.id)"
-            >
-              Voir graphique
-            </button>
-          </div>
 
-          <div
-            *ngIf="!consultation.bilanb"
-            class="flex items-center w-full gap-2"
+        <!-- Visualisation -->
+        <td class="td">
+          <button
+            *ngIf="consultation.bilanb; else noData"
+            class="hover:underline text-primary-blue"
+            (click)="openModalVisualisation(consultation.id)"
           >
-            <p
-              class="text-red-500"
-              (click)="openModalNouveauResume(consultation.id)"
-            >
-              Auncune 
-        </p>
-          </div>
+            Voir graphique
+          </button>
+          <ng-template #noData>
+            <p class="text-red-500">Aucune donnée</p>
+          </ng-template>
         </td>
+
+        <!-- Résultats -->
         <td class="td">
           <div class="flex flex-col gap-2">
-            <div
-              *ngIf="consultation.resultatsb"
-              class="flex items-center w-full gap-2"
-            >
+            <!-- Résultat biologique -->
+            <div *ngIf="consultation.resultatsb; else noResultBio">
               <button
                 class="text-pink-500 hover:underline"
                 (click)="openModalResultatBio(consultation.id)"
@@ -182,22 +116,12 @@
                 Biologique
               </button>
             </div>
+            <ng-template #noResultBio>
+              <button class="text-red-500">Aucun résultat</button>
+            </ng-template>
 
-            <div
-              *ngIf="!consultation.resultatsb"
-              class="flex items-center w-full gap-2"
-            >
-              <button
-                class="text-red-500"
-              >
-                Aucun resultat
-              </button>
-            </div>
-
-            <div
-              *ngIf="consultation.resultatsr"
-              class="flex items-center w-full gap-2"
-            >
+            <!-- Résultat radiologique -->
+            <div *ngIf="consultation.resultatsr; else noResultRadio">
               <button
                 class="text-gray-500 hover:underline"
                 (click)="openModalResultatRadio(consultation.id)"
@@ -205,166 +129,105 @@
                 Radiologique
               </button>
             </div>
-
-            <div
-              *ngIf="!consultation.resultatsr"
-              class="flex items-center w-full gap-2"
-            >
-              <button
-                class="text-red-500"
-              >
-                Aucun resultat
-              </button>
-            </div>
+            <ng-template #noResultRadio>
+              <button class="text-red-500">Aucun résultat</button>
+            </ng-template>
           </div>
         </td>
+
+        <!-- Résumé -->
         <td class="td">
-          <div
-            *ngIf="consultation.resume"
-            class="flex items-center w-full gap-2"
-          >
+          <div *ngIf="consultation.resume_consultation; else addResume">
             <button
               class="hover:underline text-primary-blue"
               (click)="openModalAffichageResume(consultation.id)"
             >
-              Voir details
+              Voir détails
             </button>
             <button
               class="text-gray-300 hover:text-red-500"
               (click)="openPopup('resume', consultation)"
             >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 7H20"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M10 11V17"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M14 11V17"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M5 7L6 19C6 20.1046 6.89543 21 8 21H16C17.1046 21 18 20.1046 18 19L19 7"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M9 7V4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V7"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+              Supprimer
             </button>
           </div>
-
-          <div
-            *ngIf="!consultation.resume"
-            class="flex items-center w-full gap-2"
-          >
+          <ng-template #addResume>
             <button
               class="text-gray-300 hover:text-green-500 hover:underline"
               (click)="openModalNouveauResume(consultation.id)"
             >
-              Ajouter resume
+              Ajouter résumé
             </button>
-          </div>
+          </ng-template>
         </td>
       </tr>
     </tbody>
   </table>
 
-  <!-- Pagination Controls -->
+  <!-- Pagination -->
   <div class="flex items-center justify-center py-2 space-x-2 text-black">
-    <!-- First Button -->
     <button
       class="px-4 py-2 text-xs font-semibold text-white rounded-md bg-primary-blue hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
       (click)="changePage(1)"
       [disabled]="currentPage === 1"
     >
-      First
+      Premier
     </button>
-
-    <!-- Previous Button -->
     <button
       class="px-4 py-2 text-xs font-medium bg-white border rounded-lg border-primary-blue text-primary-blue hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
       (click)="changePage(currentPage - 1)"
       [disabled]="currentPage === 1"
     >
-      Prev
+      Précédent
     </button>
-
-    <!-- Page Indicator -->
     <span class="px-4 py-2 text-xs font-medium text-gray-800">
-      Page {{ currentPage }} of {{ totalPages }}
+      Page {{ currentPage }} sur {{ totalPages }}
     </span>
-
-    <!-- Next Button -->
     <button
       class="px-4 py-2 text-xs font-medium bg-white border rounded-lg text-primary-blue border-primary-blue hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
       (click)="changePage(currentPage + 1)"
       [disabled]="currentPage === totalPages"
     >
-      Next
+      Suivant
     </button>
-
-    <!-- Last Button -->
     <button
       class="px-4 py-2 text-xs font-semibold text-white rounded-md bg-primary-blue hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
       (click)="changePage(totalPages)"
       [disabled]="currentPage === totalPages"
     >
-      Last
+      Dernier
     </button>
   </div>
-</div>
 
-<div
-  *ngIf="popupVisible"
-  class="absolute inset-0 z-50 flex items-center justify-center h-full bg-opacity-100 backdrop-blur-sm"
->
-  <div class="p-6 bg-white rounded-lg shadow-md">
-    <h2 class="mb-4 text-lg font-semibold">Confirmation</h2>
-    <p>Êtes-vous sûr(e) de vouloir supprimer cet élément ?</p>
-    <div class="flex justify-end mt-4 space-x-2">
-      <button
-        class="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600"
-        (click)="confirmDelete()"
-      >
-        Confirmer
-      </button>
-      <button
-        class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
-        (click)="cancelDelete()"
-      >
-        Annuler
-      </button>
+  <!-- Popup Confirmation -->
+  <div
+    *ngIf="popupVisible"
+    class="absolute inset-0 z-50 flex items-center justify-center h-full bg-opacity-100 backdrop-blur-sm"
+  >
+    <div class="p-6 bg-white rounded-lg shadow-md">
+      <h2 class="mb-4 text-lg font-semibold">Confirmation</h2>
+      <p>Êtes-vous sûr(e) de vouloir supprimer cet élément ?</p>
+      <div class="flex justify-end mt-4 space-x-2">
+        <button
+          class="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600"
+          (click)="confirmDelete()"
+        >
+          Confirmer
+        </button>
+        <button
+          class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
+          (click)="cancelDelete()"
+        >
+          Annuler
+        </button>
+      </div>
     </div>
   </div>
-</div>
-<div *ngIf="isModalVisible" class="modal-overlay" (click)="closeModal()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
-<router-outlet></router-outlet>
-</div>
+
+  <!-- Modal -->
+  <div *ngIf="isModalVisible" class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>

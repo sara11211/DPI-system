@@ -2,8 +2,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Consultation, Ordonnance, Medicament,ResumeConsultation,SoinsInfirmier
+
+from  authentication.models import Dpis,Infirmiers,Medecins
+
 from authentication.serializers import DpiSerializer, MedecinSerializer
-from .serializers import ConsultationSerializer, OrdonnanceSerializer,MedicamentSerializer,ResumeConsultationSerializer,SoinsInfirmierSerializer
+from .serializers import ConsultationSerializer, OrdonnanceSerializer,MedicamentSerializer,ResumeConsultationSerializer,SoinsInfirmierSerializer,Consultation_Serializer
 from django.shortcuts import get_object_or_404, redirect
 from io import BytesIO
 from django.http import HttpResponse
@@ -81,23 +84,22 @@ def delete_medicament(request, medicament_id):
 
 
 ##   2.crud_consultation##
-
 @api_view(['POST'])
 def create_consultation(request):
-    if request.method == 'POST':
-        data = request.data.copy()
-        # Ajout de valeurs par défaut pour certains champs si non fournis
-        data.setdefault('bilans_biologiques', None)
-        data.setdefault('bilans_radiologiques', None)
-        
-        # Sérialisation et validation des données
-        serializer = ConsultationSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    """
+    Endpoint pour créer une consultation.
+    """
+    print("Données reçues :", request.data)  # Log des données envoyées
+    serializer = ConsultationSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    print("Erreurs de validation :", serializer.errors)  # Log des erreurs
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 # Liste des consultations
+
 @api_view(['GET'])
 def list_consultations(request):
     patient_id = request.query_params.get('patient_id', None)
@@ -112,25 +114,45 @@ def list_consultations_by_medecin(request, medecins_id):
     """
     Liste les consultations associées à un médecin spécifique.
     """
-    consultations = Consultation.objects.filter(patient__medecin__id=medecins_id).order_by('-date_consultation')
+
+    consultations = Consultation.objects.filter(patient__medecins__id=medecins_id).order_by('-date_consultation')
     if not consultations.exists():
         return Response({"message": "Aucune consultation trouvée pour ce médecin."}, status=status.HTTP_404_NOT_FOUND)
     
     serializer = ConsultationSerializer(consultations, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-
 @api_view(['GET'])
-def list_consultations_by_patient(request, patient_id):
+def list_consultations_by_patient(request, nss):
     """
-    Liste les consultations associées à un patient spécifique.
+    Liste les consultations avec leurs ordonnances associées pour un patient spécifique.
     """
-    consultations = Consultation.objects.filter(patient_id=patient_id).order_by('-date_consultation')
+    consultations = Consultation.objects.filter(patient__nss=nss).order_by('-date_consultation')
     if not consultations.exists():
         return Response({"message": "Aucune consultation trouvée pour ce patient."}, status=status.HTTP_404_NOT_FOUND)
     
-    serializer = ConsultationSerializer(consultations, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    # Sérialisation des consultations
+    serializer = Consultation_Serializer(consultations, many=True)
+    
+    # Ajouter dynamiquement l'ID de l'ordonnance
+    response_data = serializer.data
+    for consultation in response_data:
+        consultation_id = consultation['id']
+        ordonnances = Ordonnance.objects.filter(consultation_id=consultation_id)
+        
+        # Si une ordonnance existe, on ajoute seulement son ID
+        if ordonnances.exists():
+            consultation['ordonnance'] = ordonnances.first().id  # Ajouter l'ID de l'ordonnance
+        else:
+            consultation['ordonnance'] = None  # Aucun ID d'ordonnance si elle n'existe pas
+    
+
+    
+    # Affichage des données après ajout des ordonnances
+    print("Données après ajout des ordonnances:")
+    print(response_data)
+    
+    return Response(response_data, status=status.HTTP_200_OK)
 
 
 # Détails d'une consultation spécifique
@@ -240,25 +262,28 @@ def delete_resume_consultation(request, resume_consultation_id):
 ##   4.crud_ordonnance  ##
 @api_view(['POST'])
 def create_ordonnance(request, consultation_id):
+    # Vérifier si la consultation existe
     consultation = get_object_or_404(Consultation, id=consultation_id)
 
     # Vérifier si une ordonnance existe déjà pour cette consultation
-    if Ordonnance.objects.filter(consultation=consultation).exists():
+    ordonnances = Ordonnance.objects.filter(consultation=consultation)
+    if ordonnances.exists():
         return Response({"message": "Une ordonnance existe déjà pour cette consultation."}, status=400)
 
-    # Créer une ordonnance
+    # Si aucune ordonnance n'existe, créer une nouvelle ordonnance
     ordonnance_data = {
         'consultation': consultation.id,
-        'etat_ordonnance': 'En cours de validation'
+        'etat_ordonnance': 'En cours de validation'  # Assurez-vous que cet état est défini correctement
     }
     ordonnance_serializer = OrdonnanceSerializer(data=ordonnance_data)
-    
+
+    # Validation et sauvegarde de l'ordonnance
     if ordonnance_serializer.is_valid():
         ordonnance = ordonnance_serializer.save()
 
         # Ajouter les médicaments associés si fournis dans la requête
         medicaments_data = request.data.get('medicaments', [])
-        errors = []  # Liste pour collecter les erreurs
+        errors = []  # Liste pour collecter les erreurs de validation des médicaments
 
         for medicament_data in medicaments_data:
             medicament_data['ordonnance'] = ordonnance.id  # Associer l'ordonnance au médicament
@@ -267,33 +292,44 @@ def create_ordonnance(request, consultation_id):
                 medicament_serializer.save()
             else:
                 errors.append(medicament_serializer.errors)  # Ajouter les erreurs à la liste
-        
+
+        # Si des erreurs ont été détectées dans les médicaments, retourner les erreurs
         if errors:
             return Response({"errors": errors}, status=400)
 
+        # Retourner les données de l'ordonnance créée
         return Response(ordonnance_serializer.data, status=status.HTTP_201_CREATED)
-    
-    return Response(ordonnance_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # Retourner les erreurs de validation de l'ordonnance
+    return Response(ordonnance_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def get_ordonnance(request, ordonnance_id):
+    # Récupérer l'ordonnance à partir de l'ID
     ordonnance = get_object_or_404(Ordonnance, id=ordonnance_id)
+
+    # Sérialiser les données de l'ordonnance
     serializer = OrdonnanceSerializer(ordonnance)
+
+    # Afficher les données sérialisées dans la console du serveur
+    print("Données de l'ordonnance :", serializer.data)
+
+    # Retourner la réponse avec les données de l'ordonnance
     return Response(serializer.data)
 
 
 @api_view(['PUT'])
 def update_ordonnance(request, ordonnance_id):
+    # Récupérer l'ordonnance via l'ID
     ordonnance = get_object_or_404(Ordonnance, id=ordonnance_id)
 
-    # Mettre à jour l'état de l'ordonnance
+    # Mettre à jour l'ordonnance avec les nouvelles données
     ordonnance_serializer = OrdonnanceSerializer(ordonnance, data=request.data, partial=True)
 
     if ordonnance_serializer.is_valid():
         ordonnance = ordonnance_serializer.save()
 
-        # Si de nouveaux médicaments sont fournis, les associer à l'ordonnance
+        # Si des médicaments sont fournis, les mettre à jour
         medicaments_data = request.data.get('medicaments', [])
         if medicaments_data:
             # Supprimer les anciens médicaments associés à l'ordonnance avant d'ajouter les nouveaux
@@ -303,13 +339,17 @@ def update_ordonnance(request, ordonnance_id):
                 medicament_data['ordonnance'] = ordonnance.id  # Associer l'ordonnance au médicament
                 medicament_serializer = MedicamentSerializer(data=medicament_data)
                 if medicament_serializer.is_valid():
+                    # Sauvegarder chaque médicament
                     medicament_serializer.save()
+                else:
+                    # Enregistrer les erreurs de validation des médicaments
+                    return Response(medicament_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        # Retourner les données de l'ordonnance mise à jour avec les médicaments
         return Response(ordonnance_serializer.data, status=status.HTTP_200_OK)
 
+    # Si l'ordonnance n'est pas valide, retourner les erreurs
     return Response(ordonnance_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 @api_view(['DELETE'])
 def delete_ordonnance(request, ordonnance_id):
     ordonnance = get_object_or_404(Ordonnance, id=ordonnance_id)
@@ -457,22 +497,30 @@ def valider_ordonnance(request, ordonnance_id):
 
 
 
-
 @api_view(['GET'])
 def list_ordonnances_by_medecin(request, medecins_id):
     """
     Liste les ordonnances associées à un médecin spécifique.
     """
-    
-    consultations = Consultation.objects.filter(patient__medecin__id=medecins_id)
+    # Récupérer les consultations
+    consultations = Consultation.objects.filter(patient__medecins__id=medecins_id)
+    print(f"Consultations récupérées pour le médecin {medecins_id}: {consultations}")
+
     if not consultations.exists():
         return Response({"message": "Aucune consultation trouvée pour ce médecin."}, status=status.HTTP_404_NOT_FOUND)
-    
+
+    # Récupérer les ordonnances
     ordonnances = Ordonnance.objects.filter(consultation__in=consultations)
+    print(f"Ordonnances récupérées pour le médecin {medecins_id}: {ordonnances}")
+
     if not ordonnances.exists():
         return Response({"message": "Aucune ordonnance trouvée pour ce médecin."}, status=status.HTTP_404_NOT_FOUND)
-    
+
+    # Sérialiser les ordonnances
     serializer = OrdonnanceSerializer(ordonnances, many=True)
+    print(f"Les données sérialisées des ordonnances: {serializer.data}")
+
+    # Retourner les données sérialisées
     return Response(serializer.data, status=status.HTTP_200_OK)
 @api_view(['GET'])
 def list_ordonnances_by_patient(request, patient_id):

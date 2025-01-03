@@ -1,25 +1,40 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { OrdonnanceService } from '../ordonnance.service'; // Importer le service
 
 @Component({
   selector: 'app-affichage-ordonnance',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './affichage-ordonnance.component.html',
-  styleUrl: './affichage-ordonnance.component.css',
+  styleUrls: ['./affichage-ordonnance.component.css'],
 })
 export class AffichageOrdonnanceComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  
+  ordonnance: any = null; // Pour stocker les détails de l'ordonnance
+  
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private ordonnanceService: OrdonnanceService // Injecter le service
+  ) {}
+  medicaments: { nom_medicament: string; dose: string; duree: string }[] = [];
 
   ngOnInit(): void {
-    // Retrieve the consultation ID from the route parameters
-    const consultationId = this.route.snapshot.paramMap.get('id');
+    const ordonnanceId = this.route.snapshot.paramMap.get('id');
+    console.log('Ordonnance ID:', ordonnanceId);
+    
+    if (ordonnanceId) {
+      this.ordonnanceService.getOrdonnance(Number(ordonnanceId)).subscribe((data) => {
+        this.ordonnance = data;
+        this.medicaments = this.ordonnance.medicaments;  // Assurez-vous que la structure est correcte
+        console.log('Ordonnance récupérée:', this.ordonnance);
+      });
+    } else {
+      console.error('ID de l\'ordonnance non trouvé');
+    }
   }
-
-  medications: { name: string; dose: string; duration: string }[] = [
-    { name: 'Paracetamol', dose: '500mg', duration: '5 days' },
-    { name: 'Amoxicillin', dose: '250mg', duration: '7 days' },
-  ];
+  
 }

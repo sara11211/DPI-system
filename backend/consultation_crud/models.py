@@ -51,7 +51,7 @@ class Ordonnance(models.Model):
     etat_ordonnance = models.CharField(
         max_length=255,
         choices=ETAT_CHOICES,
-        default='Refusee',  # L'ordonnance est refusée par défaut
+        default='En cours de validation', 
     )
 
 

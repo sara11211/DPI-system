@@ -5,14 +5,6 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
 import { UnauthGuard } from './auth.guard';
 
-export const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent, canActivate: [UnauthGuard] },
-  { path: 'test', component: TestComponent, canActivate: [AuthGuard] },
-];
-
-
-
 import { NouveauDossierComponent } from './dashboards/dashboard-medecin/pages/nouveau-dossier/nouveau-dossier.component';
 import { RechercheDossierComponent } from './dashboards/dashboard-medecin/pages/recherche-dossier/recherche-dossier.component';
 import { AffichageDossierComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/affichage-dossier.component';
@@ -37,6 +29,13 @@ import { ListeDossiersComponent } from './dashboards/dashboard-administratif/pag
 import { ModifierDossierComponent } from './dashboards/dashboard-administratif/pages/modifier-dossier/modifier-dossier.component';
 
 export type DashboardType = 'medical' | 'admin';
+
+export const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent, canActivate: [UnauthGuard] },
+  { path: 'test', component: TestComponent, canActivate: [AuthGuard] },
+];
+
 
 
 export const administratifRoutes: Routes = [

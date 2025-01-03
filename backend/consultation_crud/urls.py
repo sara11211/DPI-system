@@ -40,7 +40,7 @@ urlpatterns = [
 
     ## 6. Liste par médecin et par patient ##
     path('consultations/medecin/<int:medecins_id>/', views.list_consultations_by_medecin, name='list_consultations_by_medecin'),
-    path('consultations/patient/<int:patient_id>/', views.list_consultations_by_patient, name='list_consultations_by_patient'),
+    path('consultations/patient/<str:nss>/', views.list_consultations_by_patient, name='list_consultations_by_patient'),
     path('ordonnances/medecin/<int:medecins_id>/', views.list_ordonnances_by_medecin, name='list_ordonnances_by_medecin'),
     path('ordonnances/patient/<int:patient_id>/', views.list_ordonnances_by_patient, name='list_ordonnances_by_patient'),
 ]

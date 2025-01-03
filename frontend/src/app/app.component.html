@@ -1,9 +1,15 @@
+
+
+
 <div>
+  <!-- Le <router-outlet> affichera dynamiquement le contenu selon la route -->
   <router-outlet></router-outlet>
 </div>
-<!-- <app-header /> -->
 <main class="w-full h-full min-h-screen font-main bg-background-gray">
-  <!-- <app-home /> -->
-  <!-- <app-button [text]="text()"/> -->
-   <app-sidebar />
+  <!-- Si tu veux ajouter un en-tête, décommente cette ligne -->
+  <!-- <app-header /> -->
+
+
+  <!-- Le sidebar du médecin -->
+  <app-sidebar />
 </main>
