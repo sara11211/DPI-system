@@ -95,6 +95,7 @@ export class ConsultationsComponent {
         this.router.url.includes('resultat-bio') ||
         this.router.url.includes('nouveau-bilan-bio') ||
         this.router.url.includes('affichage-bilan-bio') ||
+        this.router.url.includes('modifier-bilan-bio') ||
         this.router.url.includes('resultat-radio') ||
         this.router.url.includes('nouveau-bilan-radio') ||
         this.router.url.includes('affichage-bilan-radio') ||
@@ -138,6 +139,10 @@ export class ConsultationsComponent {
         this.consultationToDelete.ordonnance = '';
       } else if (this.deleteType === 'resume') {
         this.consultationToDelete.resume = '';
+      } else if (this.deleteType === 'bilanb') {
+        this.consultationToDelete.bilanb = '';
+      } else if (this.deleteType === 'bilanr') {
+        this.consultationToDelete.bilanr = '';
       }
     }
     this.popupVisible = false;
@@ -213,4 +218,11 @@ export class ConsultationsComponent {
       relativeTo: this.route,
     });
   }
+
+  openModalModifierBilanBio(id: string): void {
+    this.router.navigate(['modifier-bilan-bio', id], {
+      relativeTo: this.route,
+    });
+  }
+  
 }

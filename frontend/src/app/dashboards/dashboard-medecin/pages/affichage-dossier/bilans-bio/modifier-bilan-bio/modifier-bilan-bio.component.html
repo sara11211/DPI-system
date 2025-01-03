@@ -1,0 +1,76 @@
+<!-- modifier-bilan-bio.component.html -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="w-full max-w-4xl p-6 bg-white rounded-lg">
+      <header class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold">Modifier Bilan Biologique</h2>
+        <button type="button" (click)="annuler()" class="text-gray-500 hover:text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </header>
+  
+      <form (ngSubmit)="onSubmit()">
+        <!-- Synthese Input -->
+        <div class="form-group">
+          <label for="synthese" class="label">Synthèse</label>
+          <textarea
+            id="synthese"
+            [(ngModel)]="synthese"
+            name="synthese"
+            required
+            rows="3"
+            class="input"
+            placeholder="Enterez une synthese"
+          ></textarea>
+          <p *ngIf="synthese.trim() === ''" class="text-xs text-red-500">
+            Synthèse est obligatoire.
+          </p>
+        </div>
+  
+        <!-- Dynamic Mesures Input -->
+        <div class="white-card">
+          <label class="label">Mesures</label>
+          <div class="mesures-container">
+            <div *ngFor="let mesure of mesures; let i = index" class="mesure-item">
+              <input
+                type="text"
+                [(ngModel)]="mesures[i]"
+                name="mesure{{ i }}"
+                class="mesure-input input"
+                placeholder="mesure"
+                required
+              />
+              <p *ngIf="mesures[i].trim() === ''" class="block text-xs text-red-500">
+                Ce champ est obligatoire.
+              </p>
+              <button
+                *ngIf="mesures.length > 1"
+                (click)="removeMesure(i)"
+                type="button"
+              >
+                <svg width="20" height="20" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10.9375 17.5C10.9375 16.6946 11.5904 16.0417 12.3958 16.0417H22.6042C23.4096 16.0417 24.0625 16.6946 24.0625 17.5C24.0625 18.3055 23.4096 18.9584 22.6042 18.9584H12.3958C11.5904 18.9584 10.9375 18.3055 10.9375 17.5Z" fill="#0F60FF"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M32.0846 17.5C32.0846 25.5541 25.5554 32.0834 17.5013 32.0834C9.44715 32.0834 2.91797 25.5541 2.91797 17.5C2.91797 9.44586 9.44715 2.91669 17.5013 2.91669C25.5554 2.91669 32.0846 9.44586 32.0846 17.5ZM29.168 17.5C29.168 23.9434 23.9447 29.1667 17.5013 29.1667C11.058 29.1667 5.83464 23.9434 5.83464 17.5C5.83464 11.0567 11.058 5.83335 17.5013 5.83335C23.9447 5.83335 29.168 11.0567 29.168 17.5Z" fill="#0F60FF"/>
+                </svg>
+              </button>
+            </div>
+            <button (click)="addMesure()" type="button">
+              <svg width="25" height="25" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M26.0027 47.6667C37.9688 47.6667 47.6694 37.9661 47.6694 26C47.6694 14.0338 37.9688 4.33334 26.0027 4.33334C14.0364 4.33334 4.33594 14.0338 4.33594 26C4.33594 37.9661 14.0364 47.6667 26.0027 47.6667ZM23.836 33.5833C23.836 34.78 24.8061 35.75 26.0027 35.75C27.1991 35.75 28.1694 34.78 28.1694 33.5833V28.1667H33.586C34.7825 28.1667 35.7527 27.1967 35.7527 26C35.7527 24.8034 34.7825 23.8333 33.586 23.8333H28.1694V18.4167C28.1694 17.2201 27.1991 16.25 26.0027 16.25C24.8061 16.25 23.836 17.2201 23.836 18.4167V23.8333H18.4193C17.2227 23.8333 16.2526 24.8034 16.2526 26C16.2526 27.1967 17.2227 28.1667 18.4193 28.1667H23.836V33.5833Z" fill="#0F60FF"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+  
+        <div class="flex justify-end gap-4 mt-6">
+          <button type="button" class="px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-100" (click)="annuler()">
+            Annuler
+          </button>
+          <button class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700" [disabled]="!validateForm()" type="submit">
+            Sauvegarder
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
