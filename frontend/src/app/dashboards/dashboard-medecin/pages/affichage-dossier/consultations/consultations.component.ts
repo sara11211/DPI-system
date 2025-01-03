@@ -100,6 +100,7 @@ export class ConsultationsComponent {
         this.router.url.includes('affichage-bilan-radio') ||
         this.router.url.includes('nouveau-resume') ||
         this.router.url.includes('affichage-resume') ||
+        this.router.url.includes('modifier-resume') ||
         this.router.url.includes('visualisation')
         ;
     });
@@ -203,6 +204,12 @@ export class ConsultationsComponent {
 
   openModalModifierOrdonnance(id: string): void {
     this.router.navigate(['modifier-ordonnance', id], {
+      relativeTo: this.route,
+    });
+  }
+
+  openModalModifierResume(id: string): void {
+    this.router.navigate(['modifier-resume', id], {
       relativeTo: this.route,
     });
   }

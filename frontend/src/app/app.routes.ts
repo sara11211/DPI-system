@@ -16,7 +16,6 @@ import { AffichageBilanBioComponent } from './dashboards/dashboard-medecin/pages
 import { ResultatRadioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-radio/resultat-radio/resultat-radio.component';
 import { NouveauBilanRadioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-radio/nouveau-bilan-radio/nouveau-bilan-radio.component';
 import { AffichageBilanRadioComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-radio/affichage-bilan-radio/affichage-bilan-radio.component';
-import { NouveauResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/resume/nouveau-resume/nouveau-resume.component';
 import { AffichageResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/resume/affichage-resume/affichage-resume.component';
 import { VisualisationComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/visualisation/visualisation.component';
 import { ListeDossiersComponent } from './dashboards/dashboard-administratif/pages/liste-dossiers/liste-dossiers.component';
@@ -69,7 +68,10 @@ export const medecinRoutes: Routes = [
 
           { path: 'nouveau-resume/:id', component: NouveauResumeComponent },
           { path: 'affichage-resume/:id', component: AffichageResumeComponent },
-
+          {
+            path: 'modifier-resume/:id',
+            component: ModifierResumeComponent
+          },
           { path: 'visualisation/:id', component: VisualisationComponent },
         ],
       },
@@ -85,6 +87,8 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { NouvelleConsultationComponent } from './dashboards/dashboard-medecin/pages/nouvelle-consultation/nouvelle-consultation.component';
 import { ModifierOrdonnanceComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/ordonnance/modifier-ordonnance/modifier-ordonnance.component';
+import { ModifierResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/resume/modifier-resume/modifier-resume.component';
+import { NouveauResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/resume/nouveau-resume/nouveau-resume.component';
 
 @Injectable({
   providedIn: 'root'

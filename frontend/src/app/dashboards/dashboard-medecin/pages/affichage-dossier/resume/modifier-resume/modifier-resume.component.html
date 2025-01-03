@@ -1,0 +1,97 @@
+<!-- modifier-resume.component.html -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="w-full max-w-4xl p-6 bg-white rounded-lg">
+      <header class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold">Modifier Résumé</h2>
+        <button type="button" (click)="annuler()" class="text-gray-500 hover:text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </header>
+  
+      <form (ngSubmit)="onSubmit()">
+        <div class="flex items-center w-full gap-4">
+          <div class="flex-1">
+            <!-- Symptoms Input -->
+            <div class="form-group">
+              <label for="symptoms" class="label">Symptômes</label>
+              <textarea
+                id="symptoms"
+                [(ngModel)]="symptoms"
+                name="symptoms"
+                required
+                rows="3"
+                class="input"
+                placeholder="Entrez les symptômes"
+              ></textarea>
+              <p *ngIf="symptoms.trim() === ''" class="text-xs text-red-500">
+                Les symptômes sont obligatoires.
+              </p>
+            </div>
+  
+            <!-- Diagnostic Input -->
+            <div class="form-group">
+              <label for="diagnostic" class="label">Diagnostic</label>
+              <input
+                id="diagnostic"
+                type="text"
+                [(ngModel)]="diagnostic"
+                name="diagnostic"
+                required
+                class="input"
+                placeholder="Entrez le diagnostic"
+              />
+              <p *ngIf="diagnostic.trim() === ''" class="text-xs text-red-500">
+                Le diagnostic est obligatoire.
+              </p>
+            </div>
+          </div>
+  
+          <div class="flex-1">
+            <!-- Information on Measures Input -->
+            <div class="form-group">
+              <label for="measuresInfo" class="label">Informations sur les mesures</label>
+              <textarea
+                id="measuresInfo"
+                [(ngModel)]="measuresInfo"
+                name="measuresInfo"
+                required
+                rows="3"
+                class="input"
+                placeholder="Entrez les informations sur les mesures"
+              ></textarea>
+              <p *ngIf="measuresInfo.trim() === ''" class="text-xs text-red-500">
+                Les informations sur les mesures sont obligatoires.
+              </p>
+            </div>
+  
+            <!-- Next Consultation Date Input -->
+            <div class="form-group">
+              <label for="nextConsultation" class="label">Date de la prochaine consultation</label>
+              <input
+                id="nextConsultation"
+                type="date"
+                [(ngModel)]="nextConsultation"
+                name="nextConsultation"
+                required
+                class="input"
+              />
+              <p *ngIf="!nextConsultation" class="text-xs text-red-500">
+                La date de la prochaine consultation est obligatoire.
+              </p>
+            </div>
+          </div>
+        </div>
+  
+        <div class="flex justify-end gap-4 mt-6">
+          <button type="button" class="px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-100" (click)="annuler()">
+            Annuler
+          </button>
+          <button class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700" [disabled]="!validateForm()" type="submit">
+            Sauvegarder
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
