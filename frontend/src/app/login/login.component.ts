@@ -71,17 +71,23 @@ export class LoginComponent {
 
     // Extract form values
     const { nss, password } = this.patientForm.value;
-    
-    // Make the login request
+
     this.authService.login(nss, password).subscribe({
       next: (response) => {
         if (response.status === 'success') {
           console.log('Login successful:', response);
-          localStorage.setItem('user', JSON.stringify(response)); // Save user data
-          this.router.navigate(['test']);
-          console.log("wechhhhhhh");
+          localStorage.setItem('user', JSON.stringify(response));
+          
+          if(response.patient)
+          {
+            console.log("je suis un patient");
+            this.router.navigate(['patient/dashboard']);
+          }else{
+            //this case must not be present or else I'll shot myself
+          }
+
         } else {
-          console.log('Login failed: ' + response.message); // Adjust based on your backend response
+          console.log('Login failed: ' + response.message);
         }
       },
       error: (error: HttpErrorResponse) => {
@@ -105,10 +111,36 @@ export class LoginComponent {
   this.authService.login(username, password).subscribe({
     next: (response) => {
       if (response.status === 'success') {
+        let path;
         console.log('Login successful:', response);
         localStorage.setItem('user', JSON.stringify(response)); // Save user data
-        this.router.navigate(['test']);
-        console.log("wechhhhhhh");
+        switch (response.fonction) {
+          case 'Infirmier':
+            path = 'infirmier'
+            break;
+            
+          case 'Medecin':
+            path='medecin'     
+          break;
+
+          case 'Radiologue':
+            path='radiologue'
+          break;
+
+          case 'Laborantin':
+           path = 'laborantin'
+          break;
+
+          case 'Personnel administratif':
+            path='admin'
+          break;
+
+          default:
+            // this.router.navigate(['login']);
+            console.log("no fonction found");
+        }
+        let route = path+'/dashboard'
+        this.router.navigate([route]);
       } else {
         console.log('Login failed: ' + response.message); // Adjust based on your backend response
       }

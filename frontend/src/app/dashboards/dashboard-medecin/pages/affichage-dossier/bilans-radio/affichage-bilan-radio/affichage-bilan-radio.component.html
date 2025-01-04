@@ -1,0 +1,31 @@
+<header class="header">Affichage Bilan Radiologique</header>
+
+<div class="flex flex-col gap-4 px-8 py-4">
+  <form>
+    <div class="form-group">
+      <label for="typeBilan" class="label">Type de Bilan</label>
+      <select
+        id="typeBilan"
+        [(ngModel)]="typeBilan"
+        name="typeBilan"
+        [disabled]="true"  
+        class="input"
+      >
+        <option *ngFor="let option of typeBilanOptions" [value]="option">{{ option }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="synthese" class="label">Synthèse</label>
+      <textarea
+        id="synthese"
+        [(ngModel)]="synthese"
+        name="synthese"
+        rows="4"
+        [readonly]="true" 
+        class="input"
+        placeholder="Entrez la synthèse du bilan"
+      ></textarea>
+    </div>
+  </form>
+</div>

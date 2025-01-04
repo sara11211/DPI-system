@@ -43,12 +43,14 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework.authtoken',
     'api',
-    'authentication'
+    'authentication',
+    'bilanradiologique'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -57,6 +59,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware'
 ]
 
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',
 ]
@@ -145,3 +148,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+# Define paths for static and media files
+STATIC_URL = '/static/'
+
+# Public directory that serves static files (radios images)
+STATICFILES_DIRS = [
+    BASE_DIR / 'public',  # The public directory where radios images are stored
+]

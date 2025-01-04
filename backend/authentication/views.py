@@ -101,6 +101,18 @@ class LoginView(APIView):
                     "prenom" : serializer2.data['prenom'],
                     "fonction" : serializer2.data['fonction'],
                     })
+                elif fonction == 'Personnel administratif' :
+                    serializer1 = PersonnelSerializer(personnel)
+                    serializer2 = UserSerializer(user)
+                    return Response({
+                    "status": "success",
+                    "id" : serializer2.data['id'],
+                    "username" : serializer2.data['username'],
+                    "email" : serializer2.data['email'],
+                    "nom" : serializer1.data['nom'],
+                    "prenom" : serializer1.data['prenom'],
+                    "fonction" : serializer1.data['fonction'],
+                    })
                     
             except Personnel.DoesNotExist:
                 return Response({"detail": "Aucun role n'est associé à cet utilisateur."}, status=404)
