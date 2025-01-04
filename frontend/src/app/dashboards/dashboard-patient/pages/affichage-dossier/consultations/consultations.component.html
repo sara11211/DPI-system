@@ -58,7 +58,7 @@
             >
               <button
                 class="text-pink-500 hover:underline"
-                (click)="editConsultation(consultation.nss)"
+                (click)="openModalAffichageBilanBio(consultation.id)"
               >
                 Biologique
               </button>
@@ -79,7 +79,7 @@
             >
               <button
                 class="text-gray-500 hover:underline"
-                (click)="editConsultation(consultation.nss)"
+                (click)="openModalAffichageBilanRadio(consultation.id)"
               >
                 Radiologique
               </button>
@@ -103,7 +103,7 @@
             >
               <button
                 class="text-pink-500 hover:underline"
-                (click)="editConsultation(consultation.nss)"
+                (click)="openModalResultatBio(consultation.id)"
               >
                 Biologique
               </button>
@@ -124,7 +124,7 @@
             >
               <button
                 class="text-gray-500 hover:underline"
-                (click)="editConsultation(consultation.nss)"
+                (click)="openModalResultatRadio(consultation.id)"
               >
                 Radiologique
               </button>

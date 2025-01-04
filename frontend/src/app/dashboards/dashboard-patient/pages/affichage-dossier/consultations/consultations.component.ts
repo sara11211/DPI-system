@@ -85,8 +85,12 @@ export class ConsultationsComponentPatient implements OnInit {
     this.router.events.subscribe(() => {
       // Check if the current route matches the modal route
       this.isModalVisible =
-        this.router.url.includes('ordonnance') ||
-        this.router.url.includes('resume') 
+        this.router.url.includes('affichage-ordonnance') ||
+        this.router.url.includes('affichage-resume') ||
+        this.router.url.includes('affichage-bilan-bio') ||
+        this.router.url.includes('affichage-bilan-radio') ||
+        this.router.url.includes('resultat-bio') ||
+        this.router.url.includes('resultat-radio')
     });
   }
 
@@ -157,12 +161,28 @@ export class ConsultationsComponentPatient implements OnInit {
   }
 
   openModalAffichageOrdonnance(id: string): void {
-    this.router.navigate(['ordonnance', id], {
+    this.router.navigate(['affichage-ordonnance', id], {
       relativeTo: this.route,
     });
   }
 
   openModalAffichageResume(id: string): void {
-    this.router.navigate(['resume', id], { relativeTo: this.route });
+    this.router.navigate(['affichage-resume', id], { relativeTo: this.route });
+  }
+
+  openModalAffichageBilanBio(id: string): void {
+    this.router.navigate(['affichage-bilan-bio', id], { relativeTo: this.route });
+  }
+
+  openModalAffichageBilanRadio(id: string): void {
+    this.router.navigate(['affichage-bilan-radio', id], { relativeTo: this.route });
+  }
+
+  openModalResultatBio(id: string): void {
+    this.router.navigate(['resultat-bio', id], { relativeTo: this.route });
+  }
+
+  openModalResultatRadio(id: string): void {
+    this.router.navigate(['resultat-radio', id], { relativeTo: this.route });
   }
 }
