@@ -47,8 +47,8 @@ fetchMedecins(): void {
         '',
         [
           Validators.required,
-          Validators.minLength(18),
-          Validators.maxLength(18),
+          Validators.minLength(12),
+          Validators.maxLength(12),
           Validators.pattern('^[0-9]*$'),
         ],
       ],
@@ -293,6 +293,8 @@ fetchMedecins(): void {
           .subscribe({
             next: (response) => {
               console.log('Dossier successfully submitted:', response);
+              alert("Dossier crée avec succés !");
+              this.dossierForm.reset();
               const dpiId = response.id;
               this.createMutuelle(dpiId);
             },
