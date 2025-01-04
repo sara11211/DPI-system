@@ -32,6 +32,7 @@ class Dpis(models.Model):
 
 class BilansRadiologiques(models.Model):
     synthese_bilan_radio = models.TextField(blank=True, null=True)
+    resultat = models.TextField(blank=True, null=True)
     date_radiologie = models.DateField(blank=True, null=True)
     type_radiologie = models.CharField(max_length=255, blank=True, null=True)
     image_url = models.CharField(max_length=255, blank=True, null=True)

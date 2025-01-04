@@ -51,6 +51,7 @@ class bilan_radio(APIView):
                     "nomComplet": nomComplet,
                     "parDocteur": parDocteur,
                     "date" : date,
+                    "resultat" : bilan.resultat
                 })
                 print(response_data)
                 
@@ -98,13 +99,6 @@ class bilan_radio(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    
-    
-    
-    
-    
-    
     
     def delete(self, request, *args, **kwargs):
         pk = kwargs.get('pk')

@@ -148,3 +148,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+# Define paths for static and media files
+STATIC_URL = '/static/'
+
+# Public directory that serves static files (radios images)
+STATICFILES_DIRS = [
+    BASE_DIR / 'public',  # The public directory where radios images are stored
+]
