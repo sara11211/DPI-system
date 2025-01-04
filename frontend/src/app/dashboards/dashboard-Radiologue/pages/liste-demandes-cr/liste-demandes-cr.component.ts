@@ -5,6 +5,7 @@ import { ApiService } from '../../../../services/api.service';
 import { Router } from '@angular/router';
 
 interface Demande {
+  id:string;
   nss: string;
   nomComplet: string;
   type_radiologie: string;
@@ -13,7 +14,7 @@ interface Demande {
   synthese_bilan_radio?: string; // Optional synthesis property
   date_radiologie?: string; // Date when the report is completed
   resultat?: string; // Completed report result
-  image_url?: string[]; // List of uploaded images
+  image_url?: string; // List of uploaded images
   consultations?: string;
 }
 
@@ -79,6 +80,7 @@ export class ListeDemandesCRComponent implements OnInit {
   addCompteRendu(demande: Demande) {
     this.router.navigate(['radiologue/nouveau-cr',demande.consultations], {
       queryParams: {
+        id: demande.id,
         nss: demande.nss,
         type_radiologie: demande.type_radiologie,
         synthese_bilan_radio: demande.synthese_bilan_radio, 

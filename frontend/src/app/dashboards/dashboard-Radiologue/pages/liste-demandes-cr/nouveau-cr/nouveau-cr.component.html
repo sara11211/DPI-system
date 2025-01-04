@@ -89,17 +89,16 @@
 
       <!-- Téléverser des Images -->
       <div class="form-group">
-        <label for="files" class="label">Téléverser des Images</label>
+        <label for="base64Image" class="label">Téléverser des Images</label>
         <input
-          id="files"
+          id="base64Image"
           type="file"
           (change)="handleFileInput($event)"
-          multiple
           accept=".png, .jpg, .jpeg, .dicom"
           class="input"
         />
-        <p *ngIf="files.length === 0" class="text-xs text-red-500">
-          La téléversement d'au moins une image est obligatoire.
+        <p *ngIf="base64Image.length === 0" class="text-xs text-red-500">
+          La téléversement d'une image est obligatoire.
         </p>
       </div>
     </div>

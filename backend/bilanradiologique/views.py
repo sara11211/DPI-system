@@ -1,9 +1,18 @@
 from django.shortcuts import render
+from django.conf import settings
+from django.utils.decorators import method_decorator
 from .models import BilansRadiologiques,Dpis,Consultations,Personnel,PersonnesContact,Medecins
 from .serializers import BilansRadiologiquesSerializer,DpisSerializer,ResumesConsultationsSerializer,RadiologuesSerializer,Consultations,PersonnelSerializer,PersonnesContactSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+import base64
+from django.core.files.base import ContentFile
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import os
+
+
 
 
 #.#################################
@@ -43,6 +52,7 @@ class bilan_radio(APIView):
                     "parDocteur": parDocteur,
                     "date" : date,
                 })
+                print(response_data)
                 
         return Response(response_data)
     
@@ -54,16 +64,47 @@ class bilan_radio(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def put(self, request, pk):
-        try:
+        try:        
             bilan = BilansRadiologiques.objects.get(pk=pk)
         except BilansRadiologiques.DoesNotExist:
             return Response({"error": "Object not found."}, status=status.HTTP_404_NOT_FOUND)
         
-        serializer = BilansRadiologiquesSerializer(bilan, data=request.data, partial=True)
+        #handle the image :
+        image = request.data['image_url']
+        print(request.data)
+        image_data = base64.b64decode(image.split(',')[1])  # Split to remove the data URL part
+        # Define the file path
+        directory = os.path.join(settings.BASE_DIR, 'public/radios')
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        file_path = os.path.join(directory, 'radio_n'+str(request.data['id'])+'.png')
+        # Save the image to the directory
+        with open(file_path, 'wb') as f:
+            f.write(image_data)
+            file_path = replace_character(file_path, '\\', '/')
+        print(file_path)
+        
+        real_data={
+            'id': request.data['id'],
+            'type_radiologie': request.data['type_radiologie'],
+            'synthese_bilan_radio': request.data['synthese_bilan_radio'],
+            'date_radiologie': request.data['date_radiologie'],
+            'resultat': request.data['resultat'],
+            'image_url': file_path
+        }
+                    
+        serializer = BilansRadiologiquesSerializer(bilan,data=real_data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    
+    
+    
+    
+    
     
     def delete(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
@@ -85,3 +126,29 @@ class bilan_patient(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response({"detail": "Ce patient n'a effectué aucun bilan Radiologique"}, status=status.HTTP_404_NOT_FOUND)
+        
+        
+        
+def replace_character(input_string, old_char, new_char):
+    return input_string.replace(old_char, new_char)   
+        
+        
+        
+        # image = request.data['image']  # assuming the image is sent as a base64 string
+        # if image:
+        #     try:
+        #         # Decode the base64 image data
+        #         image_data = base64.b64decode(image.split(',')[1])  # Split to remove the data URL part
+        #         # Define the file path
+        #         directory = os.path.join(settings.BASE_DIR, 'public/radios')
+        #         if not os.path.exists(directory):
+        #             os.makedirs(directory)
+        #         file_path = os.path.join(directory, 'radio_consultation'+str(id_consultation)'.png')
+        #         # Save the image to the directory
+        #         with open(file_path, 'wb') as f:
+        #             f.write(image_data)
+        #             file_path = replace_character(file_path, '\\', '/')
+                    
+        #         #suvegarder l'element dans la bdd
+        #         graph = GraphiquesTendances.objects.create(laborantins_id=id_laborantin,dpis_id=id_dpis,url_graphique=file_path,date_graphique=date)
+        #         return JsonResponse({"message": "Image saved successfully", "path": file_path}, status=200)

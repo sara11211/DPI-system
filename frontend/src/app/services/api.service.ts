@@ -17,16 +17,20 @@ export class ApiService {
 
   //creat
   postBilanRadio(data: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}bilan-radio/create`, data);
+    return this.http.post<any>(`${this.apiUrl}/bilan-radio/create`, data);
   }
 
   // update
   updateBilanRadio(id: number, data: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}bilan-radio/${id}/update`, data);
+    let image = data.image_url;
+    return this.http.put<any>(`${this.apiUrl}/bilan-radio/update/${id}/`, data, {
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   // delete
   deleteBilanRadio(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}bilan-radio/${id}/delete`);
+    return this.http.delete<any>(`${this.apiUrl}/bilan-radio/${id}/delete`);
   }
+
 }
