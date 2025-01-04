@@ -5,7 +5,7 @@ class Personnel(models.Model):
     nom = models.CharField(max_length=255, blank=True, null=True)
     prenom = models.CharField(max_length=255, blank=True, null=True)
     fonction = models.CharField(max_length=23, blank=True, null=True)
-    users = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='personnel_users')
+    users = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='personnel_user')
 
     class Meta:
         managed = False
@@ -23,7 +23,7 @@ class Dpis(models.Model):
     personnes_contact = models.ForeignKey('PersonnesContact', models.DO_NOTHING, blank=True, null=True)
     qr_url = models.CharField(max_length=255, blank=True, null=True)
     antecedents = models.CharField(max_length=255, blank=True, null=True)
-    users = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='dpis_users')
+    users = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True, related_name='dpis_user')
 
     class Meta:
         managed = False

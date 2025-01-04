@@ -1,4 +1,4 @@
-<header class="header">Bonjour {{userName}}</header>
+<header class="header">Interface Administrateur</header>
 
 <div
   class="flex flex-col items-center w-full h-full gap-6 px-8 py-6 bg-background-gray"
@@ -14,9 +14,11 @@
     <div class="grid justify-between w-full grid-cols-3 gap-4">
       <div class="small-white-card">
         <div class="flex flex-col items-start justify-between h-full gap-2">
-          <div class="flex flex-col gap-1">
-            <p class="text-base font-semibold text-black">Nombre DPI</p>
-            <p class="text-xs text-dark-gray">Aujourd'hui</p>
+            <div class="flex flex-col gap-1">
+              <p class="text-base font-semibold text-black">Nombre DPI</p>
+              <p class="text-xs text-dark-gray">Aujourd'hui</p>
+            </div>
+            <p class="text-2xl font-bold">{{ numberOfDpis }}</p> <!-- Bind the variable here -->
           </div>
           <p class="text-2xl font-bold">{{nbDPIauj}}</p>
         </div>
@@ -35,6 +37,7 @@
             <p class="text-xs text-dark-gray">Cette semaine</p>
           </div>
           <p class="text-2xl font-bold">{{nbDPIsema}}</p>
+          <p class="text-2xl font-bold">{{ numberOfDpis }}</p> <!-- Bind the variable here -->
         </div>
 
         <img src="/assets/green-wave.svg" alt="purple graph" class="self-end" />
@@ -47,6 +50,7 @@
             <p class="text-xs text-dark-gray">Ce mois</p>
           </div>
           <p class="text-2xl font-bold">{{nbDPImois}}</p>
+          <p class="text-2xl font-bold">{{ numberOfDpis }}</p> <!-- Bind the variable here -->
         </div>
 
         <img src="/assets/blue-wave.svg" alt="purple graph" class="self-end" />

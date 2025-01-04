@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('authentication.urls')),
     path('bilan-radio/', include('bilanradiologique.urls')),
+    path('api/', include('api.urls')),  
 ]
 
 urlpatterns += static('/radios/', document_root=settings.BASE_DIR / 'public' / 'radios')

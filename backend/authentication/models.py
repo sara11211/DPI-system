@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class Personnel(models.Model):
-    users = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+    users = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True,  related_name='personnel')
     nom = models.CharField(max_length=255, blank=True, null=True)
     prenom = models.CharField(max_length=255, blank=True, null=True)
     fonction = models.CharField(max_length=10, blank=True, null=True)
