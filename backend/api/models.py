@@ -81,5 +81,3 @@ class Mutuelle(models.Model):
 
     def __str__(self):
         return f"{self.nom_mutuelle} - {self.num_adherent}"
-
-    

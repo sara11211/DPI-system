@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import DPICreateView, DPIListView, DPIViewView, DPIUpdateView, DPIDeleteView, MUTUELLECreateView, CONTACTCreateView, GenerateQRCodeView, GetDoctorsView, USERViewView
+from .views import DPICreateView, DPIListView, DPIViewView, DPIUpdateView, DPIDeleteView, MUTUELLECreateView, CONTACTCreateView, GenerateQRCodeView, GetDoctorsView, USERViewView, DPINSSView, GetDoctorIDView, MUTUELLEGetView, CONTACTGetView, DossierChartView
+
 
 urlpatterns = [
     path('dpis/', DPIListView.as_view(), name='dpis_list'), # GET all DPIS
@@ -12,4 +13,13 @@ urlpatterns = [
     path('get-medecins/', GetDoctorsView.as_view(), name='get_doctors'),
     path('mutuelles/create/', MUTUELLECreateView.as_view(), name='create_mutuelle'),
     path('users/<int:users_id>/', USERViewView.as_view(), name='get_user_data'),
+    path('dpis_nss/<str:nss>/',  DPINSSView.as_view(), name='view_dpi_nss'), 
+    path('get-medecin_traitant/<int:id>', GetDoctorIDView.as_view(), name='get_doctor_by_id'),
+    path('get_mutuelle/<int:dpis_id>/',  MUTUELLEGetView.as_view(), name='get_mutuelle'), 
+    path('get_contact/<int:id>/',  CONTACTGetView.as_view(), name='get_contact'), 
+    path('dossier_chart/', DossierChartView.as_view(), name='dossier_chart'),
+
+    
+
+    
 ]

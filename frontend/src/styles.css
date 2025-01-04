@@ -17,7 +17,7 @@
 }
 
 .white-card {
-    @apply bg-white p-4 rounded-xl flex flex-col gap-2 shadow-sm
+    @apply bg-white p-4 rounded-xl flex flex-col gap-4 shadow-sm
 }
 
 .form-category {
@@ -25,7 +25,7 @@
 }
 
 .button-main {
-    @apply px-6 py-2 text-white rounded-md bg-primary-blue text-sm font-semibold hover:bg-blue-700
+    @apply px-6 py-2 text-white rounded-md bg-primary-blue text-sm font-semibold hover:bg-blue-700 cursor-pointer
 }
 
 .header {
@@ -34,4 +34,8 @@
 
 .td {
     @apply px-4 py-3 border-b border-gray-200
+}
+
+.small-white-card {
+    @apply flex items-center justify-between bg-white rounded-2xl p-5 shadow-sm border
 }

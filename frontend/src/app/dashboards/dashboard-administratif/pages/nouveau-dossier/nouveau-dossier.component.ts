@@ -113,7 +113,7 @@ fetchMedecins(): void {
       return 'NSS doit contenir uniquement des chiffres';
     }
     if (control?.hasError('minlength') || control?.hasError('maxlength')) {
-      return 'NSS doit avoir exactement 18 chiffres';
+      return 'NSS doit avoir exactement 12 chiffres';
     }
     return null;
   }

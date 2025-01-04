@@ -1,8 +1,8 @@
 <header class="header">Liste Dossiers</header>
 
-<div class="p-4 bg-background-gray">
+<div class="relative flex flex-col items-center h-full px-10 py-6 bg-background-gray">
   <!-- Search and Filter Buttons -->
-  <div class="flex items-center justify-between mb-4">
+  <div class="flex items-center justify-between w-full pb-4">
     <!-- Search -->
     <div>
       <input
@@ -10,7 +10,7 @@
         [(ngModel)]="searchTerm"
         (input)="applyFilters()"
         placeholder="Rechercher par nss"
-        class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
+        class="px-4 py-1.5 drop-shadow-sm rounded-lg focus:outline-none"
       />
     </div>
 
@@ -19,10 +19,10 @@
         type="date"
         [(ngModel)]="selectedDate"
         (change)="applyFilters()"
-        class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none"
+        class="px-4 py-1.5 drop-shadow-sm rounded-lg focus:outline-none"
       />
       <span
-        class="absolute inset-y-0 flex items-center text-gray-400 bg-white border-gray-300 pointer-events-none border-y left-4"
+        class="absolute inset-y-0 flex items-center text-gray-400 bg-white pointer-events-none left-4"
         *ngIf="!selectedDate"
       >
         Filter by date
@@ -30,7 +30,9 @@
     </div>
   </div>
 
-  <table class="w-full overflow-hidden bg-white border-separate rounded-2xl">
+  <table
+    class="w-full pb-4 overflow-hidden bg-white border-separate rounded-2xl"
+  >
     <thead>
       <tr>
         <th
@@ -46,45 +48,21 @@
         *ngFor="let dossier of paginatedDossiers"
         class="text-sm text-black hover:bg-gray-50"
       >
+        <td class="td">{{ dossier.prenom }}</td>
         <td class="td">{{ dossier.nom }}</td>
         <td class="td">{{ dossier.prenom }}</td>
         <td class="td">{{ dossier.nss }}</td>
         <td class="td">{{ dossier.dateAjout }}</td>
         <td class="td">
           <div class="flex items-center w-full gap-2">
-            <button class="hover:underline text-primary-blue">Details</button>
-            <button class="text-dark-gray hover:text-primary-blue">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M9 7H6C4.89543 7 4 7.89543 4 9V18C4 19.1046 4.89543 20 6 20H15C16.1046 20 17 19.1046 17 18V15"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M9 15H12L20.5 6.49998C21.3284 5.67156 21.3284 4.32841 20.5 3.49998C19.6716 2.67156 18.3284 2.67156 17.5 3.49998L9 12V15"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M16 5L19 8"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+            <button class="hover:underline text-primary-blue" (click)="editDossier(dossier.nss)">
+              Voir details
             </button>
-            <button class="text-dark-gray hover:text-red-500">
+
+            <button
+              class="text-gray-300 hover:text-red-500"
+              (click)="openPopup(dossier)"
+            >
               <svg
                 width="24"
                 height="24"
@@ -129,6 +107,65 @@
                 />
               </svg>
             </button>
+
+            <div
+              *ngIf="popupVisible"
+              class="absolute inset-0 z-50 flex items-center justify-center h-full bg-opacity-100 backdrop-blur-sm"
+            >
+              <div class="p-6 bg-white rounded-lg shadow-md">
+                <h2 class="mb-4 text-lg font-semibold">Confirmation</h2>
+                <p>Are you sure you want to delete this dossier?</p>
+                <div class="flex justify-end mt-4 space-x-2">
+                  <button
+                    class="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600"
+                    (click)="confirmDelete()"
+                  >
+                    Confirm
+                  </button>
+                  <button
+                    class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
+                    (click)="cancelDelete()"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button
+              (click)="editDossier(dossier.nss)"
+              class="text-gray-300 hover:text-primary-blue"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M9 7H6C4.89543 7 4 7.89543 4 9V18C4 19.1046 4.89543 20 6 20H15C16.1046 20 17 19.1046 17 18V15"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M9 15H12L20.5 6.49998C21.3284 5.67156 21.3284 4.32841 20.5 3.49998C19.6716 2.67156 18.3284 2.67156 17.5 3.49998L9 12V15"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16 5L19 8"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
           </div>
         </td>
       </tr>
@@ -136,10 +173,10 @@
   </table>
 
   <!-- Pagination Controls -->
-  <div class="flex items-center justify-center mt-4 space-x-2 text-black">
+  <div class="flex items-center justify-center py-2 space-x-2 text-black">
     <!-- First Button -->
     <button
-      class="px-4 py-2 text-sm font-semibold text-white rounded-md bg-primary-blue hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+      class="px-4 py-2 text-xs font-semibold text-white rounded-md bg-primary-blue hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
       (click)="changePage(1)"
       [disabled]="currentPage === 1"
     >
@@ -148,7 +185,7 @@
 
     <!-- Previous Button -->
     <button
-      class="px-4 py-2 text-sm font-medium bg-white border rounded-lg border-primary-blue text-primary-blue hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      class="px-4 py-2 text-xs font-medium bg-white border rounded-lg border-primary-blue text-primary-blue hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
       (click)="changePage(currentPage - 1)"
       [disabled]="currentPage === 1"
     >
@@ -156,13 +193,13 @@
     </button>
 
     <!-- Page Indicator -->
-    <span class="px-4 py-2 text-sm font-medium text-gray-800">
+    <span class="px-4 py-2 text-xs font-medium text-gray-800">
       Page {{ currentPage }} of {{ totalPages }}
     </span>
 
     <!-- Next Button -->
     <button
-      class="px-4 py-2 text-sm font-medium bg-white border rounded-lg text-primary-blue border-primary-blue hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      class="px-4 py-2 text-xs font-medium bg-white border rounded-lg text-primary-blue border-primary-blue hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
       (click)="changePage(currentPage + 1)"
       [disabled]="currentPage === totalPages"
     >
@@ -171,7 +208,7 @@
 
     <!-- Last Button -->
     <button
-      class="px-4 py-2 text-sm font-semibold text-white rounded-md bg-primary-blue hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+      class="px-4 py-2 text-xs font-semibold text-white rounded-md bg-primary-blue hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
       (click)="changePage(totalPages)"
       [disabled]="currentPage === totalPages"
     >

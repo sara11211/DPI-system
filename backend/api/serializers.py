@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import DPI, Mutuelle, PersonneContact
+from .models import DPI, Mutuelle, PersonneContact, Medecin
 from django.contrib.auth.models import User
 import qrcode, io
 
@@ -92,3 +92,30 @@ class USERSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'date_joined']  
+        
+        
+class MedecinSerializer(serializers.ModelSerializer):
+    # Use the foreign key relationship to fetch first_name and last_name from the Personnel table
+    prenom = serializers.CharField(source='personnel.prenom', read_only=True)
+    nom = serializers.CharField(source='personnel.nom', read_only=True)
+
+    class Meta:
+        model = Medecin
+        fields = ['nom', 'prenom']
+        
+
+
+class MutuelleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Mutuelle
+        fields = ['nom_mutuelle', 'type_couverture', 'num_adherent']
+        
+        
+
+
+class PersonneContactSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = PersonneContact
+        fields = ['nom_contact', 'prenom_contact', 'numero_telephone']

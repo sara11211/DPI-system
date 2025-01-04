@@ -1,0 +1,133 @@
+<header class="header">
+    Modifier Dossier
+  </header>
+  
+  <div class="px-8 py-5 bg-background-gray">
+    <form [formGroup]="dossierForm" (ngSubmit)="onSubmit()" class="flex flex-col items-end gap-3">
+      <div class="flex w-full gap-5">
+        <div class="flex flex-col flex-1 gap-2">
+          <h3 class="form-category">Informations du Patient</h3>
+          <div class="white-card">
+            <div>
+              <label for="nss" class="label">NSS</label>
+              <input id="nss" formControlName="nss" type="text" class="input" />
+              <div *ngIf="dossierForm.get('nss')?.touched && dossierForm.get('nss')?.invalid" class="error">
+                {{ getNssError() }}
+              </div>
+            </div>
+  
+            <div class="flex justify-between">
+              <div>
+                <label for="nom" class="label">Nom</label>
+                <input id="nom" formControlName="nom" type="text" class="input" />
+                <div *ngIf="dossierForm.get('nom')?.touched && dossierForm.get('nom')?.invalid" class="error">
+                  {{ getNomError() }}
+                </div>
+              </div>
+              <div>
+                <label for="prenom" class="label">Prénom</label>
+                <input id="prenom" formControlName="prenom" type="text" class="input" />
+                <div *ngIf="dossierForm.get('prenom')?.touched && dossierForm.get('prenom')?.invalid" class="error">
+                  {{ getPrenomError() }}
+                </div>
+              </div>
+            </div>
+  
+            <div>
+              <label for="numTel" class="label">Numéro de Téléphone</label>
+              <input id="numTel" formControlName="numTel" type="text" class="input" />
+              <div *ngIf="dossierForm.get('numTel')?.touched && dossierForm.get('numTel')?.invalid" class="error">
+                {{ getNumTelError() }}
+              </div>
+            </div>
+  
+            <div>
+              <label for="dateNaiss" class="label">Date de Naissance</label>
+              <input id="dateNaiss" formControlName="dateNaiss" type="date" class="input" />
+              <div *ngIf="dossierForm.get('dateNaiss')?.touched && dossierForm.get('dateNaiss')?.invalid" class="error">
+                {{ getDateNaissanceError() }}
+              </div>
+            </div>
+  
+            <div>
+              <label for="adresse" class="label">Adresse</label>
+              <input id="adresse" formControlName="adresse" type="text" class="input" />
+              <div *ngIf="dossierForm.get('adresse')?.touched && dossierForm.get('adresse')?.invalid" class="error">
+                {{ getAdresseError() }}
+              </div>
+            </div>
+  
+            <div>
+              <label for="medecinTraitant" class="label">Médecin Traitant</label>
+              <input id="medecinTraitant" formControlName="medecinTraitant" type="text" class="input"  />
+              <div *ngIf="dossierForm.get('medecinTraitant')?.touched && dossierForm.get('medecinTraitant')?.invalid" class="error">
+                {{ getMedecinTraitantError() }}
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="flex flex-col justify-between flex-1">
+          <h3 class="form-category">Personne à Contacter</h3>
+          <div class="white-card">
+            <div class="flex justify-between">
+              <div>
+                <label for="nomContact" class="label">Nom</label>
+                <input id="nomContact" formControlName="nomContact" type="text" class="input" />
+              </div>
+              <div>
+                <label for="prenomContact" class="label">Prénom</label>
+                <input id="prenomContact" formControlName="prenomContact" type="text" class="input" />
+              </div>
+            </div>
+  
+            <div>
+              <label for="numTelContact" class="label">Numéro de Téléphone</label>
+              <input id="numTelContact" formControlName="numTelContact" type="text" class="input" />
+              <div *ngIf="dossierForm.get('numTelContact')?.touched && dossierForm.get('numTelContact')?.invalid" class="error">
+                {{ getNumTelContactError() }}
+              </div>
+            </div>
+          </div>
+  
+          <div class="flex flex-col gap-2">
+            <h3 class="form-category">Informations de la Mutuelle</h3>
+            <div class="white-card">
+              <div>
+                <label for="nomMutuelle" class="label">Nom de la Mutuelle</label>
+                <input id="nomMutuelle" formControlName="nomMutuelle" type="text" class="input" />
+              </div>
+  
+              <div>
+                <label for="numAdherent" class="label">Numéro d'Adhérent</label>
+                <input id="numAdherent" formControlName="numAdherent" type="text" class="input" />
+                <div *ngIf="dossierForm.get('numAdherent')?.touched && dossierForm.get('numAdherent')?.invalid" class="error">
+                  {{ getNumAdherentError() }}
+                </div>
+              </div>
+  
+              <div>
+                <label for="typeCouverture" class="label">Type de Couverture</label>
+                <select
+                id="typeCouverture"
+                formControlName="typeCouverture"
+                class="input"
+              >
+                <option value="Complète">Complète</option>
+                <option value="Partielle">Partielle</option>
+                
+              </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="flex justify-center">
+        <button type="submit" class="button-main" [disabled]="dossierForm.invalid">
+          Modifier
+        </button>
+      </div>
+    </form>
+  </div>
+  

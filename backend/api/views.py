@@ -2,15 +2,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from .models import DPI, Medecin
-from .serializers import DPISerializer, MUTUELLESerializer, CONTACTSerializer, USERSerializer
+from .models import DPI, Medecin, Mutuelle, PersonneContact
+from .serializers import DPISerializer, MUTUELLESerializer, CONTACTSerializer, USERSerializer, MedecinSerializer, MutuelleSerializer, PersonneContactSerializer
 import qrcode, io
 from django.http import HttpResponse, JsonResponse
-from django.db.models import F
+from django.db.models import F, Count
 from fpdf import FPDF
 import os
 from django.contrib.auth.models import User
-
+from django.db.models.functions import TruncMonth
 
 # Ensure the user is an admin
 def is_admin(user):
@@ -135,3 +135,61 @@ class USERViewView(APIView):
             return Response(serializer.data)
         except User.DoesNotExist:
             return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        
+
+
+class DPINSSView(APIView):
+    def get(self, request, nss):
+        dpi = get_object_or_404(DPI, nss=nss)
+        serializer = DPISerializer(dpi)
+        return Response(serializer.data)
+
+
+
+
+# READ: Read a specific DPI (Visible to all users)
+class GetDoctorIDView(APIView):
+    def get(self, request, id):
+        medecin = get_object_or_404(Medecin, id=id)
+        serializer = MedecinSerializer(medecin)
+        return Response(serializer.data)
+    
+
+class MUTUELLEGetView(APIView):
+    def get(self, request, dpis_id):
+        mutuelle = get_object_or_404(Mutuelle, dpis_id=dpis_id)
+        serializer = MutuelleSerializer(mutuelle)
+        return Response(serializer.data)
+    
+    
+    
+
+class CONTACTGetView(APIView):
+    def get(self, request, id):
+        contact = get_object_or_404(PersonneContact, id=id)
+        serializer = PersonneContactSerializer(contact)
+        return Response(serializer.data)
+    
+    
+
+class DossierChartView(APIView):
+    def get(self, request):
+        dpi_data = DPI.objects.annotate(
+            month=TruncMonth('users__date_joined')  
+        ).values('month').annotate(
+            count=Count('id')  
+        ).order_by('month')
+
+        labels = []
+        data = []
+
+        for entry in dpi_data:
+            labels.append(entry['month'].strftime('%b'))  
+            data.append(entry['count'])
+
+        return Response({
+            'labels': labels,
+            'data': data
+        })
+

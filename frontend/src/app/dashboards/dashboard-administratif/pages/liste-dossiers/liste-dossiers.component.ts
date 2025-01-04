@@ -103,21 +103,24 @@ export class ListeDossiersComponent implements OnInit {
     this.currentPage = page;
   }
 
-  // Apply filters
   applyFilters() {
     this.filteredDossiers = this.dossiers.filter((dossier) => {
       const matchesSearch =
         this.searchTerm.trim() === '' ||
         dossier.nss.toLowerCase().includes(this.searchTerm.toLowerCase());
+  
       const matchesDate =
-        !this.selectedDate || dossier.dateAjout === this.selectedDate;
+        !this.selectedDate ||
+        this.normalizeDate(dossier.dateAjout) === this.selectedDate;
+  
       return matchesSearch && matchesDate;
     });
-
-    // Reset to first page after filtering
-    this.currentPage = 1;
   }
-
+  
+  normalizeDate(dateString: string): string {
+    const [day, month, year] = dateString.split('/');
+    return `${year}-${month}-${day}`; 
+  }
   editDossier(nss: string) {
     this.router.navigate(['/modifier-dossier', nss]);
   }
@@ -126,18 +129,28 @@ export class ListeDossiersComponent implements OnInit {
     this.popupVisible = true;
     this.dossierToDelete = dossier;
   }
-  
-  confirmDelete() {
-    if (this.dossierToDelete) {
-      this.dossiers = this.dossiers.filter(
-        (dossier) => dossier.nss !== this.dossierToDelete?.nss
-      );
-      this.applyFilters(); // Reapply filters after deletion
-      this.popupVisible = false;
-      this.dossierToDelete = null;
+
+    readonly endpointDeleteDPI = 'http://127.0.0.1:8000/api/dpis/';
+    confirmDelete() {
+      if (this.dossierToDelete) {
+        this.http.delete(`${this.endpointDeleteDPI}${this.dossierToDelete.nss}/delete/`)
+          .subscribe(
+            () => {
+              this.dossiers = this.dossiers.filter(
+                (dossier) => dossier.nss !== this.dossierToDelete?.nss
+              );
+              this.applyFilters(); 
+              this.popupVisible = false;
+              this.dossierToDelete = null;
+            },
+            (error) => {
+              console.error('Failed to delete dossier:', error);
+              alert('Failed to delete the dossier. Please try again.');
+            }
+          );
+      }
     }
-  }
-  
+      
   cancelDelete() {
     this.popupVisible = false;
     this.dossierToDelete = null;
