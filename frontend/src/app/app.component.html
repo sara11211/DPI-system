@@ -1,4 +1,8 @@
-<div>
-  <app-sidebar-radio></app-sidebar-radio>
-  <router-outlet></router-outlet>
+<div *ngIf="authService.isLoggedIn()">
+    <app-sidebar-radio *ngIf="showSidebarRadio()"></app-sidebar-radio >
+    <app-sidebar-admin *ngIf="showSidebarAdmin()"></app-sidebar-admin >
+    <app-sidebar-patient *ngIf="showSidebarPatient()"></app-sidebar-patient >
+    <app-sidebar-medecin *ngIf="showSidebarMedecin()"></app-sidebar-medecin >
 </div>
+  
+<router-outlet></router-outlet>

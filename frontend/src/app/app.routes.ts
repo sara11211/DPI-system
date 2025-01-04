@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { NouveauDossierComponent } from './dashboards/dashboard-medecin/pages/nouveau-dossier/nouveau-dossier.component';
+import { NouveauDossierComponent } from './dashboards/dashboard-administratif/pages/nouveau-dossier/nouveau-dossier.component';
 import { RechercheDossierComponent } from './dashboards/dashboard-medecin/pages/recherche-dossier/recherche-dossier.component';
 import { AffichageDossierComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/affichage-dossier.component';
 import { DashboardComponent } from './dashboards/dashboard-medecin/pages/dashboard/dashboard.component';
