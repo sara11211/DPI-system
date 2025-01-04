@@ -128,13 +128,13 @@ export const infirmierRoutes: Routes = [
   
   {
     path: 'recherche-dossier/:nss',
-    component: AffichageDossierComponent,
+    component: AffichageDossierComponentInfirmier,
     children: [
       { path: '', redirectTo: 'personal-info', pathMatch: 'full' },
       { path: 'personal-info', component: InformationsPersonellesComponent },
       {
-        path: 'consultations',
-        component: ConsultationsComponent,
+        path: 'soins-prodigues',
+        component: SoinsProdiguesComponentInfirmier,
         children: [
           { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
 
@@ -155,6 +155,8 @@ import { BehaviorSubject } from 'rxjs';
 import { NouvelleConsultationComponent } from './dashboards/dashboard-medecin/pages/nouvelle-consultation/nouvelle-consultation.component';
 import { DashboardAdministratifComponent } from './dashboards/dashboard-administratif/dashboard-administratif.component';
 import { NouveauSoinComponent } from './dashboards/dashboard-infirmier/pages/nouveau-soin/nouveau-soin.component';
+import { SoinsProdiguesComponentInfirmier } from './dashboards/dashboard-infirmier/pages/affichage-dossier/soins-prodigues/soins-prodigues.component';
+import { AffichageDossierComponentInfirmier } from './dashboards/dashboard-infirmier/pages/affichage-dossier/affichage-dossier.component';
 
 @Injectable({
   providedIn: 'root'
