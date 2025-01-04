@@ -3,6 +3,19 @@ import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common'; // Import Location
 import { CommonModule } from '@angular/common';
+import { ImageService } from '../../../../../services/image.service';
+import { ApiService } from '../../../../../services/api.service';
+
+interface Demande {
+  id: string;
+  nss?: string;
+  type_radiologie: string;
+  synthese_bilan_radio?: string; // Optional synthesis property
+  date_radiologie?: string; // Date when the report is completed
+  resultat?: string; // Completed report result
+  image_url?: string; // List of uploaded images
+  consultations?: string;
+}
 
 @Component({
   selector: 'app-compte-rendu',
@@ -12,35 +25,62 @@ import { CommonModule } from '@angular/common';
   imports: [FormsModule,CommonModule],
 })
 export class CompteRenduComponent implements OnInit {
+  demande: Demande = { // Initializing with a default object
+    id: '',
+    nss: '',
+    type_radiologie: '',
+    synthese_bilan_radio: '', // Optional synthesis property
+    date_radiologie: '', // Date when the report is completed
+    resultat: '', // Completed report result
+    image_url: '', // List of uploaded images
+    consultations: '',
+  };
+
   nss: string = '';
   typeExamen: string = '';
   synthese: string = '';
   dateExamen: string = '';
   resultat: string = '';
-  uploadedImages: string[] = [];
+  uploadedImages: string = '';
   isEditable: boolean = false;
+  base64Image: string = '';
 
   constructor(
+    private apiService: ApiService,
+    private imageService: ImageService,
     private router: Router,
     private route: ActivatedRoute,
     private location: Location // Inject Location
   ) {}
 
   ngOnInit(): void {
-    // Safely fetch state data passed from ListeDemandesCRComponent
-    const state = history.state;
-
-    // Check if data exists, then populate fields
-    if (state && state.nss) {
-      this.nss = state.nss;
-      this.typeExamen = state.typeExamen;
-      this.synthese = state.synthese;
-      this.dateExamen = state.dateExamen || '';
-      this.resultat = state.resultat || '';
-      this.uploadedImages = state.uploadedImages || [];
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state?.['demande']) {
+      // Retrieve from navigation state
     } else {
-      console.error('No data passed to CompteRenduComponent');
+      // Fallback to query parameters
+      this.route.queryParams.subscribe((params) => {
+          this.demande.id = params['id'],
+          this.demande.type_radiologie = params['type_radiologie'],
+          this.demande.synthese_bilan_radio = params['synthese_bilan_radio'],
+          this.nss = params['nss'],
+          this.typeExamen = params['type_radiologie'],
+          this.synthese = params['synthese_bilan_radio'], 
+          this.dateExamen = params['date_radiologie'], 
+          this.resultat = params['resultat'],
+          this.uploadedImages = params['image_url']
+      });
     }
+
+    const fileName = this.uploadedImages.split('/').pop()|| "";
+    this.imageService.getImage(fileName).subscribe((response: Blob) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.uploadedImages = reader.result as string;
+        this.base64Image = this.uploadedImages;
+      };
+      reader.readAsDataURL(response);
+    });
   }
 
   toggleEditMode(): void {
@@ -48,18 +88,25 @@ export class CompteRenduComponent implements OnInit {
   }
 
   handleFileInput(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    if (target.files) {
-      const files = Array.from(target.files);
-      files.forEach((file) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          if (e.target?.result) {
-            this.uploadedImages.push(e.target.result as string);
-          }
-        };
-        reader.readAsDataURL(file);
-      });
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file: File = input.files[0];
+      const reader = new FileReader();
+  
+      reader.onload = () => {
+        if (reader.result) {
+          this.base64Image = reader.result.toString();
+          this.uploadedImages = this.base64Image;
+          this.demande.image_url = this.uploadedImages;
+          // console.log('Base64 Image:', this.base64Image);
+        }
+      };
+  
+      reader.onerror = () => {
+        console.error('Error reading file');
+      };
+  
+      reader.readAsDataURL(file);
     }
   }
 
@@ -68,17 +115,22 @@ export class CompteRenduComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.isEditable) {
-      console.log('Saved data:', {
-        nss: this.nss,
-        typeExamen: this.typeExamen,
-        dateExamen: this.dateExamen,
-        synthese: this.synthese,
-        resultat: this.resultat,
-        uploadedImages: this.uploadedImages,
+        this.demande.date_radiologie = this.dateExamen,
+        this.demande.resultat = this.resultat,
+        this.demande.image_url = this.base64Image,
+        delete this.demande.nss;
+        delete this.demande.consultations;
+        let data = JSON.stringify(this.demande);  
+        console.log(data);
+      this.apiService.updateBilanRadio(Number(this.demande?.id), data).subscribe({
+        next: (response) => {
+          alert('Compte Rendu sauvegardé avec succès !');
+          this.router.navigate(['/radiologue/liste-demandes-cr']);
+        },
+        error: (error) => {
+          alert('Une erreur s\'est produite.');
+        }
       });
-      alert('Modifications sauvegardées avec succès !');
-      this.isEditable = false;
-    }
   }
+
 }

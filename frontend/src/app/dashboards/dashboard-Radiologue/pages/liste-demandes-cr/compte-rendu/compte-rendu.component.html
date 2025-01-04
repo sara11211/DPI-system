@@ -84,13 +84,12 @@
 
       <!-- Images Téléversées -->
       <div class="form-group">
-        <label class="label">Images Téléversées</label>
+        <label class="label">Image Téléversée</label>
         
         <!-- Display uploaded images -->
         <div *ngIf="uploadedImages.length > 0; else noImages" class="grid grid-cols-3 gap-2 mt-2">
           <img
-            *ngFor="let image of uploadedImages"
-            [src]="image"
+            [src]="uploadedImages"
             alt="Image Téléversée"
             class="w-full h-32 object-cover rounded-md border"
           />
@@ -104,10 +103,10 @@
         <!-- File upload input -->
         <div *ngIf="isEditable" class="mt-4">
           <label
-            for="files"
+          for="files"
             class="inline-block px-4 py-2 bg-blue-500 text-white font-medium text-sm leading-tight rounded shadow-md hover:bg-blue-600 focus:bg-blue-700 focus:outline-none focus:ring-0 transition duration-150 ease-in-out cursor-pointer"
           >
-            Ajouter des Fichiers
+            Modifier l'image
           </label>
           <input
             id="files"

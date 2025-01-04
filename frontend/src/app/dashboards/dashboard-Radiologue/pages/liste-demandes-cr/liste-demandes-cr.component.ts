@@ -97,16 +97,19 @@ export class ListeDemandesCRComponent implements OnInit {
 
   // Navigate to the "Compte Rendu" component with data
   viewDetails(demande: Demande) {
-    // this.router.navigate(['compte-rendu', demande.nss], {
-    //   state: {
-    //     nss: demande.nss,
-    //     typeExamen: demande.typeExamen,
-    //     synthese: demande.synthese,
-    //     dateExamen: demande.dateExamen || '',
-    //     resultat: demande.resultat || '',
-    //     uploadedImages: demande.uploadedImages || [],
-    //   },
-    // });
+    console.log(demande)
+    this.router.navigate(['radiologue/compte-rendu',demande.consultations], {
+      queryParams: {
+        id: demande.id,
+        nss: demande.nss,
+        type_radiologie: demande.type_radiologie,
+        synthese_bilan_radio: demande.synthese_bilan_radio, 
+        date_radiologie: demande.date_radiologie, 
+        resultat: demande.resultat,
+        image_url: demande.image_url,
+        consultations: demande.consultations,
+      }
+    });
   }
 
   // Determine CSS class based on the type of exam
