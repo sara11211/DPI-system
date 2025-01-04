@@ -2,49 +2,66 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ResumeService } from '../resume.service'; // Assure-toi d'importer le service
 
 @Component({
   selector: 'app-nouveau-resume',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './nouveau-resume.component.html',
-  styleUrl: './nouveau-resume.component.css'
+  styleUrls: ['./nouveau-resume.component.css']
 })
 export class NouveauResumeComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private router: Router) {}
-
-  ngOnInit(): void {
-    // Retrieve the consultation ID from the route parameters
-    const consultationId = this.route.snapshot.paramMap.get('id');
-  } 
-
+  // Déclaration des variables
   symptoms: string = '';
   diagnostic: string = '';
   measuresInfo: string = '';
   nextConsultation: string | null = null;
+  consultationId: number | null = null; // Pour stocker l'ID de la consultation
 
-  // Validation method for the form
+  constructor(private route: ActivatedRoute, private router: Router, private resumeService: ResumeService) {}
+
+  ngOnInit(): void {
+    // Récupérer l'ID de la consultation depuis l'URL (paramètre de la route)
+    const consultationId = this.route.snapshot.paramMap.get('id'); 
+    if (consultationId) {
+      this.consultationId = +consultationId; // Convertir en nombre
+    }
+  }
+
+  // Validation du formulaire
   validateForm(): boolean {
     return (
       this.symptoms.trim() !== '' &&
       this.diagnostic.trim() !== '' &&
       this.measuresInfo.trim() !== '' &&
-      !!this.nextConsultation
+      !!this.nextConsultation &&
+      this.consultationId !== null  // Vérifie que l'ID de la consultation est bien présent
     );
   }
 
-  // Submit handler
+  // Soumission du formulaire
   onSubmit(): void {
     if (this.validateForm()) {
-      // Form submission logic
-      console.log('Form submitted with the following data:');
-      console.log({
-        symptoms: this.symptoms,
+      const formData = {
         diagnostic: this.diagnostic,
-        measuresInfo: this.measuresInfo,
-        nextConsultation: this.nextConsultation,
-      });
-      this.router.navigate(['../../../consultations'], { relativeTo: this.route });
+        symptomes: this.symptoms,
+        mesure: this.measuresInfo,
+        date_prochaine_consultation: this.nextConsultation,
+        consultationId: this.consultationId, // Ajout de l'ID de consultation récupéré de la route
+      };
+
+      // Envoie des données via le service
+      this.resumeService.createResumeConsultation(formData).subscribe(
+        response => {
+          console.log('Form submitted successfully:', response);
+          // Redirection vers la page des consultations après succès
+          this.router.navigate(['../../../consultations'], { relativeTo: this.route });
+        },
+        error => {
+          console.error('Error during form submission:', error);
+        }
+      );
     }
   }
 }

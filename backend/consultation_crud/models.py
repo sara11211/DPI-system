@@ -2,13 +2,14 @@
 
 from django.db import models
 from django.contrib.auth import get_user_model
-from  authentication.models import Dpis,Infirmiers
+from authentication.models import Dpis, Infirmiers
+
 
 
 
 # Modèle de la consultation
 class Consultation(models.Model):
-    patient = models.ForeignKey(Dpis, on_delete=models.CASCADE, db_column='dpis_id')  # Nom explicite de la colonne
+    patient = models.ForeignKey('authentication.Dpis', on_delete=models.CASCADE, db_column='dpis_id')  # Nom explicite de la colonne
     resume_consultation = models.ForeignKey('ResumeConsultation', on_delete=models.CASCADE, null=True, blank=True,db_column='resume_consultation_id')
     date_consultation = models.DateField()
    
@@ -26,7 +27,7 @@ class ResumeConsultation(models.Model):
     antecedents = models.TextField(null=True, blank=True)
     info_supp = models.TextField(null=True, blank=True)
     date_prochaine_consultation = models.DateField()
-    patient = models.ForeignKey(Dpis, on_delete=models.CASCADE, db_column='dpis_id')
+    patient = models.ForeignKey('authentication.Dpis', on_delete=models.CASCADE, db_column='dpis_id')
 
     class Meta:
         db_table = 'resumes_consultations'  
@@ -79,7 +80,7 @@ class Medicament(models.Model):
 
 class SoinsInfirmier(models.Model):
     infirmiers_id = models.ForeignKey(
-        Infirmiers, 
+       'authentication.Infirmiers' , 
         on_delete=models.SET_NULL, 
         null=True, 
         blank=True, 

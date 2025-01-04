@@ -25,7 +25,7 @@ urlpatterns = [
 
     ## 4. Résumé des Consultations CRUD ##
     path('resume-consultations/', views.list_resume_consultations, name='list_resume_consultations'),  
-    path('resume-consultation/<int:resume_consultation_id>/', views.detail_resume_consultation, name='detail_resume_consultation'), 
+    path('resume-consultation/<int:consultation_id>/', views.detail_resume_consultation, name='detail_resume_consultation'), 
     path('resume-consultation/create/', views.create_resume_consultation, name='create_resume_consultation'), 
     path('resume-consultation/<int:resume_consultation_id>/update/', views.update_resume_consultation, name='update_resume_consultation'),  
     path('resume-consultation/<int:resume_consultation_id>/delete/', views.delete_resume_consultation, name='delete_resume_consultation'),  
@@ -43,4 +43,9 @@ urlpatterns = [
     path('consultations/patient/<str:nss>/', views.list_consultations_by_patient, name='list_consultations_by_patient'),
     path('ordonnances/medecin/<int:medecins_id>/', views.list_ordonnances_by_medecin, name='list_ordonnances_by_medecin'),
     path('ordonnances/patient/<int:patient_id>/', views.list_ordonnances_by_patient, name='list_ordonnances_by_patient'),
+    path('ordonnance/consultation/<int:consultation_id>/', views.get_ordonnance_id_by_consultation, name='get_ordonnance_id_by_consultation'),
+
+
+
+
 ]

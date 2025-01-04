@@ -6,7 +6,7 @@ from .models import Consultation, Ordonnance, Medicament,ResumeConsultation,Soin
 from  authentication.models import Dpis,Infirmiers,Medecins
 
 from authentication.serializers import DpiSerializer, MedecinSerializer
-from .serializers import ConsultationSerializer, OrdonnanceSerializer,MedicamentSerializer,ResumeConsultationSerializer,SoinsInfirmierSerializer,Consultation_Serializer
+from .serializers import ConsultationSerializer, OrdonnanceSerializer,MedicamentSerializer,ResumeConsultationSerializer,SoinsInfirmierSerializer,Consultation_Serializer,Ordonnance_Serializer
 from django.shortcuts import get_object_or_404, redirect
 from io import BytesIO
 from django.http import HttpResponse
@@ -23,8 +23,16 @@ import requests
 
 
 
-
-##   1.crud_medicament  ##
+@api_view(['GET'])
+def get_ordonnance_id_by_consultation(request, consultation_id):
+    try:
+        # Récupérer l'ordonnance associée à la consultation
+        ordonnance = Ordonnance.objects.get(consultation_id=consultation_id)
+        
+        # Retourner uniquement l'ID de l'ordonnance
+        return Response({'ordonnance_id': ordonnance.id}, status=status.HTTP_200_OK)
+    except Ordonnance.DoesNotExist:
+        return Response({'error': 'Ordonnance not found for this consultation'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
 def create_medicament(request):
@@ -45,7 +53,7 @@ def create_medicament(request):
 
     # Réponse de succès
     return Response({'message': 'Medicament created successfully'}, status=status.HTTP_201_CREATED)
-##list_medicaments : 
+
 @api_view(['GET'])
 def list_medicaments(request):
     medicaments = Medicament.objects.all()  # Récupérer tous les médicaments
@@ -182,9 +190,6 @@ def delete_consultation(request, consultation_id):
 
 
 
-
-
-##   3.crud_ResumeConsultation ##
 @api_view(['POST'])
 def create_resume_consultation(request):
     if request.method == 'POST':
@@ -192,23 +197,28 @@ def create_resume_consultation(request):
         serializer = ResumeConsultationSerializer(data=request.data)
 
         if serializer.is_valid():
-            # Sauvegarder le résumé de consultation dans la base de données
-            resume_consultation = serializer.save()
+            # Récupérer l'ID de la consultation depuis la requête
+            consultation_id = request.data.get('consultationId')
 
-            # Récupérer le patient (Dpi) à partir du résumé
-            patient = resume_consultation.patient
+            try:
+                # Trouver la consultation par son ID
+                consultation = Consultation.objects.get(id=consultation_id)
 
-            # Trouver la consultation correspondant à ce patient
-            consultation = Consultation.objects.filter(patient=patient, resume_consultation__isnull=True).first()
+                # Sauvegarder le résumé de consultation dans la base de données
+                resume_consultation = serializer.save()
 
-            # Si une consultation existe sans résumé, on l'associe au résumé
-            if consultation:
+                # Associer le résumé de consultation à la consultation
                 consultation.resume_consultation = resume_consultation
                 consultation.save()
 
-            # Répondre avec les données du résumé de consultation
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+                # Répondre avec les données du résumé de consultation
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+            except Consultation.DoesNotExist:
+                # Si la consultation n'existe pas, renvoyer une erreur
+                return Response({"error": "Consultation not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Si le serializer n'est pas valide, retourner une erreur
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -219,12 +229,21 @@ def list_resume_consultations(request):
     serializer = ResumeConsultationSerializer(resume_consultations, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-# Détails d'un résumé de consultation
+
+
 @api_view(['GET'])
-def detail_resume_consultation(request, resume_consultation_id):
-    resume_consultation = get_object_or_404(ResumeConsultation, id=resume_consultation_id)
-    serializer = ResumeConsultationSerializer(resume_consultation)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+def detail_resume_consultation(request, consultation_id):
+    # Récupérer la consultation à partir de l'ID de la consultation
+    consultation = get_object_or_404(Consultation, id=consultation_id)
+
+    # Récupérer le résumé de consultation associé
+    resume_consultation = consultation.resume_consultation
+    if resume_consultation:
+        serializer = ResumeConsultationSerializer(resume_consultation)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        return Response({'detail': 'Aucun résumé de consultation trouvé pour cette consultation.'}, 
+                        status=status.HTTP_404_NOT_FOUND)
 
 # Mise à jour d'un résumé de consultation
 @api_view(['PUT'])
@@ -255,52 +274,28 @@ def delete_resume_consultation(request, resume_consultation_id):
     resume_consultation.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-
-
-
-##   4.crud_ordonnance  ##
 @api_view(['POST'])
 def create_ordonnance(request, consultation_id):
-    # Vérifier si la consultation existe
+    # Récupérer la consultation
     consultation = get_object_or_404(Consultation, id=consultation_id)
 
     # Vérifier si une ordonnance existe déjà pour cette consultation
-    ordonnances = Ordonnance.objects.filter(consultation=consultation)
-    if ordonnances.exists():
+    if Ordonnance.objects.filter(consultation=consultation).exists():
         return Response({"message": "Une ordonnance existe déjà pour cette consultation."}, status=400)
 
-    # Si aucune ordonnance n'existe, créer une nouvelle ordonnance
+    # Créer l'ordonnance
     ordonnance_data = {
         'consultation': consultation.id,
-        'etat_ordonnance': 'En cours de validation'  # Assurez-vous que cet état est défini correctement
+        'etat_ordonnance': 'En cours de validation'
     }
     ordonnance_serializer = OrdonnanceSerializer(data=ordonnance_data)
-
-    # Validation et sauvegarde de l'ordonnance
+    
     if ordonnance_serializer.is_valid():
         ordonnance = ordonnance_serializer.save()
 
-        # Ajouter les médicaments associés si fournis dans la requête
-        medicaments_data = request.data.get('medicaments', [])
-        errors = []  # Liste pour collecter les erreurs de validation des médicaments
-
-        for medicament_data in medicaments_data:
-            medicament_data['ordonnance'] = ordonnance.id  # Associer l'ordonnance au médicament
-            medicament_serializer = MedicamentSerializer(data=medicament_data)
-            if medicament_serializer.is_valid():
-                medicament_serializer.save()
-            else:
-                errors.append(medicament_serializer.errors)  # Ajouter les erreurs à la liste
-
-        # Si des erreurs ont été détectées dans les médicaments, retourner les erreurs
-        if errors:
-            return Response({"errors": errors}, status=400)
-
-        # Retourner les données de l'ordonnance créée
+        # Retourner l'ordonnance créée
         return Response(ordonnance_serializer.data, status=status.HTTP_201_CREATED)
-
-    # Retourner les erreurs de validation de l'ordonnance
+    
     return Response(ordonnance_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])

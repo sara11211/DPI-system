@@ -1,42 +1,30 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'; // Importer HttpClient
-import { Observable } from 'rxjs'; // Pour gérer les observables
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrdonnanceService {
-  private apiUrl = 'http://localhost:8000/ordonnance'; // URL de base de l'API
+  private apiUrl = 'http://localhost:8000/'; // URL de base de l'API
 
   constructor(private http: HttpClient) {}
+// Récupérer l'ordonnance par consultation ID
+  getOrdonnanceByConsultationId(consultationId: number): Observable<any> {
+  return this.http.get(`${this.apiUrl}ordonnance/consultation/${consultationId}/`); // URL à ajuster en fonction de votre API
+ } 
 
-  // Obtenir une ordonnance par ID
-  getOrdonnance(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/`); // Utilicd sation de l'URL GET pour l'ordonnance
-  }
+ getOrdonnanceById(ordonnanceId: number): Observable<any> {
+  return this.http.get(`${this.apiUrl}ordonnance/${ordonnanceId}/`); // URL à ajuster en fonction de votre API
 
+ }
   // Créer une ordonnance
   createOrdonnance(consultationId: number, ordonnanceData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/create/${consultationId}/`, ordonnanceData); // POST pour créer une ordonnance
+    return this.http.post(`${this.apiUrl}ordonnance/create/${consultationId}/`, ordonnanceData);
   }
-
-  // Mettre à jour une ordonnance
-  updateOrdonnance(id: number, ordonnanceData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/update/${id}/`, ordonnanceData); // PUT pour mettre à jour
-  }
-
-  // Supprimer une ordonnance
-  deleteOrdonnance(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/delete/${id}/`); // DELETE pour supprimer une ordonnance
-  }
-
-  // Valider une ordonnance
-  validerOrdonnance(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/valider/${id}/`); // GET pour valider une ordonnance
-  }
-
-  // Télécharger l'ordonnance en format Word
-  downloadOrdonnanceWord(id: number): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/word/${id}/`, { responseType: 'blob' }); // GET pour télécharger en format Word
+  
+  // Créer un médicament
+  createMedicament(medicamentData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}medicament/create/`, medicamentData);
   }
 }
