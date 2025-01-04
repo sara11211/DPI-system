@@ -89,7 +89,18 @@ export const medecinRoutes: Routes = [
 ];
 
 export const patientRoutes: Routes = [
-  { path: 'dashboard', component:DashboardPatientComponent},
+  { path: 'dashboard', component:DashboardPatientComponent,
+    children: [
+      { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
+      { path: 'resultat-bio/:id', component: ResultatBioComponent },
+      { path: 'affichage-bilan-bio/:id', component: AffichageBilanBioComponent },
+
+      { path: 'resultat-radio/:id', component: ResultatRadioComponent },
+      { path: 'affichage-bilan-radio/:id', component: AffichageBilanRadioComponent },
+
+      { path: 'affichage-resume/:id', component: AffichageResumeComponent },
+    ],
+  },
   { path: 'mes-informations-personnelles', component:InformationsPersonellesPatientComponent,
     children: [
       { path: '', redirectTo: 'mes-informations-personnelles', pathMatch: 'full' },

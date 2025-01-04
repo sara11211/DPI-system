@@ -33,7 +33,7 @@
           >
             <button
               class="hover:underline text-primary-blue"
-              (click)="viewDetails(consultation.nss)"
+              (click)="openModalAffichageOrdonnance(consultation.id)"
             >
               Voir details
             </button>
@@ -65,7 +65,7 @@
             >
               <button
                 class="text-pink-500 hover:underline"
-                (click)="afficherBilan(consultation.nss)"
+                (click)="openModalAffichageBilanBio(consultation.id)"
               >
                 Biologique
               </button>
@@ -86,7 +86,7 @@
             >
               <button
                 class="text-gray-500 hover:underline"
-                (click)="afficherBilan(consultation.nss)"
+                (click)="openModalAffichageBilanRadio(consultation.id)"
               >
                 Radiologique
               </button>
@@ -110,7 +110,7 @@
             >
               <button
                 class="text-pink-500 hover:underline"
-                (click)="afficherBilan(consultation.nss)"
+                (click)="openModalResultatBio(consultation.id)"
               >
                 Biologique
               </button>
@@ -131,7 +131,7 @@
             >
               <button
                 class="text-gray-500 hover:underline"
-                (click)="afficherBilan(consultation.nss)"
+                (click)="openModalResultatRadio(consultation.id)"
               >
                 Radiologique
               </button>
@@ -154,7 +154,7 @@
           >
             <button
               class="hover:underline text-primary-blue"
-              (click)="viewDetails(consultation.nss)"
+              (click)="openModalAffichageResume(consultation.id)"
             >
               Voir details
             </button>
@@ -239,27 +239,14 @@
 
           </div>
         </td>
-        <td class="td">
-          <div
-            class="flex items-center w-full gap-2"
-          >
-            <button
-              class="hover:underline text-primary-blue"
-              
-            >
-              View details
-              
-            </button>
-            <button
-              class="text-gray-300 hover:text-primary-blue"
-              
-            >
-            <download-icon/>
-            </button>
-          </div>
-        </td>
       </tr>
     </tbody>
   </table>
+
+  <div *ngIf="isModalVisible" class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 
 

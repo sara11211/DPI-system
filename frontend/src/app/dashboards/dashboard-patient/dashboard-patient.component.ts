@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
-import { Route, ActivatedRoute, Router } from '@angular/router';
+import { Route, ActivatedRoute, Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { DownloadIconComponent } from '../../../assets/icons/download-icon/download-icon.component';
 import { CommonModule } from '@angular/common';
+import { filter } from 'rxjs';
+
+
 
 interface Consultation {
+  id: string;
   nom: string;
   nss: string;
   dateAjout: string;
@@ -37,7 +41,7 @@ interface Soin {
 @Component({
   selector: 'app-dashboard-patient',
   standalone: true,
-  imports: [DownloadIconComponent, CommonModule],
+  imports: [DownloadIconComponent, CommonModule, RouterOutlet],
   templateUrl: './dashboard-patient.component.html',
   styleUrl: './dashboard-patient.component.css',
 })
@@ -60,6 +64,7 @@ export class DashboardPatientComponent {
   };
   consultations: Consultation[] = [
     {
+      id: '1',
       nom: 'Braham Imad',
       nss: '0673222612',
       dateAjout: '2023-04-06',
@@ -71,6 +76,7 @@ export class DashboardPatientComponent {
       resume: 'Résumé A',
     },
     {
+      id: '2',
       nom: 'Sarah Ali',
       nss: '0233222612',
       dateAjout: '2023-05-10',
@@ -82,6 +88,7 @@ export class DashboardPatientComponent {
       resume: 'Résumé B',
     },
     {
+      id: '3',
       nom: 'Ahmed Karim',
       nss: '0783222612',
       dateAjout: '2023-06-12',
@@ -122,8 +129,9 @@ export class DashboardPatientComponent {
     'Date',
     'Type de soin',
     'Description',
-    'Action',
   ];
+
+  isModalVisible: boolean = false;
 
   consultation = this.getLastestConsultation();
 
@@ -133,7 +141,23 @@ export class DashboardPatientComponent {
     if (!nss) {
       nss = '0673222612';
     }
+
+    this.router.events.subscribe(() => {
+      // Check if the current route matches the modal route
+      this.isModalVisible =
+        this.router.url.includes('affichage-ordonnance') ||
+        this.router.url.includes('affichage-resume') ||
+        this.router.url.includes('affichage-bilan-bio') ||
+        this.router.url.includes('affichage-bilan-radio') ||
+        this.router.url.includes('resultat-bio') ||
+        this.router.url.includes('resultat-radio')
+    });
   }
+
+  closeModal() {
+    this.router.navigate(['../dashboard'], { relativeTo: this.route });
+  }
+
   getLastestConsultation(): Consultation {
     return this.consultations[0];
   }
@@ -142,4 +166,30 @@ export class DashboardPatientComponent {
   }
   afficherBilan(nss: string) {}
   download(type: string, consultation: Consultation) {}
+
+  openModalAffichageOrdonnance(id: string): void {
+    this.router.navigate(['affichage-ordonnance', id], {
+      relativeTo: this.route,
+    });
+  }
+
+  openModalAffichageResume(id: string): void {
+    this.router.navigate(['affichage-resume', id], { relativeTo: this.route });
+  }
+
+  openModalAffichageBilanBio(id: string): void {
+    this.router.navigate(['affichage-bilan-bio', id], { relativeTo: this.route });
+  }
+
+  openModalAffichageBilanRadio(id: string): void {
+    this.router.navigate(['affichage-bilan-radio', id], { relativeTo: this.route });
+  }
+
+  openModalResultatBio(id: string): void {
+    this.router.navigate(['resultat-bio', id], { relativeTo: this.route });
+  }
+
+  openModalResultatRadio(id: string): void {
+    this.router.navigate(['resultat-radio', id], { relativeTo: this.route });
+  }
 }
