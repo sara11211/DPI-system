@@ -1,5 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { AuthService } from '../../../../login/auth.service';
 
 Chart.register(...registerables);
 
@@ -11,7 +12,10 @@ Chart.register(...registerables);
   styleUrl: './dashboard.component.css'
 })
 export class DashboardRadioComponent implements AfterViewInit {
-  userName: string = 'Lyna Sili';
+  
+  constructor(private authservice: AuthService) {}
+
+  userName: string = this.authservice.getUser().nom+' '+this.authservice.getUser().prenom;
   nbDms: number = 10;
   nbBrs: number = 5;
   nbBrms: number = 3;
