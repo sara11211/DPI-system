@@ -129,7 +129,7 @@
             <label for="medecinTraitant" class="label">Medecin Traitant</label>
             <select id="medecinTraitant" formControlName="medecinTraitant" class="input">
               <option *ngFor="let medecin of medecins" [value]="medecin.id">
-                {{ medecin.name }}
+               Dr. {{ medecin.nom }} {{ medecin.prenom }}
               </option>
             </select>
             <!-- Error messages -->
