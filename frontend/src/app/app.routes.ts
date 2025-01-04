@@ -124,7 +124,7 @@ export const infirmierRoutes: Routes = [
   { path: 'recherche-dossier', component: RechercheDossierComponent },
   { path: 'recherche-dossier/nss', component: RechercheDossierNssComponent },
   { path: 'recherche-dossier/qr', component: RechercheDossierQrComponent },
-  { path: 'nouveau-soin', component: NouvelleConsultationComponent },
+  { path: 'nouveau-soin', component: NouveauSoinComponent},
   
   {
     path: 'recherche-dossier/:nss',
@@ -154,6 +154,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { NouvelleConsultationComponent } from './dashboards/dashboard-medecin/pages/nouvelle-consultation/nouvelle-consultation.component';
 import { DashboardAdministratifComponent } from './dashboards/dashboard-administratif/dashboard-administratif.component';
+import { NouveauSoinComponent } from './dashboards/dashboard-infirmier/pages/nouveau-soin/nouveau-soin.component';
 
 @Injectable({
   providedIn: 'root'
