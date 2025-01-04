@@ -27,13 +27,12 @@
           >
             <button
               class="hover:underline text-primary-blue"
-              (click)="viewDetails(consultation.nss)"
+              (click)="openModalAffichageOrdonnance(consultation.id)"
             >
               Voir details
             </button>
             <button
               class="text-gray-300 hover:text-primary-blue"
-              (click)="openPopup('ordonnance', consultation)"
             >
               <download-icon/>
             </button>
@@ -44,10 +43,10 @@
             class="flex items-center w-full gap-2"
           >
             <div
-              class="text-gray-300  "
+              class="text-red-500"
               
             >
-              Il n'y a pas d'ordonnance
+              Aucune d'ordonnance
             </div>
           </div>
         </td>
@@ -69,8 +68,8 @@
               *ngIf="!consultation.bilanb"
               class="flex items-center w-full gap-2"
             >
-              <div class="text-gray-300  ">
-                Il n'y a pas de bilan biologique
+              <div class="text-red-500">
+                Aucun bilan biologique
               </div>
             </div>
 
@@ -90,8 +89,8 @@
               *ngIf="!consultation.bilanr"
               class="flex items-center w-full gap-2"
             >
-              <div class="text-gray-300  ">
-                Il n'y a pas de bilan radiologique
+              <div class="text-red-500 ">
+                Aucun bilan radiologique
               </div>
             </div>
           </div>
@@ -114,7 +113,7 @@
               *ngIf="!consultation.resultatsb"
               class="flex items-center w-full gap-2"
             >
-              <div class="text-gray-300  ">
+              <div class="text-gray-300 ">
                 Aucun résultat
               </div>
             </div>
@@ -135,7 +134,7 @@
               *ngIf="!consultation.resultatsr"
               class="flex items-center w-full gap-2"
             >
-              <div class="text-gray-300  ">
+              <div class="text-red-500">
                 Aucun résultat
               </div>
             </div>
@@ -148,7 +147,7 @@
           >
             <button
               class="hover:underline text-primary-blue"
-              (click)="viewDetails(consultation.nss)"
+              (click)="openModalAffichageResume(consultation.id)"
             >
               Voir details
             </button>
@@ -164,7 +163,7 @@
             *ngIf="!consultation.resume"
             class="flex items-center w-full gap-2"
           >
-            <div class="text-gray-300  ">
+            <div class="text-red-500">
               Aucun résultat
             </div>
           </div>
@@ -239,5 +238,11 @@
         Annuler
       </button>
     </div>
+  </div>
+</div>
+
+<div *ngIf="isModalVisible" class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <router-outlet></router-outlet>
   </div>
 </div>

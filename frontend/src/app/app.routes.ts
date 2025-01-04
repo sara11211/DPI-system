@@ -32,6 +32,7 @@ import { ConsultationsComponentPatient } from './dashboards/dashboard-patient/pa
 import { SoinsProdiguesComponentPatient } from './dashboards/dashboard-patient/pages/affichage-dossier/soins-prodigues/soins-prodigues.component';
 import { DashboardPatientComponent } from './dashboards/dashboard-patient/dashboard-patient.component';
 import { InformationsPersonellesPatientComponent } from './dashboards/dashboard-patient/pages/informations-personelles/informations-personelles.component';
+import { OrdonnanceComponent } from './dashboards/dashboard-patient/pages/affichage-dossier/ordonnance/ordonnance.component';
 
 export type DashboardType = 'medical' | 'admin' | 'patient';
 
@@ -100,14 +101,14 @@ export const patientRoutes: Routes = [
       { path: '', redirectTo: 'consultations', pathMatch: 'full' },
       {path : 'consultations', component: ConsultationsComponentPatient,
         children: [
-          { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
+          { path: 'ordonnance/:id', component: OrdonnanceComponent },
           { path: 'resultat-bio/:id', component: ResultatBioComponent },
           { path: 'affichage-bilan-bio/:id', component: AffichageBilanBioComponent },
 
           { path: 'resultat-radio/:id', component: ResultatRadioComponent },
           { path: 'affichage-bilan-radio/:id', component: AffichageBilanRadioComponent },
 
-          { path: 'affichage-resume/:id', component: AffichageResumeComponent },
+          { path: 'resume/:id', component: ResumeComponent },
         ],
       },
       { path: 'visualisation', component: VisualisationComponent },
@@ -123,6 +124,8 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { NouvelleConsultationComponent } from './dashboards/dashboard-medecin/pages/nouvelle-consultation/nouvelle-consultation.component';
 import { DashboardAdministratifComponent } from './dashboards/dashboard-administratif/dashboard-administratif.component';
+import { ResumeComponent } from './dashboards/dashboard-patient/pages/affichage-dossier/resume/resume.component';
+
 
 @Injectable({
   providedIn: 'root'

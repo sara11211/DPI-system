@@ -2,7 +2,7 @@
 <header class="header">Bonjour {{dossierData.nom}}</header>
 
 <div
-  class="flex flex-col  w-full h-full gap-6 px-8 py-6 bg-background-gray"
+  class="flex flex-col w-full h-full gap-6 px-8 py-6 bg-background-gray"
 >
     <div class="text-lg font-semibold"> 
         Votre Dernière consultation date du <span class="text-primary-blue">{{getLastestConsultation().dateAjout}}</span>
@@ -50,7 +50,7 @@
             class="flex items-center w-full gap-2"
           >
             <div
-              class="text-gray-300  "
+              class="text-gray-300 "
               
             >
               Il n'y a pas d'ordonnance
@@ -75,7 +75,7 @@
               *ngIf="!consultation.bilanb"
               class="flex items-center w-full gap-2"
             >
-              <div class="text-gray-300  ">
+              <div class="text-gray-300 ">
                 Il n'y a pas de bilan biologique
               </div>
             </div>
@@ -96,7 +96,7 @@
               *ngIf="!consultation.bilanr"
               class="flex items-center w-full gap-2"
             >
-              <div class="text-gray-300  ">
+              <div class="text-gray-300 ">
                 Il n'y a pas de bilan radiologique
               </div>
             </div>
@@ -120,7 +120,7 @@
               *ngIf="!consultation.resultatsb"
               class="flex items-center w-full gap-2"
             >
-              <div class="text-gray-300  ">
+              <div class="text-gray-300 ">
                 Aucun résultat
               </div>
             </div>
@@ -141,7 +141,7 @@
               *ngIf="!consultation.resultatsr"
               class="flex items-center w-full gap-2"
             >
-              <div class="text-gray-300  ">
+              <div class="text-gray-300 ">
                 Aucun résultat
               </div>
             </div>
@@ -170,7 +170,7 @@
             *ngIf="!consultation.resume"
             class="flex items-center w-full gap-2"
           >
-            <div class="text-gray-300  ">
+            <div class="text-gray-300 ">
               Aucun résultat
             </div>
           </div>
@@ -262,58 +262,4 @@
     </tbody>
   </table>
 
-
-
-
-
-
-  <div class="flex flex-col w-full gap-6">
-    <div class="flex flex-col gap-1">
-      <h2 class="text-lg font-semibold">Vos Statistiques</h2>
-      <p class="text-xs text-dark-gray">
-        Vous trouverez ici les dernières statistiques.
-      </p>
-    </div>
-    <div class="grid justify-between w-full grid-cols-3 gap-4">
-      <div class="small-white-card">
-        <div class="flex flex-col items-start justify-between h-full gap-2">
-          <div class="flex flex-col gap-1">
-            <p class="text-base font-semibold text-black">Nombre Patients</p>
-            <p class="text-xs text-dark-gray">Total</p>
-          </div>
-          
-        </div>
-
-        <img
-          src="/assets/purple-wave.svg"
-          alt="purple graph"
-          class="self-end"
-        />
-      </div>
-
-      <div class="small-white-card">
-        <div class="flex flex-col items-start justify-between h-full gap-2">
-          <div class="flex flex-col gap-1">
-            <p class="text-base font-semibold text-black">Consultations</p>
-            <p class="text-xs text-dark-gray">Aujourd'hui</p>
-          </div>
-          
-        </div>
-
-        <img src="/assets/green-wave.svg" alt="purple graph" class="self-end" />
-      </div>
-
-      <div class="small-white-card">
-        <div class="flex flex-col items-start justify-between h-full gap-2">
-          <div class="flex flex-col gap-1">
-            <p class="text-base font-semibold text-black">Ordonnances Validees</p>
-            <p class="text-xs text-dark-gray">Aujourd'hui</p>
-          </div>
-          
-        </div>
-
-        <img src="/assets/blue-wave.svg" alt="purple graph" class="self-end" />
-      </div>
-    </div>
-  </div>
 

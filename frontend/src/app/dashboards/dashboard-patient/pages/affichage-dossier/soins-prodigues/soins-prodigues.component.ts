@@ -107,7 +107,7 @@ export class SoinsProdiguesComponentPatient {
     }
   ]
   // Updated displayed columns for consultations
-  displayedColumns: string[] = ['Date', 'Type de soin','Description','Action' ];
+  displayedColumns: string[] = ['Date', 'Type de soin','Description'];
 
   itemsPerPage = 8;
   currentPage = 1;

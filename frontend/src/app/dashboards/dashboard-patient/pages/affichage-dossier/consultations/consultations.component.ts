@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { DownloadIconComponent } from '../../../../../../assets/icons/download-icon/download-icon.component';
 
 interface Consultation {
+  id: string;
   nom: string;
   nss: string;
   dateAjout: string;
@@ -18,17 +19,18 @@ interface Consultation {
 @Component({
   selector: 'app-consultations',
   standalone: true,
-  imports: [CommonModule, DownloadIconComponent],
+  imports: [CommonModule, DownloadIconComponent, RouterOutlet],
   templateUrl: './consultations.component.html',
   styleUrl: './consultations.component.css'
 })
-export class ConsultationsComponentPatient {
+export class ConsultationsComponentPatient implements OnInit {
   popupVisible: boolean = false;
   deleteType: string = '';
   consultationToDelete: Consultation | null = null;
 
   consultations: Consultation[] = [
     { 
+      id: '1',
       nom: 'Braham Imad', 
       nss: '0673222612', 
       dateAjout: '2023-04-06', 
@@ -40,6 +42,7 @@ export class ConsultationsComponentPatient {
       resume: 'Résumé A'
     },
     { 
+      id: '2',
       nom: 'Sarah Ali', 
       nss: '0233222612', 
       dateAjout: '2023-05-10', 
@@ -51,6 +54,7 @@ export class ConsultationsComponentPatient {
       resume: 'Résumé B'
     },
     { 
+      id: '3',  
       nom: 'Ahmed Karim', 
       nss: '0783222612', 
       dateAjout: '2023-06-12', 
@@ -71,10 +75,24 @@ export class ConsultationsComponentPatient {
   currentPage = 1;
   searchTerm: string = '';
   selectedDate: string | null = null;
+  isModalVisible: boolean = false;
 
   filteredConsultations: Consultation[] = [...this.consultations]; // Filtered list
 
   constructor(public router: Router, public route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.router.events.subscribe(() => {
+      // Check if the current route matches the modal route
+      this.isModalVisible =
+        this.router.url.includes('ordonnance') ||
+        this.router.url.includes('resume') 
+    });
+  }
+
+  closeModal() {
+    this.router.navigate(['../consultations'], { relativeTo: this.route });
+  }
 
   get paginatedConsultations() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -138,15 +156,13 @@ export class ConsultationsComponentPatient {
     this.consultationToDelete = null;
   }
 
-  addOrUpdate(type: 'resume' | 'ordonnance', consultation: Consultation) {
-    if (type === 'resume') {
-      consultation.resume = 'New Resume'; // Add logic to handle resume addition
-    } else if (type === 'ordonnance') {
-      consultation.ordonnance = 'New Ordonnance'; // Add logic to handle ordonnance addition
-    }
+  openModalAffichageOrdonnance(id: string): void {
+    this.router.navigate(['ordonnance', id], {
+      relativeTo: this.route,
+    });
   }
 
-  addNewResume() {
-    this.router.navigate(['/nouveau-resume']);
+  openModalAffichageResume(id: string): void {
+    this.router.navigate(['resume', id], { relativeTo: this.route });
   }
 }
