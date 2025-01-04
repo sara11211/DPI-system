@@ -165,7 +165,7 @@
   class="absolute inset-0 z-50 flex items-center justify-center h-full bg-opacity-100 backdrop-blur-sm"
 >
   <div class="p-6 bg-white rounded-lg shadow-md">
-    <app-nouveau-soin/>
+    <app-nouveau-soin (update)="cancelAjouterSoin()"/>
     <div class="flex justify-end mt-4 space-x-2">
       <button
         class="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600"

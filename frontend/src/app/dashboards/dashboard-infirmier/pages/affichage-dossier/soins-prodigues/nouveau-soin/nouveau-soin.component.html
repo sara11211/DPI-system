@@ -20,19 +20,14 @@
                     <div class="flex flex-row items-baseline gap-3">
                         <label for="typeSoin" class="label">Type de soin</label>
                         <div class="max-w-[550px]">
-                            <select
-                                [ngClass]="{
-                                'text-gray-400': !selectedOption,
-                                'text-black': selectedOption
-                                }"
-                                [(ngModel)]="selectedOption"
-                                class="form-select"
-                                id="typeSoin"
-                                formControlName="typeSoin"
-                            >
+                            <select 
+                                formControlName="typeSoin" 
+                                class="form-select" 
+                                id="typeSoin">
                                 <option value="" disabled>Séléctionner ...</option>
                                 <option *ngFor="let option of options" [value]="option">{{ option }}</option>
-                            </select>
+                              </select>
+                              
                             <div
                                 *ngIf="soinForm.get('typeSoin')?.invalid && soinForm.get('typeSoin')?.touched"
                                 class="text-sm text-red-500"

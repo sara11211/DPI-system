@@ -31,7 +31,7 @@ export class NouveauSoinComponent {
       this.soinForm = this.fb.group({
         dateSoin: ['', Validators.required],
         heureSoin: ['', Validators.required],
-        typeSoin:['', Validators.required , typeSoinValidator(allowedTypeSoins)],
+        typeSoin:['', [Validators.required , typeSoinValidator(allowedTypeSoins)]],
         nomPatient: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
         prenomPatient: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
         nss: ['', [Validators.required, Validators.pattern(/^\d{15}$/)]],

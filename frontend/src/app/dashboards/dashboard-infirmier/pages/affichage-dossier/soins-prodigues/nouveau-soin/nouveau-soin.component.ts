@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TypeSoin } from '../soins-prodigues.component';
 
-const allowedTypeSoins: TypeSoin[] = [
+
+let allowedTypeSoins: TypeSoin[] = [
   'Administration de medicaments',
   'Changement de pensements',
   'Mesures de Parametres Medicaux',
@@ -41,6 +42,8 @@ interface Dossier {
   styleUrl: './nouveau-soin.component.css'
 })
 export class NouveauSoinComponent {
+  @Output() update: EventEmitter<void> = new EventEmitter<void>();
+
     currentDossier :Dossier={
     nom: 'Braham Imad',
     prenom: 'Imad',
@@ -63,9 +66,7 @@ export class NouveauSoinComponent {
       this.soinForm = this.fb.group({
         dateSoin: ['', Validators.required],
         heureSoin: ['', Validators.required],
-        typeSoin:['', Validators.required , typeSoinValidator(allowedTypeSoins)],
-        nomPatient: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
-        prenomPatient: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
+        typeSoin:['', [Validators.required , typeSoinValidator(allowedTypeSoins)]],
         nss: [this.currentDossier.nss],
         description: ['', Validators.required],
       });
@@ -79,7 +80,9 @@ export class NouveauSoinComponent {
       if (this.soinForm.valid) {
         console.log('Form Data:', this.soinForm.value);
         const nss = this.soinForm.value.nss;
-        this.router.navigate([`/recherche-dossier/${nss}/consultations`]);
+        
+        this.router.navigate([`/recherche-dossier/${nss}/soins-prodigues`]);
+        this.update.emit();
       } else {
         console.log('Form Invalid');
       }
