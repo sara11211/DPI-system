@@ -89,6 +89,7 @@ export const medecinRoutes: Routes = [
 ];
 
 export const patientRoutes: Routes = [
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component:DashboardPatientComponent,
     children: [
       { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
