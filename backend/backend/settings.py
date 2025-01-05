@@ -40,13 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'rest_framework',
     'rest_framework.authtoken',
     'api',
     'authentication',
     'bilanradiologique',
     'consultation_crud',
+    'rest_framework' ,
+     'consultation_crud',
+     'bilanbiologique',
 ]
 
 MIDDLEWARE = [
