@@ -69,7 +69,6 @@ export const routes: Routes = [
   ////////////////////////////////////////////medecin routes////////////////////////////////////////////////
   { path: 'medecin', children:[
           { path: 'dashboard', component: DashboardComponent },
-          { path: 'nouveau-dossier', component: NouveauDossierComponent },
           { path: 'recherche-dossier', component: RechercheDossierComponent },
           { path: 'recherche-dossier/nss', component: RechercheDossierNssComponent },
           { path: 'recherche-dossier/qr', component: RechercheDossierQrComponent },

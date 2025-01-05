@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'api',
     'authentication',
-    'bilanradiologique'
+    'bilanradiologique',
     'consultation_crud',
 ]
 
@@ -66,6 +66,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200',
+    'http://localhost:52131',
 ]
 
 # Configuration CORS
