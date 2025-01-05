@@ -1,0 +1,226 @@
+<div class="flex h-full min-h-screen">
+  <div class="flex flex-col bg-white border-r w-52">
+    <!-- DPI Logo -->
+    <div class="flex items-center justify-between p-4 border-b">
+      <div class="flex items-center gap-2.5">
+        <button>
+          <img src="assets/logo.svg" alt="DPI system logo" />
+        </button>
+        <span class="text-lg font-bold tracking-wide">DPI</span>
+      </div>
+      <button class="group">
+        <img
+          src="assets/icons/hide-icon.svg"
+          alt="Hide icon"
+          class="transform group-hover:translate-x-[-5px] transition-transform duration-200"
+        />
+      </button>
+    </div>
+
+    <!-- Sidebar content -->
+    <nav class="flex flex-col justify-start h-full gap-10 pt-20">
+      <!-- First Section -->
+      <div class="flex flex-col gap-6">
+        <h3 class="px-4 text-xs uppercase text-dark-gray">Main Menu</h3>
+        <ul class="flex flex-col gap-4">
+          <li>
+            <a
+              routerLink="/dashboard"
+              routerLinkActive="bg-accent-blue text-primary-blue font-semibold"
+              ariaCurrentWhenActive="page"
+              class="flex items-center gap-2 px-2 py-2 mx-2 rounded-md cursor-pointer group hover:bg-accent-blue text-dark-gray hover:text-primary-blue hover:font-semibold"
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 22 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M17.4178 7.98428L12.5292 4.18195C11.6467 3.49534 10.4106 3.49534 9.52806 4.18195L4.63856 7.98428C4.0431 8.44735 3.69496 9.15954 3.69531 9.91386V16.5139C3.69531 17.5264 4.51612 18.3472 5.52865 18.3472H16.5286C17.5412 18.3472 18.362 17.5264 18.362 16.5139V9.91386C18.362 9.15945 18.0136 8.4472 17.4178 7.98428"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M14.6654 13.7501C12.6395 14.972 9.35603 14.972 7.33203 13.7501"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+
+              <span class="text-sm">Dashboard</span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              routerLink="/recherche-dossier"
+              routerLinkActive="bg-accent-blue text-primary-blue font-semibold"
+              ariaCurrentWhenActive="page"
+              class="flex items-center gap-2 px-2 py-2 mx-2 rounded-md cursor-pointer group hover:bg-accent-blue text-dark-gray hover:text-primary-blue hover:font-semibold"
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 22 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M9.62765 1.8335C5.32439 1.8335 1.83594 5.32194 1.83594 9.62516C1.83594 13.9284 5.32439 17.4168 9.62765 17.4168C11.4485 17.4168 13.1246 16.7913 14.4509 15.7448L18.8729 20.1668C19.2309 20.5248 19.8113 20.5248 20.1693 20.1668C20.5273 19.8089 20.5273 19.2284 20.1693 18.8705L15.7472 14.4485C16.7938 13.1222 17.4193 11.4461 17.4193 9.62516C17.4193 5.32194 13.9309 1.8335 9.62765 1.8335ZM3.66927 9.62516C3.66927 6.33447 6.33691 3.66683 9.62765 3.66683C12.9183 3.66683 15.586 6.33447 15.586 9.62516C15.586 11.2708 14.92 12.7591 13.8407 13.8383C12.7615 14.9176 11.2732 15.5835 9.62765 15.5835C6.33691 15.5835 3.66927 12.9159 3.66927 9.62516Z"
+                  fill="currentColor"
+                />
+              </svg>
+
+              <span class="text-sm">Recherche Dossier</span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              routerLink="/liste-demandes-bb"
+              routerLinkActive="bg-accent-blue text-primary-blue font-semibold"
+              ariaCurrentWhenActive="page"
+              class="flex items-center gap-2 px-2 py-2 mx-2 rounded-md cursor-pointer group hover:bg-accent-blue text-dark-gray hover:text-primary-blue hover:font-semibold"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M14 14C14 14.5523 13.5523 15 13 15H9C8.44771 15 8 14.5523 8 14C8 13.4477 8.44771 13 9 13H13C13.5523 13 14 13.4477 14 14Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M16 10C16 10.5523 15.5523 11 15 11H9C8.44771 11 8 10.5523 8 10C8 9.44771 8.44771 9 9 9H15C15.5523 9 16 9.44771 16 10Z"
+                  fill="currentColor"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M19.4142 6.41422C19.7893 6.78929 20 7.298 20 7.82843V20C20 21.1046 19.1046 22 18 22H6C4.89543 22 4 21.1046 4 20V4C4 2.89543 4.89543 2 6 2H14.1716C14.702 2 15.2107 2.21071 15.5858 2.58578L19.4142 6.41422ZM18 7.82843V20H6V4H14.1716L18 7.82843Z"
+                  fill="currentColor"
+                />
+              </svg>
+
+              <span class="text-sm">Liste Demandes BB</span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              routerLink="/historique-graphiques"
+              routerLinkActive="bg-accent-blue text-primary-blue font-semibold"
+              ariaCurrentWhenActive="page"
+              class="flex items-center gap-2 px-2 py-2 mx-2 rounded-md cursor-pointer group hover:bg-accent-blue text-dark-gray hover:text-primary-blue hover:font-semibold"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="text-dark-gray group-hover:text-primary-blue transition-colors duration-200"
+              >
+                <path
+                  d="M20 12C20 16.4183 16.4183 20 12 20C8.22522 20 5.06106 17.3856 4.21945 13.8688C4.10205 13.3782 3.68329 13 3.17885 13H3.15358C2.56224 13 2.09591 13.5126 2.21895 14.091C3.18034 18.6101 7.19429 22 12 22C17.5229 22 22 17.5228 22 12C22 6.47715 17.5229 2 12 2C8.41135 2 5.26421 3.89033 3.5 6.72958V4.5C3.5 3.94772 3.05228 3.5 2.5 3.5C2.46548 3.5 2.43137 3.50175 2.39776 3.50516C1.8935 3.55637 1.5 3.98223 1.5 4.5V9C1.5 9.26522 1.60536 9.51957 1.79289 9.70711C1.98043 9.89464 2.23478 10 2.5 10L7 10C7.55229 10 8 9.55228 8 9C8 8.44771 7.55228 8 7 8L5.07026 8C6.4535 5.60879 9.03887 4 12 4C16.4183 4 20 7.58172 20 12Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M12 7.5C11.4477 7.5 11 7.94772 11 8.5V12C11 12.3573 11.1906 12.6874 11.5 12.866L14.9641 14.866C15.0239 14.9005 15.0858 14.9282 15.1488 14.9492C15.5901 15.0963 16.0885 14.9185 16.3301 14.5C16.6063 14.0217 16.4424 13.4101 15.9641 13.134L13 11.4227V8.5C13 7.94772 12.5523 7.5 12 7.5Z"
+                  fill="currentColor"
+                />
+              </svg>
+              <span class="text-sm">Historique graphiques generes</span>
+            </a>
+          </li>
+          
+          
+
+        
+
+          <li>
+            <a
+              class="flex items-center gap-2 px-2 py-2 mx-2 rounded-md cursor-pointer group hover:bg-accent-blue text-dark-gray hover:text-primary-blue hover:font-semibold"
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 22 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="11"
+                  cy="11"
+                  r="8.25"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <circle
+                  cx="11"
+                  cy="11"
+                  r="8.25"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <ellipse
+                  cx="11"
+                  cy="9.1665"
+                  rx="2.75"
+                  ry="2.75"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <ellipse
+                  cx="11"
+                  cy="9.1665"
+                  rx="2.75"
+                  ry="2.75"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M5.65234 17.2781C6.11823 15.7275 7.54595 14.666 9.16501 14.6665H12.8317C14.4529 14.6659 15.8821 15.7302 16.3462 17.2836"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M5.65234 17.2781C6.11823 15.7275 7.54595 14.666 9.16501 14.6665H12.8317C14.4529 14.6659 15.8821 15.7302 16.3462 17.2836"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <span class="text-sm">Deconnexion</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="flex-1 h-full bg-background-gray">
+    <router-outlet></router-outlet>
+  </div>
+</div>

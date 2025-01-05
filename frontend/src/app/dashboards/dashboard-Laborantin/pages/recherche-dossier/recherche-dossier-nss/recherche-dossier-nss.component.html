@@ -1,0 +1,60 @@
+<header class="header">Recherche par NSS</header>
+<div class="flex flex-col items-center gap-12">
+  <div class="flex flex-col items-center justify-start w-full pt-20">
+    <p>Entrez le NSS du patient pour accéder à son dossier</p>
+    <div class="flex items-center w-full max-w-md mt-8 space-x-2">
+      <div class="relative w-full">
+        <div class="absolute top-0 left-0 z-50 flex items-center h-full pl-4">
+          <img src="/assets/icons/recherche-nss-icon.svg" alt="" />
+        </div>
+        <input
+          type="text"
+          placeholder="Entrez le NSS du patient"
+          [(ngModel)]="nss"
+          (ngModelChange)="validateNSS()"
+          class="relative flex-1 w-full py-3 pl-16 border rounded-full focus:outline-none focus:border focus:border-primary-blue"
+        />
+        <button
+          (click)="searchNSS()"
+          class="absolute right-0.5 z-50 px-8 py-2.5 top-0.5 bottom-0.5 text-base font-semibold text-white rounded-full bg-primary-blue hover:bg-blue-700"
+        >
+          Rechercher
+        </button>
+      </div>
+    </div>
+    <p *ngIf="errorMessage" class="mt-1 text-sm text-left text-red-500">
+      {{ errorMessage }}
+    </p>
+  </div>
+
+  <!-- Dossier Found -->
+  <div *ngIf="dossierFound" class="flex flex-col gap-1">
+    <p class="font-light text-center text-gray-600">
+      Résultat de votre recherche
+    </p>
+
+    <div
+      class="flex flex-col items-center gap-6 p-8 bg-white shadow-sm rounded-xl"
+    >
+      <div class="flex items-center justify-center gap-4">
+        <!-- user image -->
+        <div>
+          <img src="/assets/icons/user-found-icon.svg" alt="" />
+        </div>
+        <!-- user infos -->
+        <div class="flex flex-col gap-2 text-left">
+          <span class="font-semibold">{{ dossier.name }}</span>
+          <span class="font-light text-dark-gray">{{ dossier.nss }}</span>
+        </div>
+      </div>
+
+      <!-- details button -->
+      <button
+        (click)="viewDossier()"
+        class="px-8 py-2 border text-primary-blue border-primary-blue rounded-xl hover:bg-accent-blue"
+      >
+        Voir l'historique des bilans Biologiques
+      </button>
+    </div>
+  </div>
+</div>
