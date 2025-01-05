@@ -58,7 +58,7 @@ export class ListeDemandesBbComponent implements OnInit {
   }
 
   viewDetails(demande: Demande): void {
-    this.router.navigate(['/historique-bilans'], {
+    this.router.navigate(['laborantin/historique-bilans'], {
       state: { nss: demande.nss, nomComplet: demande.nomComplet },
     });
   }

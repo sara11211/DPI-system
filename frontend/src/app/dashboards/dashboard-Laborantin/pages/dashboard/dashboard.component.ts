@@ -1,5 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { AuthService } from '../../../../login/auth.service';
 
 Chart.register(...registerables);
 
@@ -11,7 +12,10 @@ Chart.register(...registerables);
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardLaboComponent implements AfterViewInit {
-  userName: string = 'Laborantin';
+
+  constructor(private authService: AuthService){}
+
+  userName: string = this.authService.getUser().nom+' '+this.authService.getUser().prenom;
   nbDms: number = 15; // Example data
   nbBrs: number = 8; // Example data
   nbBrms: number = 30; // Example data

@@ -29,6 +29,14 @@ import { VisualisationComponent } from './dashboards/dashboard-medecin/pages/aff
 import { ListeDossiersComponent } from './dashboards/dashboard-administratif/pages/liste-dossiers/liste-dossiers.component';
 import { NouvelleConsultationComponent } from './dashboards/dashboard-medecin/pages/nouvelle-consultation/nouvelle-consultation.component';
 
+//import laborantin
+import { DashboardLaboComponent } from './dashboards/dashboard-Laborantin/pages/dashboard/dashboard.component';
+import { HistoriqueGraphiquesComponent } from './dashboards/dashboard-Laborantin/pages/historique-graphiques/historique-graphiques.component';
+import { ListeDemandesBbComponent } from './dashboards/dashboard-Laborantin/pages/liste-demandes-bb/liste-demandes-bb.component';
+import { BilanBioComponent } from './dashboards/dashboard-Laborantin/pages/liste-demandes-bb/historique-bilans/bilan-bio/bilan-bio.component';
+import { HistoriqueBilansComponent } from './dashboards/dashboard-Laborantin/pages/liste-demandes-bb/historique-bilans/historique-bilans.component';
+import { NouveauBbComponent } from './dashboards/dashboard-Laborantin/pages/liste-demandes-bb/historique-bilans/nouveau-bb/nouveau-bb.component';
+
 
 // Import the radio dashboard component
 import { DashboardRadioComponent } from './dashboards/dashboard-Radiologue/pages/dashboard/dashboard.component';
@@ -38,6 +46,8 @@ import { RechercheDossierQrRadioComponent } from './dashboards/dashboard-Radiolo
 import { ListeDemandesCRComponent } from './dashboards/dashboard-Radiologue/pages/liste-demandes-cr/liste-demandes-cr.component';
 import { NouveauCrComponent } from './dashboards/dashboard-Radiologue/pages/liste-demandes-cr/nouveau-cr/nouveau-cr.component';
 import { CompteRenduComponent } from './dashboards/dashboard-Radiologue/pages/liste-demandes-cr/compte-rendu/compte-rendu.component';
+import { RechercheDossierLaboComponent } from './dashboards/dashboard-Laborantin/pages/recherche-dossier/recherche-dossier.component';
+
 
 //login and authentication
 import { TestComponent } from './test/test.component';
@@ -119,8 +129,18 @@ export const routes: Routes = [
           canActivate: [AuthGuard]},
   ///////////////////////////////////////////laborantin routes////////////////////////////////////////////////////
   { path: 'laborantin', children:[
-    { path: 'dashboard', component: TestComponent },
-    ],
+          { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+          { path: 'dashboard', component: DashboardLaboComponent },
+          // { path: 'recherche-dossier', component: RechercheDossierLaboComponent },
+          // { path: 'recherche-dossier/qr', component: RechercheDossierQrLaboComponent },
+          // { path: 'recherche-dossier/:nss', component: RechercheDossierNssLaboComponent },
+
+          { path: 'liste-demandes-bb', component: ListeDemandesBbComponent },
+          { path: 'historique-bilans', component: HistoriqueBilansComponent }, // Add the route for historique-bilans
+          { path: 'nouveau-bb', component: NouveauBbComponent },
+          { path: 'bilan-bio', component: BilanBioComponent },
+          { path: 'historique-graphiques', component: HistoriqueGraphiquesComponent }, // Add the route for historique-bilans
+          ],
     canActivate: [AuthGuard] },
   /////////////////////////////////////////////infirmier routes///////////////////////////////////////////////////////
     { path: 'infirmier', children:[

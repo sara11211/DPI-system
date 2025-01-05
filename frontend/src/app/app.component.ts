@@ -5,6 +5,7 @@ import { SidebarComponent } from './dashboards/dashboard-administratif/sidebar/s
 import { SidebarComponentMedecin } from './dashboards/dashboard-medecin/sidebar/sidebar.component';
 import { SidebarPatientComponent } from './dashboards/dashboard-patient/sidebar/sidebar.component';
 import { SidebarRadioComponent } from './dashboards/dashboard-Radiologue/sidebar/sidebar.component';
+import { SidebarLaboComponent } from './dashboards/dashboard-Laborantin/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from "./login/login.component";
 import { TestComponent } from './test/test.component';
@@ -34,7 +35,7 @@ import { AuthService } from './login/auth.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SidebarComponent,SidebarPatientComponent,SidebarRadioComponent,RouterOutlet, LoginComponent, TestComponent,SidebarComponentMedecin],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SidebarComponent,SidebarPatientComponent,SidebarRadioComponent,RouterOutlet, LoginComponent, TestComponent,SidebarComponentMedecin, SidebarLaboComponent],
   templateUrl: './app.component.html',
  
 })

@@ -97,7 +97,7 @@ export class HistoriqueBilansComponent implements OnInit {
   }
 
   editBilan(bilan: any) {
-    this.router.navigate(['/bilan-bio'], {
+    this.router.navigate(['laborantin/bilan-bio'], {
       state: {
         nss: this.nss,
         nomComplet: this.nomComplet,
