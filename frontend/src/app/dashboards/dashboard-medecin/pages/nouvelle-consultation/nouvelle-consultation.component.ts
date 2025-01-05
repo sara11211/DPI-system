@@ -37,7 +37,7 @@ export class NouvelleConsultationComponent {
           // Afficher une alerte de succès lorsque la consultation est créée
           window.alert('Consultation créée avec succès!');
           const nss = this.consultationForm.value.nss;
-          this.router.navigate([`/recherche-dossier/${nss}/consultations`]);
+          this.router.navigate([`medecin/recherche-dossier/${nss}/consultations`]);
         },
         error: (err) => {
           // Si vous voulez afficher un message d'erreur générique en cas de problème
