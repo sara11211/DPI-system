@@ -53,14 +53,12 @@ class bilan_radio(APIView):
                     "date" : date,
                     "resultat" : bilan.resultat
                 })
-                print(response_data)
                 
         return Response(response_data)
     
     def post(self, request):
         serializer = BilansRadiologiquesSerializer(data=request.data)
         if serializer.is_valid():
-            print(serializer)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -73,7 +71,6 @@ class bilan_radio(APIView):
         
         #handle the image :
         image = request.data['image_url']
-        print(request.data)
         image_data = base64.b64decode(image.split(',')[1])  # Split to remove the data URL part
         # Define the file path
         directory = os.path.join(settings.BASE_DIR, 'public/radios')
@@ -84,7 +81,6 @@ class bilan_radio(APIView):
         with open(file_path, 'wb') as f:
             f.write(image_data)
             file_path = replace_character(file_path, '\\', '/')
-        print(file_path)
         
         real_data={
             'id': request.data['id'],
@@ -132,7 +128,6 @@ def replace_character(input_string, old_char, new_char):
 class bilan_consultation(APIView):
     def get(request,self,pk):
         bilan = BilansRadiologiques.objects.filter(consultations=pk)
-        print(bilan)
         if bilan:
             serializer = BilansRadiologiquesSerializer(bilan, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -142,7 +137,6 @@ class bilan_consultation(APIView):
 class bilan_par_id(APIView):
     def get(request,self,pk):
         bilan = BilansRadiologiques.objects.filter(id=pk)
-        print(bilan)
         if bilan:
             serializer = BilansRadiologiquesSerializer(bilan, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -162,7 +156,6 @@ class image_radio(APIView):
                     base64_encoded = base64.b64encode(image_file.read()).decode('utf-8')
 
                 # Return the Base64 string
-                print(base64_encoded)
                 return JsonResponse({
                     "image_base64": f"data:image/png;base64,{base64_encoded}"
                 })

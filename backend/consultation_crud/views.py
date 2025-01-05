@@ -97,12 +97,10 @@ def create_consultation(request):
     """
     Endpoint pour créer une consultation.
     """
-    print("Données reçues :", request.data)  # Log des données envoyées
     serializer = ConsultationSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    print("Erreurs de validation :", serializer.errors)  # Log des erreurs
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -156,9 +154,7 @@ def list_consultations_by_patient(request, nss):
     
 
     
-    # Affichage des données après ajout des ordonnances
-    print("Données après ajout des ordonnances:")
-    print(response_data)
+
     
     return Response(response_data, status=status.HTTP_200_OK)
 
@@ -305,9 +301,6 @@ def get_ordonnance(request, ordonnance_id):
 
     # Sérialiser les données de l'ordonnance
     serializer = OrdonnanceSerializer(ordonnance)
-
-    # Afficher les données sérialisées dans la console du serveur
-    print("Données de l'ordonnance :", serializer.data)
 
     # Retourner la réponse avec les données de l'ordonnance
     return Response(serializer.data)
@@ -499,21 +492,18 @@ def list_ordonnances_by_medecin(request, medecins_id):
     """
     # Récupérer les consultations
     consultations = Consultation.objects.filter(patient__medecins__id=medecins_id)
-    print(f"Consultations récupérées pour le médecin {medecins_id}: {consultations}")
 
     if not consultations.exists():
         return Response({"message": "Aucune consultation trouvée pour ce médecin."}, status=status.HTTP_404_NOT_FOUND)
 
     # Récupérer les ordonnances
     ordonnances = Ordonnance.objects.filter(consultation__in=consultations)
-    print(f"Ordonnances récupérées pour le médecin {medecins_id}: {ordonnances}")
 
     if not ordonnances.exists():
         return Response({"message": "Aucune ordonnance trouvée pour ce médecin."}, status=status.HTTP_404_NOT_FOUND)
 
     # Sérialiser les ordonnances
     serializer = OrdonnanceSerializer(ordonnances, many=True)
-    print(f"Les données sérialisées des ordonnances: {serializer.data}")
 
     # Retourner les données sérialisées
     return Response(serializer.data, status=status.HTTP_200_OK)
