@@ -1,0 +1,27 @@
+.tag-green {
+    color: #28c76f;
+    background: #28c76f10;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  .tag-blue {
+    color: #0fb7ff;
+    background: #0fb7ff10;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  .tag-purple {
+    color: #bf39fd;
+    background: #bf39fd10;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  .tag-red {
+    color: #ea5455;
+    background: #ea545510;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  
+
+  

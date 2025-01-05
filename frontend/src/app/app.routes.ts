@@ -37,8 +37,20 @@ import { ListeDemandesCRComponent } from './dashboards/dashboard-Radiologue/page
 import { NouveauCrComponent } from './dashboards/dashboard-Radiologue/pages/liste-demandes-cr/nouveau-cr/nouveau-cr.component';
 import { CompteRenduComponent } from './dashboards/dashboard-Radiologue/pages/liste-demandes-cr/compte-rendu/compte-rendu.component';
 
+// Import the Labo dashboard component
+import { DashboardLaboComponent } from './dashboards/dashboard-Laborantin/pages/dashboard/dashboard.component';
+import { RechercheDossierLaboComponent } from './dashboards/dashboard-Laborantin/pages/recherche-dossier/recherche-dossier.component';
+import { RechercheDossierNssLaboComponent } from './dashboards/dashboard-Laborantin/pages/recherche-dossier/recherche-dossier-nss/recherche-dossier-nss.component';
+import { RechercheDossierQrLaboComponent } from './dashboards/dashboard-Laborantin/pages/recherche-dossier/recherche-dossier-qr/recherche-dossier-qr.component';
+import {ListeDemandesBbComponent} from './dashboards/dashboard-Laborantin/pages/liste-demandes-bb/liste-demandes-bb.component';
+import {HistoriqueBilansComponent} from './dashboards/dashboard-Laborantin/pages/liste-demandes-bb/historique-bilans/historique-bilans.component';
+import {NouveauBbComponent} from './dashboards/dashboard-Laborantin/pages/liste-demandes-bb/historique-bilans/nouveau-bb/nouveau-bb.component';
+import {BilanBioComponent} from './dashboards/dashboard-Laborantin/pages/liste-demandes-bb/historique-bilans/bilan-bio/bilan-bio.component';
+import {HistoriqueGraphiquesComponent} from './dashboards/dashboard-Laborantin/pages/historique-graphiques/historique-graphiques.component';
 
-export type DashboardType = 'medical' | 'admin' | 'patient' | 'radio';
+
+
+export type DashboardType = 'medical' | 'admin' | 'patient' | 'radio'| 'labo';
 
 
 export const administratifRoutes: Routes = [
@@ -118,6 +130,22 @@ export const radioRoutes: Routes = [
 
 ];
 
+// Routes for the laborantin dashboard
+export const laboRoutes: Routes = [
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardLaboComponent },
+  { path: 'recherche-dossier', component: RechercheDossierLaboComponent },
+  { path: 'recherche-dossier/qr', component: RechercheDossierQrLaboComponent },
+  { path: 'recherche-dossier/:nss', component: RechercheDossierNssLaboComponent },
+
+  { path: 'liste-demandes-bb', component: ListeDemandesBbComponent },
+  { path: 'historique-bilans', component: HistoriqueBilansComponent }, // Add the route for historique-bilans
+  { path: 'nouveau-bb', component: NouveauBbComponent },
+  { path: 'bilan-bio', component: BilanBioComponent },
+  { path: 'historique-graphiques', component: HistoriqueGraphiquesComponent }, // Add the route for historique-bilans
+
+];
+
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -149,6 +177,7 @@ export class DashboardRouteService {
       case 'admin':  r = administratifRoutes; break;
       case 'patient':  r = patientRoutes; break;
       case 'radio':  r = radioRoutes; break;
+      case 'labo':  r = laboRoutes; break;
     }
     const routes=r;
     this.router.resetConfig(routes);

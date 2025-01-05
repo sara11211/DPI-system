@@ -1,0 +1,138 @@
+<header class="header">Nouveau Bilan Biologique</header>
+
+<div class="flex flex-col gap-6 px-8 py-6">
+  <!-- Predefined Information -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- NSS -->
+    <div class="form-group">
+      <label for="nss" class="label">NSS</label>
+      <input
+        id="nss"
+        type="text"
+        [(ngModel)]="nss"
+        name="nss"
+        readonly
+        class="input bg-gray-100"
+      />
+    </div>
+
+    <!-- Type de Bilan -->
+    <div class="form-group">
+      <label for="typeBilan" class="label">Type de Bilan</label>
+      <input
+        id="typeBilan"
+        type="text"
+        [(ngModel)]="typeBilan"
+        name="typeBilan"
+        readonly
+        class="input bg-gray-100"
+      />
+    </div>
+  </div>
+
+  <!-- Date and Synthesis Information -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Date d'Examen -->
+    <div class="form-group">
+      <label for="examDate" class="label">Date d'Examen</label>
+      <input
+        id="examDate"
+        type="date"
+        [(ngModel)]="examDate"
+        name="examDate"
+        class="input"
+      />
+      <p *ngIf="examDate.trim() === ''" class="text-xs text-red-500">
+        La date de l'examen est obligatoire.
+      </p>
+    </div>
+
+    <!-- Synthesis -->
+    <div class="form-group">
+      <label for="synthese" class="label">Synthèse</label>
+      <textarea
+        id="synthese"
+        [(ngModel)]="synthese"
+        name="synthese"
+        readonly
+        rows="3"
+        class="input bg-gray-100"
+      ></textarea>
+    </div>
+  </div>
+
+  <!-- Measures and Graph Section -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Scrollable Measures Section -->
+    <div class="form-group">
+      <label class="label">Les mesures demandées à remplir</label>
+      <div
+        class="overflow-y-auto max-h-64 border border-gray-300 rounded p-2"
+        style="scrollbar-width: thin;"
+      >
+        <div *ngFor="let mesure of mesures; let i = index" class="mb-2">
+          <div class="flex items-center gap-2">
+            <input
+              id="mesure-{{ i }}"
+              type="text"
+              [value]="mesure.mesure"
+              readonly
+              class="input bg-gray-100 w-full"
+            />
+            <input
+              id="valeur-{{ i }}"
+              type="number"
+              [(ngModel)]="mesure.valeur"
+              name="valeur-{{ i }}"
+              class="input w-full"
+              placeholder="[Champ numérique]"
+            />
+          </div>
+          <p *ngIf="mesure.valeur.trim() === ''" class="text-xs text-red-500">
+            La valeur pour {{ mesure.mesure }} est obligatoire.
+          </p>
+        </div>
+      </div>
+      <button
+        type="button"
+        (click)="generateGraph()"
+        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 mt-4"
+      >
+        + Générer Graphique
+      </button>
+    </div>
+
+    <!-- Graph Display Section -->
+    <div class="form-group">
+      <label class="label">Graphique Généré</label>
+      <div class="border border-gray-300 rounded p-4 flex items-center justify-center">
+        <canvas id="graphCanvas" class="w-full h-64"></canvas>
+      </div>
+      <button
+        type="button"
+        (click)="downloadGraph()"
+        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 mt-4 w-full"
+      >
+        Télécharger graphique
+      </button>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="flex items-center justify-between mt-6">
+    <button
+      type="button"
+      (click)="goBack()"
+      class="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
+    >
+      Retour
+    </button>
+    <button
+      type="button"
+      (click)="saveBilan()"
+      class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700"
+    >
+      Sauvegarder
+    </button>
+  </div>
+</div>

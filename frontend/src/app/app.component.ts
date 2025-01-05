@@ -7,13 +7,15 @@ import { SidebarPatientComponent } from './dashboards/dashboard-patient/sidebar/
 
 import { SidebarRadioComponent } from './dashboards/dashboard-Radiologue/sidebar/sidebar.component';
 
+import { SidebarLaboComponent } from './dashboards/dashboard-Laborantin/sidebar/sidebar.component';
+
 import { CommonModule } from '@angular/common';
 import { DashboardRouteService } from './app.routes';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SidebarComponent,SidebarPatientComponent,SidebarRadioComponent],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SidebarComponent,SidebarPatientComponent,SidebarRadioComponent,SidebarLaboComponent],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
@@ -24,7 +26,7 @@ export class AppComponent implements OnInit {
   
   ngOnInit() {
     // change userrole here 
-    const userRole = 'radio'; 
-    this.dashboardService.setDashboard(userRole as 'medical' | 'admin' | 'patient'| 'radio' );
+    const userRole = 'labo'; 
+    this.dashboardService.setDashboard(userRole as 'medical' | 'admin' | 'patient'| 'radio'| 'labo' );
   }
 }
