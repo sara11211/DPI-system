@@ -44,6 +44,11 @@ export class ApiService {
     return this.http.get<any>(`${this.apiUrl}/bilan-radio/bilan-id/${id}`);
   }
 
+  //image
+  get_image(id : number):Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/bilan-radio/image/${id}`);
+  }
+
   ////////////////////////////////////////////////////////////////////////////
   //bilan biologique :
 
@@ -60,6 +65,8 @@ export class ApiService {
   getbilanbioconsultation(id: number):Observable<any>{
     return this.http.get<any>(`${this.apiUrl}/bilan-bio/bilan-consultation/${id}`);
   }
+
+  
 
 
   ////////////////////////////////////////////////////////////////////////////

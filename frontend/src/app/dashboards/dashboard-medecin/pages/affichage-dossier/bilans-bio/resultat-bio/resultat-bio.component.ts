@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ApiService } from '../../../../../../services/api.service';
 
 @Component({
   selector: 'app-resultat-bio',
@@ -10,17 +11,34 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './resultat-bio.component.css',
 })
 export class ResultatBioComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private router: Router) {}
+
+  constructor(private route: ActivatedRoute, private router: Router,private apiService:ApiService) {}
+
+
+  resultats: {mesure : string, value: string, unite : string}[] = []
 
   ngOnInit(): void {
     // Retrieve the consultation ID from the route parameters
     const consultationId = this.route.snapshot.paramMap.get('id');
+
+    this.apiService.getAnalyseBio(Number(consultationId)).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.resultats = [];
+        this.resultats = response.map((item: any) => ({
+          mesure: item.nom_analyse,
+          value: item.quantite,
+          unite: item.unite,
+        }));
+    
+        console.log(this.resultats); // Verify the updated mesures array
+      },
+      error: (err) => {
+        console.error('Error fetching data:', err);
+      },
+    });
+
   }
 
-  resultats = [
-    { mesure: 'Glucose', value: '100 mg/dL' },
-    { mesure: 'Hemoglobin', value: '13.5 g/dL' },
-    { mesure: 'Cholesterol', value: '180 mg/dL' },
-    { mesure: 'Calcium', value: '9.8 mg/dL' },
-  ];
+  
 }

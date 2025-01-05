@@ -149,12 +149,24 @@ class bilan_par_id(APIView):
         else:
             return Response({"detail": "cette conultation n'a pas un bilan radiologique"}, status=status.HTTP_404_NOT_FOUND)
         
+@method_decorator(csrf_exempt, name='dispatch')
 class image_radio(APIView):
-    def get(request,self,pk):
-        bilan = BilansRadiologiques.objects.filter(consultations=pk)
-        print(bilan)
+    def get(self, request, pk):
+        bilan = BilansRadiologiques.objects.filter(consultations=pk).first()
         if bilan:
-            serializer = BilansRadiologiquesSerializer(bilan, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            image_path = bilan.image_url
+            try:
+                # Open the image file in binary mode
+                with open(image_path, "rb") as image_file:
+                    # Encode the file content to Base64
+                    base64_encoded = base64.b64encode(image_file.read()).decode('utf-8')
+
+                # Return the Base64 string
+                print(base64_encoded)
+                return JsonResponse({
+                    "image_base64": f"data:image/png;base64,{base64_encoded}"
+                })
+            except Exception as e:
+                return JsonResponse({"error": str(e)}, status=500)        
         else:
             return Response({"detail": "cette conultation n'a pas un bilan radiologique"}, status=status.HTTP_404_NOT_FOUND)

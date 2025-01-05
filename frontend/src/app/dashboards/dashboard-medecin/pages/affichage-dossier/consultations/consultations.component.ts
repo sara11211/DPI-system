@@ -11,8 +11,8 @@ interface Consultation {
   resume_consultation: string;
   bilanb: boolean;
   bilanr: boolean;
-  resultatsb: string;
-  resultatsr: string;
+  resultatsb: boolean;
+  resultatsr: boolean;
   
 }
 
@@ -36,7 +36,6 @@ export class ConsultationsComponent {
     'Date',
     'Ordonnance',
     'Bilan',
-    'Visualisation',
     'Resultats',
     'Resume',
   ];
@@ -69,9 +68,20 @@ export class ConsultationsComponent {
       {
         this.apiService.getbilanradioconsultation(Number(item.id)).subscribe((data) => {
           item.bilanr = data[0].id;
+          console.log(data);
+          if ( data[0].date_radiologie !== null )
+          {
+            item.resultatsr = true;
+          }
         });
+        
         this.apiService.getAnalyseBio(Number(item.id)).subscribe((data) => {
           item.bilanb = data[0].id;
+          console.log(data);
+          if ( data[0].quantite !== null )
+            {
+              item.resultatsb =true;
+            }
         });
       }
       this.filteredConsultations = [...this.consultations];
