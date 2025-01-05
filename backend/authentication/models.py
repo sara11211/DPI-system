@@ -53,16 +53,7 @@ class PersonnesContact(models.Model):
     class Meta:
         managed = False
         db_table = 'personnes_contact'
-        
-class Medecins(models.Model):
-    id = models.IntegerField(primary_key=True)
-    specialite = models.CharField(max_length=255, blank=True, null=True)
-    personnel = models.ForeignKey('Personnel', models.DO_NOTHING, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'medecins'
-        
+    
         
 class Dpis(models.Model):
     id = models.IntegerField(primary_key=True)

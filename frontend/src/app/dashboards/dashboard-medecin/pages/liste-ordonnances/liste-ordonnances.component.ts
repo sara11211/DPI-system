@@ -1,7 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { OrdonnanceService } from './listeOrdonnance.service'; // Importation du service
+import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 interface Ordonnance {
   id: string;
@@ -14,107 +17,127 @@ interface Ordonnance {
 @Component({
   selector: 'app-liste-ordonnances',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterOutlet],
   templateUrl: './liste-ordonnances.component.html',
-  styleUrl: './liste-ordonnances.component.css',
+  styleUrls: ['./liste-ordonnances.component.css'],
+  imports: [CommonModule, FormsModule, RouterModule],
 })
 export class ListeOrdonnancesComponent implements OnInit {
-  constructor(private router: Router, public route: ActivatedRoute) {}
-
-  isModalVisible: boolean = false;
-
-  // note: make sure to write les etats the way they are written here to the color labels in the table, otherwise you can change the spelling but make sure to change it in the html file as well
-
-  ordonnances: Ordonnance[] = [
-    {
-      id: '1',
-      date: '2023-04-06',
-      nss: '0673222612',
-      etat: 'validee',
-      details: 'Ordonnance A',
-    },
-    {
-      id: '2',
-      date: '2023-05-10',
-      nss: '0233222612',
-      etat: 'en attente',
-      details: 'Ordonnance B',
-    },
-    {
-      id: '3',
-      date: '2023-06-12',
-      nss: '0783222612',
-      etat: 'rejetee',
-      details: 'Ordonnance C',
-    },
-    {
-      id: '4',
-      date: '2023-07-18',
-      nss: '0573222712',
-      etat: 'validee',
-      details: 'Ordonnance D',
-    },
-    {
-      id: '5',
-      date: '2023-08-25',
-      nss: '0133227612',
-      etat: 'en attente',
-      details: 'Ordonnance E',
-    },
-  ];
-
+  ordonnances: Ordonnance[] = []; // Liste des ordonnances récupérées
   displayedColumns: string[] = ['Date', 'NSS', 'Etat', 'Details'];
-
   itemsPerPage = 8;
   currentPage = 1;
-  searchTerm: string = '';
-  selectedDate: string | null = null;
+  searchTerm: string = ''; // Critère de recherche par NSS
+  selectedDate: string | null = null; // Critère de filtre par date
+  filteredOrdonnances: Ordonnance[] = []; // Ordonnances filtrées
+  isModalVisible: boolean = false; // Modal de détails
 
-  filteredOrdonnances: Ordonnance[] = [...this.ordonnances];
+
+  mapEtat(etat: string): string {
+    switch (etat) {
+      case 'Validee':
+        return 'Validée';
+      case 'En cours de validation':
+        return 'En attente';
+      case 'Refusee':
+        return 'Rejetée';
+      default:
+        return 'En attente'; // Par défaut, on considère l'état comme "En attente".
+    }
+  }
+  
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private ordonnanceService: OrdonnanceService // Service injecté
+  ) {}
 
   ngOnInit(): void {
+    const medecinId = 1; // ID du médecin (à récupérer dynamiquement si nécessaire)
+    this.loadOrdonnancesByMedecin(medecinId);
     this.router.events.subscribe(() => {
       this.isModalVisible =
         this.router.url.includes('affichage-ordonnance') 
         ;
     });
   }
-  
-  get paginatedOrdonnances() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredOrdonnances.slice(
-      startIndex,
-      startIndex + this.itemsPerPage
+
+  /**
+   * Charger les ordonnances d'un médecin via le service
+   * @param medecinId - ID du médecin
+   */
+  loadOrdonnancesByMedecin(medecinId: number): void {
+    this.ordonnanceService.getOrdonnancesByMedecin(medecinId).subscribe(
+      (ordonnances) => {
+        // Affichage détaillé des ordonnances et de leur état
+        console.log("Ordonnances reçues :", ordonnances);
+        
+        // Vérifier si l'état est bien inclus pour chaque ordonnance
+        ordonnances.forEach((ordonnance, index) => {
+          console.log(`Ordonnance ${index + 1} - Etat: ${ordonnance.etat}`);
+        });
+        
+        this.ordonnances = ordonnances; // Assigner les ordonnances récupérées
+        this.filteredOrdonnances = [...this.ordonnances]; // Initialiser les ordonnances filtrées
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des ordonnances', error);
+      }
     );
   }
+  
 
-  get totalPages() {
-    return Math.ceil(this.filteredOrdonnances.length / this.itemsPerPage);
-  }
-
-  changePage(page: number) {
-    this.currentPage = page;
-  }
-
-  applyFilters() {
+  /**
+   * Appliquer les filtres pour la recherche et la date
+   */
+  applyFilters(): void {
     this.filteredOrdonnances = this.ordonnances.filter((ordonnance) => {
       const matchesSearch =
-        this.searchTerm.trim() === '' ||
+        !this.searchTerm ||
         ordonnance.nss.toLowerCase().includes(this.searchTerm.toLowerCase());
       const matchesDate =
         !this.selectedDate || ordonnance.date === this.selectedDate;
       return matchesSearch && matchesDate;
     });
-
-    this.currentPage = 1;
+    this.currentPage = 1; // Réinitialiser la page à 1 après chaque filtre
   }
 
+  /**
+   * Récupérer les ordonnances paginées
+   */
+  get paginatedOrdonnances() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredOrdonnances.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  /**
+   * Calculer le nombre total de pages
+   */
+  get totalPages() {
+    return Math.ceil(this.filteredOrdonnances.length / this.itemsPerPage);
+  }
+
+  /**
+   * Changer de page pour la pagination
+   * @param page - Numéro de la page cible
+   */
+  changePage(page: number) {
+    this.currentPage = page;
+  }
+
+  /**
+   * Ouvrir le modal pour afficher les détails d'une ordonnance
+   * @param id - ID de l'ordonnance
+   */
   openModalAffichageOrdonnance(id: string): void {
     this.router.navigate(['affichage-ordonnance', id], {
       relativeTo: this.route,
     });
   }
 
+  /**
+   * Fermer le modal et revenir à la liste des ordonnances
+   */
   closeModal() {
     this.router.navigate(['../liste-ordonnances'], { relativeTo: this.route });
   }

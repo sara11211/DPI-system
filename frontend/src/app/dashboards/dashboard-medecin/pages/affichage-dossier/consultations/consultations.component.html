@@ -19,7 +19,7 @@
         *ngFor="let consultation of consultations"
         class="text-sm text-black hover:bg-gray-50"
       >
-        <td class="td">{{ consultation.dateAjout }}</td>
+        <td class="td">{{ consultation.date_consultation }}</td>
         <td class="td">
           <div
             *ngIf="consultation.ordonnance"
@@ -220,7 +220,7 @@
         </td>
         <td class="td">
           <div
-            *ngIf="consultation.resume"
+            *ngIf="consultation.resume_consultation"
             class="flex items-center w-full gap-2"
           >
             <button
@@ -280,7 +280,7 @@
           </div>
 
           <div
-            *ngIf="!consultation.resume"
+            *ngIf="!consultation.resume_consultation"
             class="flex items-center w-full gap-2"
           >
             <button

@@ -36,6 +36,7 @@ import { AuthService } from './login/auth.service';
   standalone: true,
   imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SidebarComponent,SidebarPatientComponent,SidebarRadioComponent,RouterOutlet, LoginComponent, TestComponent,SidebarComponentMedecin],
   templateUrl: './app.component.html',
+ 
 })
 export class AppComponent {
   
