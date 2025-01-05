@@ -60,6 +60,7 @@ class bilan_radio(APIView):
     def post(self, request):
         serializer = BilansRadiologiquesSerializer(data=request.data)
         if serializer.is_valid():
+            print(serializer)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -128,21 +129,22 @@ def replace_character(input_string, old_char, new_char):
         
         
         
-        # image = request.data['image']  # assuming the image is sent as a base64 string
-        # if image:
-        #     try:
-        #         # Decode the base64 image data
-        #         image_data = base64.b64decode(image.split(',')[1])  # Split to remove the data URL part
-        #         # Define the file path
-        #         directory = os.path.join(settings.BASE_DIR, 'public/radios')
-        #         if not os.path.exists(directory):
-        #             os.makedirs(directory)
-        #         file_path = os.path.join(directory, 'radio_consultation'+str(id_consultation)'.png')
-        #         # Save the image to the directory
-        #         with open(file_path, 'wb') as f:
-        #             f.write(image_data)
-        #             file_path = replace_character(file_path, '\\', '/')
-                    
-        #         #suvegarder l'element dans la bdd
-        #         graph = GraphiquesTendances.objects.create(laborantins_id=id_laborantin,dpis_id=id_dpis,url_graphique=file_path,date_graphique=date)
-        #         return JsonResponse({"message": "Image saved successfully", "path": file_path}, status=200)
+class bilan_consultation(APIView):
+    def get(request,self,pk):
+        bilan = BilansRadiologiques.objects.filter(consultations=pk)
+        print(bilan)
+        if bilan:
+            serializer = BilansRadiologiquesSerializer(bilan, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"detail": "cette conultation n'a pas un bilan radiologique"}, status=status.HTTP_404_NOT_FOUND)
+        
+class bilan_par_id(APIView):
+    def get(request,self,pk):
+        bilan = BilansRadiologiques.objects.filter(id=pk)
+        print(bilan)
+        if bilan:
+            serializer = BilansRadiologiquesSerializer(bilan, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"detail": "cette conultation n'a pas un bilan radiologique"}, status=status.HTTP_404_NOT_FOUND)

@@ -63,11 +63,7 @@ MIDDLEWARE = [
 
 ]
 
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:4200',
-    'http://localhost:52131',
-]
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Configuration CORS
 CORS_ALLOW_ALL_ORIGINS = True

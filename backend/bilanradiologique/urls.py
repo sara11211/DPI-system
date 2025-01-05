@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import bilan_radio
+from .views import bilan_radio,bilan_consultation,bilan_par_id
 
 urlpatterns = [
     # bilan biologique
@@ -7,4 +7,6 @@ urlpatterns = [
     path('create/', bilan_radio.as_view()),
     path('update/<int:pk>/', bilan_radio.as_view()),
     path('delete/<int:pk>/', bilan_radio.as_view()),
+    path('bilan-consultation/<int:pk>',bilan_consultation.as_view()),
+    path('bilan-id/<int:pk>',bilan_par_id.as_view()),
 ]

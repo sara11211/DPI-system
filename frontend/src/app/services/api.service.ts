@@ -17,7 +17,7 @@ export class ApiService {
 
   //creat
   postBilanRadio(data: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/bilan-radio/create`, data);
+    return this.http.post<any>(`${this.apiUrl}/bilan-radio/create/`, data);
   }
 
   // update
@@ -31,6 +31,14 @@ export class ApiService {
   // delete
   deleteBilanRadio(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/bilan-radio/${id}/delete`);
+  }
+
+  getbilanconsultation(id: number):Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/bilan-radio/bilan-consultation/${id}`);
+  }
+
+  getbilanparid(id: number):Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/bilan-radio/bilan-id/${id}`);
   }
 
 }

@@ -2,16 +2,15 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { ConsultationService } from './consultations.service';
+import { ApiService } from '../../../../../services/api.service';
 interface Consultation {
   id: string;
   nom: string;
   date_consultation: string;
   ordonnance: string;
   resume_consultation: string;
-
-
-  bilanb: string;
-  bilanr: string;
+  bilanb: boolean;
+  bilanr: boolean;
   resultatsb: string;
   resultatsr: string;
   
@@ -54,21 +53,29 @@ export class ConsultationsComponent {
 
   constructor(public router: Router, 
               public route: ActivatedRoute,
+              private apiService: ApiService,
               private consultationService: ConsultationService
             ) {}
 
 
 
   ngOnInit(): void {
-    
-
 
     const nss = '418626877306';//Jai besoin de recuperer dynamiquement le nss de ce dossier :
 
     this.consultationService.getConsultationsForPatient(nss).subscribe((data) => {
       this.consultations = data;
+      for(const item of this.consultations)
+      {
+        this.apiService.getbilanconsultation(Number(item.id)).subscribe((data) => {
+          item.bilanr = data[0].id;
+        });
+      }
       this.filteredConsultations = [...this.consultations];
+      console.log(this.consultations)
     });
+
+    
 
 
     this.router.events.subscribe(() => {
