@@ -66,14 +66,19 @@ class bilan_patient(APIView):
 #.################################
 
 class analyse_bio(APIView):
-    def get(self, request, bilan_id):
-        analyses = AnalysesBiologiques.objects.filter(bilan_biologique=bilan_id)
-        if analyses.exists():
-            serializer = AnalysesBiologiquesSerializer(analyses, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response({"detail": "Aucun analyses trouvées pour ce bilan biologique ."}, status=status.HTTP_404_NOT_FOUND) 
-    
+    def get(self, request, consultation_id):
+        try :
+            bilan = BilansBiologiques.objects.filter(consultations = consultation_id).first()
+            bilan_id = bilan.id
+            analyses = AnalysesBiologiques.objects.filter(bilan_biologique=bilan_id)
+            if analyses.exists():
+                serializer = AnalysesBiologiquesSerializer(analyses, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({"detail": "Aucun analyses trouvées pour ce bilan biologique ."}, status=status.HTTP_404_NOT_FOUND)
+        except BilansBiologiques.DoesNotExist:
+            return Response({"error": "Object not found."}, status=status.HTTP_404_NOT_FOUND) 
+        
     def post(self, request):
         serializer = AnalysesBiologiquesSerializer(data=request.data)
         if serializer.is_valid():
@@ -201,3 +206,12 @@ class SaveImageAPIView(APIView):
                 return JsonResponse({"error": str(e)}, status=400)
         else:
             return JsonResponse({"error": "No image data provided"}, status=400)
+        
+class bilan_consultation(APIView):
+    def get(request,self,pk):
+        bilan = BilansBiologiques.objects.filter(consultations=pk)
+        if bilan:
+            serializer = BilansBiologiquesSerializer(bilan, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"detail": "cette conultation n'a pas un bilan radiologique"}, status=status.HTTP_404_NOT_FOUND)

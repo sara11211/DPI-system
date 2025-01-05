@@ -26,7 +26,7 @@ urlpatterns = [
     path('bilan-radio/', include('bilanradiologique.urls')),
     path('api/', include('api.urls')),  
     path('', include('consultation_crud.urls')),
-    path('bilan/', include('bilanbiologique.urls')), 
+    path('bilan-bio/', include('bilanbiologique.urls')), 
 ]
 
 urlpatterns += static('/radios/', document_root=settings.BASE_DIR / 'public' / 'radios')

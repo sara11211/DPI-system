@@ -10,6 +10,9 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
+  ////////////////////////////////////////////////////////////////////////////
+  //bilan radiologique 
+
   //read
   getBilanRadio(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/bilan-radio/get`);
@@ -33,7 +36,7 @@ export class ApiService {
     return this.http.delete<any>(`${this.apiUrl}/bilan-radio/${id}/delete`);
   }
 
-  getbilanconsultation(id: number):Observable<any>{
+  getbilanradioconsultation(id: number):Observable<any>{
     return this.http.get<any>(`${this.apiUrl}/bilan-radio/bilan-consultation/${id}`);
   }
 
@@ -41,4 +44,34 @@ export class ApiService {
     return this.http.get<any>(`${this.apiUrl}/bilan-radio/bilan-id/${id}`);
   }
 
+  ////////////////////////////////////////////////////////////////////////////
+  //bilan biologique :
+
+  //read
+  getBilanBio(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/bilan-bio/get`);
+  }
+
+  //creat
+  postBilanBio(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/bilan-bio/create/`, data);
+  }
+
+  getbilanbioconsultation(id: number):Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/bilan-bio/bilan-consultation/${id}`);
+  }
+
+
+  ////////////////////////////////////////////////////////////////////////////
+  //analyse biologique :
+
+  //read
+  getAnalyseBio(id : number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/bilan-bio/analysebio/${id}`);
+  }
+
+  //create
+  postAnalyseBio(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/bilan-bio/analysebio/create/`, data);
+  }
 }

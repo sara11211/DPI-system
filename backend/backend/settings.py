@@ -46,8 +46,6 @@ INSTALLED_APPS = [
     'authentication',
     'bilanradiologique',
     'consultation_crud',
-    'rest_framework' ,
-     'consultation_crud',
      'bilanbiologique',
 ]
 

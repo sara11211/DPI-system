@@ -67,8 +67,11 @@ export class ConsultationsComponent {
       this.consultations = data;
       for(const item of this.consultations)
       {
-        this.apiService.getbilanconsultation(Number(item.id)).subscribe((data) => {
+        this.apiService.getbilanradioconsultation(Number(item.id)).subscribe((data) => {
           item.bilanr = data[0].id;
+        });
+        this.apiService.getAnalyseBio(Number(item.id)).subscribe((data) => {
+          item.bilanb = data[0].id;
         });
       }
       this.filteredConsultations = [...this.consultations];

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Personnel(models.Model):
     id = models.IntegerField(primary_key=True)
-    users = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+    users = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True,related_name='personel')
     nom = models.CharField(max_length=255, blank=True, null=True)
     prenom = models.CharField(max_length=255, blank=True, null=True)
     fonction = models.CharField(max_length=23, blank=True, null=True)
@@ -50,7 +50,7 @@ class Dpis(models.Model):
     num_telephone = models.CharField(max_length=255, blank=True, null=True)
     medecins = models.ForeignKey('Medecins', models.DO_NOTHING, blank=True, null=True)
     personnes_contact = models.ForeignKey('PersonnesContact', models.DO_NOTHING, blank=True, null=True)
-    users = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+    users = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True,related_name='dossierp')
     qr_url = models.CharField(max_length=255, blank=True, null=True)
     antecedents = models.CharField(max_length=255, blank=True, null=True)
 

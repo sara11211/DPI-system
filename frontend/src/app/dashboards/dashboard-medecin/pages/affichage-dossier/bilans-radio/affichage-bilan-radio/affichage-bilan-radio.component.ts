@@ -20,7 +20,7 @@ export class AffichageBilanRadioComponent implements OnInit {
     // Retrieve the consultation ID from the route parameters
     const consultationId = this.route.snapshot.paramMap.get('id');
 
-    this.apiService.getbilanconsultation(Number(consultationId)).subscribe((data) => {
+    this.apiService.getbilanradioconsultation(Number(consultationId)).subscribe((data) => {
       this.typeBilan = data[0].type_radiologie;
       this.synthese = data[0].synthese_bilan_radio;
     });

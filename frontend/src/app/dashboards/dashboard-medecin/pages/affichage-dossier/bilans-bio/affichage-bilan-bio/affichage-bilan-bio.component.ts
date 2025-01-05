@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ApiService } from '../../../../../../services/api.service';
 
 @Component({
   selector: 'app-affichage-bilan-bio',
@@ -10,18 +11,43 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './affichage-bilan-bio.component.css'
 })
 export class AffichageBilanBioComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private router: Router) {}
 
-  ngOnInit(): void {
-    // Retrieve the consultation ID from the route parameters
+  constructor(private route: ActivatedRoute, private router: Router,private apiService: ApiService) {}
+
+  synthese = '';
+  mesures: {mesure : string}[] = []
+
+  ngOnInit(): void 
+  {
     const consultationId = this.route.snapshot.paramMap.get('id');
-  } 
-  synthese = 'Résumé de synthèse ici. Exemples : Glucose élevé, cholestérol normal.';
-  mesures = [
-    { mesure: 'Glucose' },
-    { mesure: 'Hemoglobin'},
-    { mesure: 'Cholesterol'},
-    { mesure: 'Calcium'},
-    { mesure: 'Urea' },
-  ];
+
+    this.apiService.getbilanbioconsultation(Number(consultationId)).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.synthese = response[0].synthese_bilan_bio;
+    
+        console.log(this.mesures); // Verify the updated mesures array
+      },
+      error: (err) => {
+        console.error('Error fetching data:', err);
+      },
+    });
+
+    this.apiService.getAnalyseBio(Number(consultationId)).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.mesures = [];
+        this.mesures = response.map((item: any) => ({
+          mesure: item.nom_analyse,
+        }));
+    
+        console.log(this.mesures); // Verify the updated mesures array
+      },
+      error: (err) => {
+        console.error('Error fetching data:', err);
+      },
+    });
+    
+  }
+
 }
