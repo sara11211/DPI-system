@@ -137,8 +137,8 @@ export const infirmierRoutes: Routes = [
         component: SoinsProdiguesComponentInfirmier,
         children: [
           { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
-
-
+          { path: 'affichage-soin/:id', component: AffichageSoinComponent },
+          { path: 'modifier-soin/:id', component: ModifierSoinComponent },
           { path: 'visualisation/:id', component: VisualisationComponent },
         ],
       },
@@ -157,6 +157,8 @@ import { DashboardAdministratifComponent } from './dashboards/dashboard-administ
 import { NouveauSoinComponent } from './dashboards/dashboard-infirmier/pages/nouveau-soin/nouveau-soin.component';
 import { SoinsProdiguesComponentInfirmier } from './dashboards/dashboard-infirmier/pages/affichage-dossier/soins-prodigues/soins-prodigues.component';
 import { AffichageDossierComponentInfirmier } from './dashboards/dashboard-infirmier/pages/affichage-dossier/affichage-dossier.component';
+import { AffichageSoinComponent } from './dashboards/dashboard-infirmier/pages/affichage-dossier/soins-prodigues/affichage-soin/affichage-soin.component';
+import { ModifierSoinComponent } from './dashboards/dashboard-infirmier/pages/affichage-dossier/soins-prodigues/modifier-soin/modifier-soin.component';
 
 @Injectable({
   providedIn: 'root'
