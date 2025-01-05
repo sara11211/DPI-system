@@ -2,7 +2,8 @@ import { Routes } from '@angular/router';
 import { NouveauDossierComponent } from './dashboards/dashboard-administratif/pages/nouveau-dossier/nouveau-dossier.component';
 import { RechercheDossierComponent } from './dashboards/dashboard-medecin/pages/recherche-dossier/recherche-dossier.component';
 import { AffichageDossierComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/affichage-dossier.component';
-import { DashboardComponent } from './dashboards/dashboard-medecin/pages/dashboard/dashboard.component';
+import { DashboardComponent as MedecinDashboardComponent } from './dashboards/dashboard-medecin/pages/dashboard/dashboard.component';
+import { DashboardComponent as AdministratifDashboardComponent } from './dashboards/dashboard-administratif/pages/dashboard/dashboard.component';
 import { RechercheDossierNssComponent } from './dashboards/dashboard-medecin/pages/recherche-dossier/recherche-dossier-nss/recherche-dossier-nss.component';
 import { RechercheDossierQrComponent } from './dashboards/dashboard-medecin/pages/recherche-dossier/recherche-dossier-qr/recherche-dossier-qr.component';
 import { InformationsPersonellesComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/informations-personelles/informations-personelles.component';
@@ -59,7 +60,7 @@ export const routes: Routes = [
 
   /////////////////////////////////////////////admin routes//////////////////////////////////////////////////
   { path: 'admin', children:[
-          { path: 'dashboard', component: DashboardComponent },
+          { path: 'dashboard', component: AdministratifDashboardComponent },
           { path: 'nouveau-dossier', component: NouveauDossierComponent },
           { path: 'recherche-dossier', component: RechercheDossierComponent },
           { path: 'liste-dossiers', component: ListeDossiersComponent },
@@ -68,7 +69,7 @@ export const routes: Routes = [
           canActivate: [AuthGuard] },
   ////////////////////////////////////////////medecin routes////////////////////////////////////////////////
   { path: 'medecin', children:[
-          { path: 'dashboard', component: DashboardComponent },
+          { path: 'dashboard', component: MedecinDashboardComponent },
           { path: 'recherche-dossier', component: RechercheDossierComponent },
           { path: 'recherche-dossier/nss', component: RechercheDossierNssComponent },
           { path: 'recherche-dossier/qr', component: RechercheDossierQrComponent },

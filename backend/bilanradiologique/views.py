@@ -148,3 +148,13 @@ class bilan_par_id(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response({"detail": "cette conultation n'a pas un bilan radiologique"}, status=status.HTTP_404_NOT_FOUND)
+        
+class image_radio(APIView):
+    def get(request,self,pk):
+        bilan = BilansRadiologiques.objects.filter(consultations=pk)
+        print(bilan)
+        if bilan:
+            serializer = BilansRadiologiquesSerializer(bilan, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"detail": "cette conultation n'a pas un bilan radiologique"}, status=status.HTTP_404_NOT_FOUND)

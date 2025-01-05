@@ -3,6 +3,7 @@ import { Chart, registerables } from 'chart.js';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../../../../login/auth.service';
 
 Chart.register(...registerables);
 
@@ -15,16 +16,20 @@ Chart.register(...registerables);
 export class DashboardComponent implements AfterViewInit {
 
   numberOfDpis: number = 0; 
-  constructor(private http: HttpClient) {}
+  userName: string ='';
+  constructor(private http: HttpClient,public authService: AuthService) {}
   readonly httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
       withCredentials: true
     };
+
+  
   ngAfterViewInit() {
     this.fetchDpiCount();
     this.fetchDossierData();
+    this.userName = this.authService.getUser().nom+' '+this.authService.getUser().prenom;
   }
 
     fetchDpiCount() {
