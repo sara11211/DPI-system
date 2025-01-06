@@ -54,6 +54,13 @@ import { AuthGuard } from './auth.guard';
 import { UnauthGuard } from './auth.guard';
 import { LogoutComponent } from './logout/logout.component';
 
+// Patient
+import { AffichageDossierComponentPatient } from './dashboards/dashboard-patient/pages/affichage-dossier/affichage-dossier.component';
+import { ConsultationsComponentPatient } from './dashboards/dashboard-patient/pages/affichage-dossier/consultations/consultations.component';
+import { SoinsProdiguesComponentPatient } from './dashboards/dashboard-patient/pages/affichage-dossier/soins-prodigues/soins-prodigues.component';
+import { DashboardPatientComponent } from './dashboards/dashboard-patient/dashboard-patient.component';
+import { InformationsPersonellesPatientComponent } from './dashboards/dashboard-patient/pages/informations-personelles/informations-personelles.component';
+
 
 
 //::::::::::::::::::: ALL THE ROUTES :::::::::::::::::::::::
@@ -148,9 +155,31 @@ export const routes: Routes = [
   ///////////////////////////////////////////////////////patient routes///////////////////////////////////////////////
   { path: 'patient', children: 
     [
-      { path: 'dashboard', component: TestComponent },
+      { path: 'dashboard', component:DashboardPatientComponent},
       { path: 'mes-informations-personnelles', component:InformationsPersonellesPatientComponent,
-        children: [ { path: 'modifier', component: ModifierInfoComponent },]
+        children: [
+          { path: '', redirectTo: 'mes-informations-personnelles', pathMatch: 'full' },
+          {path: 'modifier', component: ModifierInfoComponent},
+        ]
+  },
+      { path: 'mon-dossier', component:AffichageDossierComponentPatient,
+        children: [
+          { path: '', redirectTo: 'consultations', pathMatch: 'full' },
+          {path : 'consultations', component: ConsultationsComponentPatient,
+            children: [
+              { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
+              { path: 'resultat-bio/:id', component: ResultatBioComponent },
+              { path: 'affichage-bilan-bio/:id', component: AffichageBilanBioComponent },
+
+              { path: 'resultat-radio/:id', component: ResultatRadioComponent },
+              { path: 'affichage-bilan-radio/:id', component: AffichageBilanRadioComponent },
+
+              { path: 'affichage-resume/:id', component: AffichageResumeComponent },
+            ],
+          },
+          { path: 'visualisation', component: VisualisationComponent },
+          { path: 'soins-prodigues', component: SoinsProdiguesComponentPatient}
+        ]
       },
     ]}
     

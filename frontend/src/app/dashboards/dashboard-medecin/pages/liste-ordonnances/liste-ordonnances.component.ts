@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../../login/auth.service';
 
 interface Ordonnance {
   id: string;
@@ -22,6 +23,7 @@ interface Ordonnance {
   imports: [CommonModule, FormsModule, RouterModule],
 })
 export class ListeOrdonnancesComponent implements OnInit {
+
   ordonnances: Ordonnance[] = []; // Liste des ordonnances récupérées
   displayedColumns: string[] = ['Date', 'NSS', 'Etat', 'Details'];
   itemsPerPage = 8;
@@ -49,11 +51,12 @@ export class ListeOrdonnancesComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private ordonnanceService: OrdonnanceService // Service injecté
+    private ordonnanceService: OrdonnanceService, // Service injecté
+    private authService : AuthService
   ) {}
 
   ngOnInit(): void {
-    const medecinId = 1; // ID du médecin (à récupérer dynamiquement si nécessaire)
+    const medecinId = this.authService.getUser().id; // ID du médecin (à récupérer dynamiquement si nécessaire)
     this.loadOrdonnancesByMedecin(medecinId);
     this.router.events.subscribe(() => {
       this.isModalVisible =
