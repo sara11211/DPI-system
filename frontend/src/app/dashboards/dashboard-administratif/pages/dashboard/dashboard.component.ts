@@ -1,83 +1,126 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../../../../login/auth.service';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
+  standalone: true, 
+  imports: [HttpClientModule] 
 })
 export class DashboardComponent implements AfterViewInit {
-  userName: string = 'Sarah Abaziz';
-  nbDPIauj = 56;
-  nbDPIsema = 54;
-  nbDPImois = 53;
 
+  numberOfDpis: number = 0; 
+  userName: string ='';
+  constructor(private http: HttpClient,public authService: AuthService) {}
+  readonly httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      withCredentials: true
+    };
+
+  
   ngAfterViewInit() {
-    this.renderChart();
-    this.renderBarChart();
+    this.fetchDpiCount();
+    this.fetchDossierData();
+    this.userName = this.authService.getUser().nom+' '+this.authService.getUser().prenom;
   }
 
-  renderChart() {
-    const ctx = document.getElementById('dossierChart') as HTMLCanvasElement;
+    fetchDpiCount() {
+      this.http.get<any[]>('http://127.0.0.1:8000/api/dpis/').subscribe(
+        (response) => {
+          this.numberOfDpis = response.length;
+          console.log('Number of DPIs:', this.numberOfDpis);
+        },
+        (error) => {
+          console.error('Failed to fetch DPIs:', error);
+        }
+      );
+    }
 
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'], // X-axis labels (time)
-        datasets: [
-          {
-            label: 'Dossiers Created',
-            data: [12, 19, 3, 5, 2, 3, 10], // Replace with actual data
-            borderColor: '#0F60FF', // Purple color
-            backgroundColor: '#0F60FF09', // Semi-transparent purple
-            fill: true,
-            tension: 0.4, // Smooth curves
+    fetchDossierData() {
+      this.http.get<any>('http://127.0.0.1:8000/api/dossier_chart/', this.httpOptions).subscribe(
+        (response) => {
+          const labels = response.labels;  
+          const data = response.data;
+          console.log("data : ", data); 
+          console.log("labels : ",labels);
+          this.renderChart(labels, data); 
+          this.renderBarChart(labels, data);
+        },
+        (error) => {
+          console.error('Failed to fetch chart data:', error);
+        }
+      );
+    }
+    
+    renderChart(labels: string[], data: number[]) {
+      const ctx = document.getElementById('dossierChart') as HTMLCanvasElement;
+    
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,  // Dynamic labels from response
+          datasets: [
+            {
+              label: 'Dossiers Created',
+              data: data,  // Dynamic data from response
+              borderColor: '#0F60FF', // Purple color
+              backgroundColor: '#0F60FF09', // Semi-transparent purple
+              fill: true,
+              tension: 0.4, // Smooth curves
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false, // Hide legend if not necessary
+            },
           },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: false, // Hide legend if not necessary
+          scales: {
+            x: {
+              grid: {
+                display: false,
+              },
+              title: {
+                display: true,
+                text: 'Time',
+              },
+            },
+            y: {
+              grid: {
+                display: false,
+              },
+              title: {
+                display: true,
+                text: 'Number of Dossiers',
+              },
+            },
           },
         },
-        scales: {
-          x: {
-            grid: {
-              display: false,
-            },
-            title: {
-              display: true,
-              text: 'Time',
-            },
-          },
-          y: {
-            grid: {
-              display: false,
-            },
-            title: {
-              display: true,
-              text: 'Number of Dossiers',
-            },
-          },
-        },
-      },
-    });
-  }
+      });
+    }
+    
 
-  renderBarChart() {
+  renderBarChart(labels: string[], data: number[]) {
     const ctx = document.getElementById('dossierBarChart') as HTMLCanvasElement;
   
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'], // Months
+        labels: labels, // Months
         datasets: [
           {
             label: 'Dossiers Created',
-            data: [5, 10, 8, 12, 15, 7, 11], 
+            data: data, 
             backgroundColor: '#BF39FD99', 
             borderColor: '#BF39FD99',
             borderWidth: 1,

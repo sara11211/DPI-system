@@ -1,0 +1,151 @@
+<header class="header">Compte Rendu Radiologique</header>
+
+<div class="flex flex-col gap-6 px-8 py-6">
+  <form (ngSubmit)="onSubmit()">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- NSS -->
+      <div class="form-group">
+        <label for="nss" class="label">NSS</label>
+        <input
+          id="nss"
+          type="text"
+          [(ngModel)]="nss"
+          name="nss"
+          readonly
+          class="input bg-gray-100"
+        />
+      </div>
+
+      <!-- Type d'Examen -->
+      <div class="form-group">
+        <label for="typeExamen" class="label">Type d'Examen</label>
+        <input
+          id="typeExamen"
+          type="text"
+          [(ngModel)]="typeExamen"
+          name="typeExamen"
+          readonly
+          class="input bg-gray-100"
+        />
+      </div>
+
+      <!-- Date d'Examen -->
+      <div class="form-group">
+        <label for="dateExamen" class="label">Date d'Examen</label>
+        <input
+          id="dateExamen"
+          type="date"
+          [(ngModel)]="dateExamen"
+          name="dateExamen"
+          [readonly]="!isEditable"
+          class="input"
+        />
+      </div>
+
+      <!-- Type du Bilan -->
+      <div class="form-group">
+        <label for="typeBilan" class="label">Type du Bilan</label>
+        <input
+          id="typeBilan"
+          type="text"
+          value="Radiologique"
+          readonly
+          class="input bg-gray-100"
+        />
+      </div>
+    </div>
+
+    <!-- Synthèse -->
+    <div class="form-group">
+      <label for="synthese" class="label">Synthèse de l'Examen</label>
+      <textarea
+        id="synthese"
+        [(ngModel)]="synthese"
+        name="synthese"
+        readonly
+        rows="4"
+        class="input bg-gray-100"
+      ></textarea>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Résultat -->
+      <div class="form-group">
+        <label for="resultat" class="label">Résultat de l'Examen</label>
+        <textarea
+          id="resultat"
+          [(ngModel)]="resultat"
+          name="resultat"
+          [readonly]="!isEditable"
+          rows="5"
+          class="input"
+        ></textarea>
+      </div>
+
+      <!-- Images Téléversées -->
+      <div class="form-group">
+        <label class="label">Image Téléversée</label>
+        
+        <!-- Display uploaded images -->
+        <div *ngIf="uploadedImages.length > 0; else noImages" class="grid grid-cols-3 gap-2 mt-2">
+          <img
+            [src]="uploadedImages"
+            alt="Image Téléversée"
+            class="w-full h-32 object-cover rounded-md border"
+          />
+        </div>
+      
+        <!-- Message when no images are uploaded -->
+        <ng-template #noImages>
+          <p class="text-gray-500">Aucune image téléversée.</p>
+        </ng-template>
+      
+        <!-- File upload input -->
+        <div *ngIf="isEditable" class="mt-4">
+          <label
+          for="files"
+            class="inline-block px-4 py-2 bg-blue-500 text-white font-medium text-sm leading-tight rounded shadow-md hover:bg-blue-600 focus:bg-blue-700 focus:outline-none focus:ring-0 transition duration-150 ease-in-out cursor-pointer"
+          >
+            Modifier l'image
+          </label>
+          <input
+            id="files"
+            type="file"
+            (change)="handleFileInput($event)"
+            multiple
+            accept=".png, .jpg, .jpeg, .dicom"
+            class="hidden"
+          />
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- Boutons -->
+    <div class="form-group flex justify-between mt-4">
+      <button
+        type="button"
+        (click)="goBack()"
+        class="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
+      >
+        Retour
+      </button>
+      <div class="flex space-x-4">
+        <button
+          type="button"
+          (click)="toggleEditMode()"
+          class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          {{ isEditable ? 'Annuler' : 'Modifier' }}
+        </button>
+        <button
+          *ngIf="isEditable"
+          type="submit"
+          class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+        >
+          Sauvegarder
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

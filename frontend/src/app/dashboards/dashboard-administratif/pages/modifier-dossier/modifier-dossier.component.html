@@ -59,9 +59,7 @@
   
             <div>
               <label for="medecinTraitant" class="label">Médecin Traitant</label>
-              <select id="medecinTraitant" formControlName="medecinTraitant" class="input">
-                <option *ngFor="let medecin of medecins" [value]="medecin.name">{{ medecin.name }}</option>
-              </select>
+              <input id="medecinTraitant" formControlName="medecinTraitant" type="text" class="input"  />
               <div *ngIf="dossierForm.get('medecinTraitant')?.touched && dossierForm.get('medecinTraitant')?.invalid" class="error">
                 {{ getMedecinTraitantError() }}
               </div>
@@ -115,8 +113,9 @@
                 formControlName="typeCouverture"
                 class="input"
               >
-                <option value="Partielle">Partielle</option>
                 <option value="Complète">Complète</option>
+                <option value="Partielle">Partielle</option>
+                
               </select>
               </div>
             </div>

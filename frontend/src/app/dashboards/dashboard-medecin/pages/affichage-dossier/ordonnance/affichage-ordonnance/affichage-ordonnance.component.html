@@ -1,9 +1,8 @@
 <header class="header">Affichage Ordonnance</header>
 
 <div class="flex flex-col w-full gap-4 px-16 py-4">
-
   <div class="w-full">
-    <div *ngFor="let medication of medications; let i = index" class="pb-4 mb-4 border-b last:border-b-0">
+    <div *ngFor="let medication of medicaments; let i = index" class="pb-4 mb-4 border-b last:border-b-0">
       <div class="flex items-center justify-between w-full">
         <div>
           <label for="name{{ i }}" class="label">Nom du Médicament</label>
@@ -11,7 +10,7 @@
             type="text"
             id="name{{ i }}"
             name="name{{ i }}"
-            [(ngModel)]="medication.name"
+            [(ngModel)]="medication.nom_medicament"
             class="input"
             readonly
           />
@@ -33,7 +32,7 @@
             type="text"
             id="duration{{ i }}"
             name="duration{{ i }}"
-            [(ngModel)]="medication.duration"
+            [(ngModel)]="medication.duree"
             class="input"
             readonly
           />
@@ -41,5 +40,4 @@
       </div>
     </div>
   </div>
-
 </div>

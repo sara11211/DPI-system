@@ -14,7 +14,7 @@
         <div class="flex items-center justify-between w-full">
           <div>
             <label for="name{{ i }}" class="label">Nom du Médicament</label>
-            <input type="text" id="name{{ i }}" name="name{{ i }}" [(ngModel)]="medication.name" class="input" #name="ngModel" (ngModelChange)="validateForm()" required>
+            <input type="text" id="name{{ i }}" name="name{{ i }}" [(ngModel)]="medication.nom_medicament" class="input" #name="ngModel" (ngModelChange)="validateForm()" required>
             <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-xs text-red-500">Nom du médicament est obligatoire.</div>
           </div>
           <div>
@@ -24,7 +24,7 @@
           </div>
           <div>
             <label for="duration{{ i }}" class="label">Durée</label>
-            <input type="text" id="duration{{ i }}" name="duration{{ i }}" [(ngModel)]="medication.duration" class="input" #duration="ngModel" (ngModelChange)="validateForm()" required>
+            <input type="text" id="duration{{ i }}" name="duration{{ i }}" [(ngModel)]="medication.duree" class="input" #duration="ngModel" (ngModelChange)="validateForm()" required>
             <div *ngIf="duration.invalid && (duration.dirty || duration.touched)" class="text-xs text-red-500">Durée est obligatoire.</div>
           </div>
           <button type="button" *ngIf="medications.length > 1" (click)="removeMedication(i)" class="text-red-500 hover:text-red-700">

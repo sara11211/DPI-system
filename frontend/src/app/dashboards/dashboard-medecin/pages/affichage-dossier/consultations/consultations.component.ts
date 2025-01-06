@@ -1,17 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-
+import { ConsultationService } from './consultations.service';
+import { ApiService } from '../../../../../services/api.service';
 interface Consultation {
   id: string;
   nom: string;
-  dateAjout: string;
+  date_consultation: string;
   ordonnance: string;
-  bilanb: string;
-  bilanr: string;
-  resultatsb: string;
-  resultatsr: string;
-  resume: string;
+  resume_consultation: string;
+  bilanb: boolean;
+  bilanr: boolean;
+  resultatsb: boolean;
+  resultatsr: boolean;
+  
 }
 
 @Component({
@@ -28,47 +30,12 @@ export class ConsultationsComponent {
   isModalVisible: boolean = false;
   consultation: any;
 
-  consultations: Consultation[] = [
-    {
-      id: '1',
-      nom: 'Braham Imad',
-      dateAjout: '2023-04-06',
-      ordonnance: 'Ordonnance A',
-      bilanb: 'Bilan A',
-      bilanr: 'Bilan A',
-      resultatsb: 'Resultats A',
-      resultatsr: 'Resultats A',
-      resume: 'Résumé A',
-    },
-    {
-      id: '2',
-      nom: 'Sarah Ali',
-      dateAjout: '2023-05-10',
-      ordonnance: 'Ordonnance B',
-      bilanb: '',
-      bilanr: 'Bilan A',
-      resultatsb: 'Resultats B',
-      resultatsr: '',
-      resume: 'Résumé B',
-    },
-    {
-      id: '3',
-      nom: 'Ahmed Karim',
-      dateAjout: '2023-06-12',
-      ordonnance: '',
-      bilanb: 'Bilan C',
-      bilanr: '',
-      resultatsb: 'Resultats C',
-      resultatsr: 'Resultats B',
-      resume: '',
-    },
-  ];
+  consultations: Consultation[] = [];
 
   displayedColumns: string[] = [
     'Date',
     'Ordonnance',
     'Bilan',
-    'Visualisation',
     'Resultats',
     'Resume',
   ];
@@ -83,9 +50,47 @@ export class ConsultationsComponent {
   consultationToUpdate: Consultation | null = null;
   ordonnanceToAdd: string = '';
 
-  constructor(public router: Router, public route: ActivatedRoute) {}
+  constructor(public router: Router, 
+              public route: ActivatedRoute,
+              private apiService: ApiService,
+              private consultationService: ConsultationService
+            ) {}
+
+
 
   ngOnInit(): void {
+
+    const nss = '418626877306';//Jai besoin de recuperer dynamiquement le nss de ce dossier :
+
+    this.consultationService.getConsultationsForPatient(nss).subscribe((data) => {
+      this.consultations = data;
+      for(const item of this.consultations)
+      {
+        this.apiService.getbilanradioconsultation(Number(item.id)).subscribe((data) => {
+          item.bilanr = data[0].id;
+          console.log(data);
+          if ( data[0].date_radiologie !== null )
+          {
+            item.resultatsr = true;
+          }
+        });
+        
+        this.apiService.getAnalyseBio(Number(item.id)).subscribe((data) => {
+          item.bilanb = data[0].id;
+          console.log(data);
+          if ( data[0].quantite !== null )
+            {
+              item.resultatsb =true;
+            }
+        });
+      }
+      this.filteredConsultations = [...this.consultations];
+      console.log(this.consultations)
+    });
+
+    
+
+
     this.router.events.subscribe(() => {
       // Check if the current route matches the modal route
       this.isModalVisible =
@@ -102,6 +107,13 @@ export class ConsultationsComponent {
         this.router.url.includes('visualisation')
         ;
     });
+ 
+ 
+ 
+ 
+ 
+ 
+ 
   }
 
   closeModal() {
@@ -135,7 +147,7 @@ export class ConsultationsComponent {
       if (this.deleteType === 'ordonnance') {
         this.consultationToDelete.ordonnance = '';
       } else if (this.deleteType === 'resume') {
-        this.consultationToDelete.resume = '';
+        this.consultationToDelete.resume_consultation = '';
       }
     }
     this.popupVisible = false;

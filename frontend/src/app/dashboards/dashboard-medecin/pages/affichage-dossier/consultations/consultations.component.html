@@ -19,7 +19,7 @@
         *ngFor="let consultation of consultations"
         class="text-sm text-black hover:bg-gray-50"
       >
-        <td class="td">{{ consultation.dateAjout }}</td>
+        <td class="td">{{ consultation.date_consultation }}</td>
         <td class="td">
           <div
             *ngIf="consultation.ordonnance"
@@ -103,7 +103,7 @@
                 class="text-pink-500 hover:underline"
                 (click)="openModalAffichageBilanBio(consultation.id)"
               >
-                Biologique
+                Consulter bilan Biologique
               </button>
             </div>
 
@@ -124,10 +124,10 @@
               class="flex items-center w-full gap-2"
             >
               <button
-                class="text-gray-500 hover:underline"
+                class="text-pink-500 hover:underline"
                 (click)="openModalAffichageBilanRadio(consultation.id)"
               >
-                Radiologique
+                Consulter bilan radiologique
               </button>
             </div>
 
@@ -144,49 +144,25 @@
             </div>
           </div>
         </td>
-        <td class="td">
-          <div
-            *ngIf="consultation.bilanb"
-            class="flex items-center w-full gap-2"
-          >
-            <button
-              class="hover:underline text-primary-blue"
-              (click)="openModalVisualisation(consultation.id)"
-            >
-              Voir graphique
-            </button>
-          </div>
-
-          <div
-            *ngIf="!consultation.bilanb"
-            class="flex items-center w-full gap-2"
-          >
-            <p
-              class="text-red-500"
-              (click)="openModalNouveauResume(consultation.id)"
-            >
-              Auncune 
-        </p>
-          </div>
-        </td>
+        
         <td class="td">
           <div class="flex flex-col gap-2">
             <div
-              *ngIf="consultation.resultatsb"
+              *ngIf="consultation.bilanb"
               class="flex items-center w-full gap-2"
             >
               <button
                 class="text-pink-500 hover:underline"
                 (click)="openModalResultatBio(consultation.id)"
               >
-                Biologique
+                Resultat bilan biologique
               </button>
             </div>
 
             <div
-              *ngIf="!consultation.resultatsb"
+              *ngIf="!consultation.bilanb"
               class="flex items-center w-full gap-2"
-            >
+              >
               <button
                 class="text-red-500"
               >
@@ -195,19 +171,19 @@
             </div>
 
             <div
-              *ngIf="consultation.resultatsr"
+              *ngIf="consultation.bilanr"
               class="flex items-center w-full gap-2"
             >
               <button
-                class="text-gray-500 hover:underline"
+                class="text-pink-500 hover:underline"
                 (click)="openModalResultatRadio(consultation.id)"
               >
-                Radiologique
+                Resultat bilan radiologique
               </button>
             </div>
 
             <div
-              *ngIf="!consultation.resultatsr"
+              *ngIf="!consultation.bilanr"
               class="flex items-center w-full gap-2"
             >
               <button
@@ -220,7 +196,7 @@
         </td>
         <td class="td">
           <div
-            *ngIf="consultation.resume"
+            *ngIf="consultation.resume_consultation"
             class="flex items-center w-full gap-2"
           >
             <button
@@ -280,7 +256,7 @@
           </div>
 
           <div
-            *ngIf="!consultation.resume"
+            *ngIf="!consultation.resume_consultation"
             class="flex items-center w-full gap-2"
           >
             <button

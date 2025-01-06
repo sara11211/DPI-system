@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ApiService } from '../../../../../../services/api.service';
 
 @Component({
   selector: 'app-affichage-bilan-radio',
@@ -11,15 +12,19 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './affichage-bilan-radio.component.css'
 })
 export class AffichageBilanRadioComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private router: Router) {}
-
+  constructor(private route: ActivatedRoute, private router: Router,private apiService: ApiService) {}
+  typeBilan: string = '';  
+  synthese: string = '';
+  
   ngOnInit(): void {
     // Retrieve the consultation ID from the route parameters
     const consultationId = this.route.snapshot.paramMap.get('id');
-  } 
 
-  typeBilan: string = 'Radiographie';  
-  synthese: string = 'Le patient présente des douleurs aiguës au niveau du bas du dos. Une radiographie a été réalisée pour évaluer les causes sous-jacentes.';
+    this.apiService.getbilanradioconsultation(Number(consultationId)).subscribe((data) => {
+      this.typeBilan = data[0].type_radiologie;
+      this.synthese = data[0].synthese_bilan_radio;
+    });
+  } 
 
   typeBilanOptions: string[] = ['Radiographie', 'Scanner', 'IRM', 'Échographie'];
 }

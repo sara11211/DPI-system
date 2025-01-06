@@ -1,6 +1,10 @@
-<!-- <app-header /> -->
-<main class="w-full h-full min-h-screen font-main bg-background-gray">
-  <!-- <app-home /> -->
-  <!-- <app-button [text]="text()"/> -->
-   <app-sidebar-patient/>
-</main>
+<div *ngIf="authService.isLoggedIn()">
+    <app-sidebar-radio *ngIf="showSidebarRadio()"></app-sidebar-radio >
+    <app-sidebar-admin *ngIf="showSidebarAdmin()"></app-sidebar-admin >
+    <app-sidebar-patient *ngIf="showSidebarPatient()"></app-sidebar-patient >
+    <app-sidebar-medecin *ngIf="showSidebarMedecin()"></app-sidebar-medecin >
+    <app-sidebar-labo *ngIf="showSidebarLaborantin()"></app-sidebar-labo >
+    <router-outlet></router-outlet>
+</div>
+  
+<app-login *ngIf="!authService.isLoggedIn()"></app-login>
