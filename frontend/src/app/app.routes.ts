@@ -11,8 +11,7 @@ import { ConsultationsComponent } from './dashboards/dashboard-medecin/pages/aff
 import { NouveauResumeComponent} from './dashboards/dashboard-medecin/pages/affichage-dossier/resume/nouveau-resume/nouveau-resume.component';
 import { ListeOrdonnancesComponent } from './dashboards/dashboard-medecin/pages/liste-ordonnances/liste-ordonnances.component';
 import { Component } from '@angular/core';
-import { DashboardPatientComponent } from './dashboards/dashboard-patient/dashboard-patient.component';
-import { InformationsPersonellesPatientComponent } from './dashboards/dashboard-patient/pages/informations-personelles/informations-personelles.component';
+
 import { ModifierDossierComponent } from './dashboards/dashboard-administratif/pages/modifier-dossier/modifier-dossier.component';
 import { ModifierInfoComponent } from './dashboards/dashboard-patient/pages/informations-personelles/modifier/modifier.component';
 
@@ -28,7 +27,6 @@ import { AffichageResumeComponent } from './dashboards/dashboard-medecin/pages/a
 import { VisualisationComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/visualisation/visualisation.component';
 import { ListeDossiersComponent } from './dashboards/dashboard-administratif/pages/liste-dossiers/liste-dossiers.component';
 import { NouvelleConsultationComponent } from './dashboards/dashboard-medecin/pages/nouvelle-consultation/nouvelle-consultation.component';
-
 //import laborantin
 import { DashboardLaboComponent } from './dashboards/dashboard-Laborantin/pages/dashboard/dashboard.component';
 import { HistoriqueGraphiquesComponent } from './dashboards/dashboard-Laborantin/pages/historique-graphiques/historique-graphiques.component';
@@ -157,11 +155,6 @@ export const routes: Routes = [
     ]}
     
   ];
-
-
-
-
-
 
 
 

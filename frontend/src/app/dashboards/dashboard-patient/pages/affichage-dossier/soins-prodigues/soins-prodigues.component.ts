@@ -1,10 +1,26 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DownloadIconComponent } from '../../../../../../assets/icons/download-icon/download-icon.component';
 
+
+export type TypeSoin =
+  'Administration de medicaments' |
+  'Changement de pensements' |
+  'Mesures de Parametres Medicaux';
+
+const soinColorsText: Record<TypeSoin, string> = {
+    'Administration de medicaments': "text-[#FF5733]",        // Orange
+    'Changement de pensements': "text-[#33C1FF]",         // Blue
+    'Mesures de Parametres Medicaux': "text-[#28C76F]",    // Green
+  };
+  const soinColorsBg: Record<TypeSoin, string> = {
+    'Administration de medicaments': "#FF5733",        // Orange
+    'Changement de pensements': "#33C1FF",         // Blue
+    'Mesures de Parametres Medicaux': "#28C76F10",    // Green
+  };
+  
 interface Consultation {
-  id: string;
   nom: string;
   nss: string;
   dateAjout: string;
@@ -15,22 +31,30 @@ interface Consultation {
   resultatsr: string;
   resume: string;
 }
+interface Dossier {
+  soins : Soin []
+}
+
+interface Soin {
+  dateAjout:string;
+  typeSoin: TypeSoin;
+  description:string;
+}
 
 @Component({
-  selector: 'app-consultations',
+  selector: 'app-soins-prodigues',
   standalone: true,
-  imports: [CommonModule, DownloadIconComponent, RouterOutlet],
-  templateUrl: './consultations.component.html',
-  styleUrl: './consultations.component.css'
+  imports: [CommonModule,DownloadIconComponent],
+  templateUrl: './soins-prodigues.component.html',
+  styleUrl: './soins-prodigues.component.css'
 })
-export class ConsultationsComponentPatient implements OnInit {
+export class SoinsProdiguesComponentPatient {
   popupVisible: boolean = false;
   deleteType: string = '';
   consultationToDelete: Consultation | null = null;
 
   consultations: Consultation[] = [
     { 
-      id: '1',
       nom: 'Braham Imad', 
       nss: '0673222612', 
       dateAjout: '2023-04-06', 
@@ -42,7 +66,6 @@ export class ConsultationsComponentPatient implements OnInit {
       resume: 'Résumé A'
     },
     { 
-      id: '2',
       nom: 'Sarah Ali', 
       nss: '0233222612', 
       dateAjout: '2023-05-10', 
@@ -54,7 +77,6 @@ export class ConsultationsComponentPatient implements OnInit {
       resume: 'Résumé B'
     },
     { 
-      id: '3',  
       nom: 'Ahmed Karim', 
       nss: '0783222612', 
       dateAjout: '2023-06-12', 
@@ -67,36 +89,34 @@ export class ConsultationsComponentPatient implements OnInit {
     },
     // Add more consultations as needed
   ];
-
+  listeSoins: Soin[]=[
+    {
+      dateAjout:'2024-12-23',
+      typeSoin: 'Administration de medicaments',
+      description:'une description random',
+    },
+    {
+      dateAjout:'2024-05-30',
+      typeSoin: 'Changement de pensements',
+      description:'une autre description random'
+    },
+    {
+      dateAjout:'2024-05-30',
+      typeSoin: 'Mesures de Parametres Medicaux',
+      description:'encore une autre description random'
+    }
+  ]
   // Updated displayed columns for consultations
-  displayedColumns: string[] = ['Date', 'Ordonnance', 'Bilan', 'Resultats', 'Resume'];
+  displayedColumns: string[] = ['Date', 'Type de soin','Description'];
 
   itemsPerPage = 8;
   currentPage = 1;
   searchTerm: string = '';
   selectedDate: string | null = null;
-  isModalVisible: boolean = false;
 
   filteredConsultations: Consultation[] = [...this.consultations]; // Filtered list
 
   constructor(public router: Router, public route: ActivatedRoute) {}
-
-  ngOnInit(): void {
-    this.router.events.subscribe(() => {
-      // Check if the current route matches the modal route
-      this.isModalVisible =
-        this.router.url.includes('affichage-ordonnance') ||
-        this.router.url.includes('affichage-resume') ||
-        this.router.url.includes('affichage-bilan-bio') ||
-        this.router.url.includes('affichage-bilan-radio') ||
-        this.router.url.includes('resultat-bio') ||
-        this.router.url.includes('resultat-radio')
-    });
-  }
-
-  closeModal() {
-    this.router.navigate(['../consultations'], { relativeTo: this.route });
-  }
 
   get paginatedConsultations() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -136,7 +156,7 @@ export class ConsultationsComponentPatient implements OnInit {
 
   openPopup(type: string, consultation: Consultation) {
     this.deleteType = type;  // Save whether we're dealing with ordonnance or resume
-    this.consultationToDelete = consultation;
+   // this.consultationToDelete = consultation;
     this.popupVisible = true;
   }
   
@@ -160,29 +180,23 @@ export class ConsultationsComponentPatient implements OnInit {
     this.consultationToDelete = null;
   }
 
-  openModalAffichageOrdonnance(id: string): void {
-    this.router.navigate(['affichage-ordonnance', id], {
-      relativeTo: this.route,
-    });
+  addOrUpdate(type: 'resume' | 'ordonnance', consultation: Consultation) {
+    if (type === 'resume') {
+      consultation.resume = 'New Resume'; // Add logic to handle resume addition
+    } else if (type === 'ordonnance') {
+      consultation.ordonnance = 'New Ordonnance'; // Add logic to handle ordonnance addition
+    }
   }
 
-  openModalAffichageResume(id: string): void {
-    this.router.navigate(['affichage-resume', id], { relativeTo: this.route });
+  addNewResume() {
+    this.router.navigate(['/nouveau-resume']);
   }
 
-  openModalAffichageBilanBio(id: string): void {
-    this.router.navigate(['affichage-bilan-bio', id], { relativeTo: this.route });
-  }
 
-  openModalAffichageBilanRadio(id: string): void {
-    this.router.navigate(['affichage-bilan-radio', id], { relativeTo: this.route });
+   getSoinColorText(soin: TypeSoin): string {
+    return soinColorsText[soin];
   }
-
-  openModalResultatBio(id: string): void {
-    this.router.navigate(['resultat-bio', id], { relativeTo: this.route });
-  }
-
-  openModalResultatRadio(id: string): void {
-    this.router.navigate(['resultat-radio', id], { relativeTo: this.route });
+   getSoinColorBG(soin: TypeSoin): string {
+    return soinColorsBg[soin];
   }
 }

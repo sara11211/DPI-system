@@ -1,1 +1,252 @@
-<p>dashboard-patient works!</p>
+
+<header class="header">Bonjour {{dossierData.nom}}</header>
+
+<div
+  class="flex flex-col w-full h-full gap-6 px-8 py-6 bg-background-gray"
+>
+    <div class="text-lg font-semibold"> 
+        Votre Dernière consultation date du <span class="text-primary-blue">{{getLastestConsultation().dateAjout}}</span>
+    </div>
+    <table
+    class="w-full pb-4 overflow-hidden bg-white border-separate rounded-2xl"
+  >
+    <thead>
+      <tr>
+        <th
+          *ngFor="let column of displayedColumns"
+          class="px-4 py-3 text-xs font-medium text-left uppercase bg-white border-b border-gray-200 text-dark-gray font-main"
+        >
+          {{ column }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngIf="consultation"
+        class="text-sm text-black hover:bg-gray-50"
+      >
+        <td class="td">{{ consultation.dateAjout }}</td>
+        <td class="td">
+          <div
+            *ngIf="consultation.ordonnance"
+            class="flex items-center w-full gap-2"
+          >
+            <button
+              class="hover:underline text-primary-blue"
+              (click)="openModalAffichageOrdonnance(consultation.id)"
+            >
+              Voir details
+            </button>
+            <button
+              class="text-gray-300 hover:text-primary-blue"
+              (click)="download('ordonnance', consultation)"
+            >
+              <download-icon/>
+            </button>
+          </div>
+
+          <div
+            *ngIf="!consultation.ordonnance"
+            class="flex items-center w-full gap-2"
+          >
+            <div
+              class="text-gray-300 "
+              
+            >
+              Il n'y a pas d'ordonnance
+            </div>
+          </div>
+        </td>
+        <td class="td">
+          <div class="flex flex-col gap-2">
+            <div
+              *ngIf="consultation.bilanb"
+              class="flex items-center w-full gap-2"
+            >
+              <button
+                class="text-pink-500 hover:underline"
+                (click)="openModalAffichageBilanBio(consultation.id)"
+              >
+                Biologique
+              </button>
+            </div>
+
+            <div
+              *ngIf="!consultation.bilanb"
+              class="flex items-center w-full gap-2"
+            >
+              <div class="text-gray-300 ">
+                Il n'y a pas de bilan biologique
+              </div>
+            </div>
+
+            <div
+              *ngIf="consultation.bilanr"
+              class="flex items-center w-full gap-2"
+            >
+              <button
+                class="text-gray-500 hover:underline"
+                (click)="openModalAffichageBilanRadio(consultation.id)"
+              >
+                Radiologique
+              </button>
+            </div>
+
+            <div
+              *ngIf="!consultation.bilanr"
+              class="flex items-center w-full gap-2"
+            >
+              <div class="text-gray-300 ">
+                Il n'y a pas de bilan radiologique
+              </div>
+            </div>
+          </div>
+        </td>
+        <td class="td">
+          <div class="flex flex-col gap-2">
+            <div
+              *ngIf="consultation.resultatsb"
+              class="flex items-center w-full gap-2"
+            >
+              <button
+                class="text-pink-500 hover:underline"
+                (click)="openModalResultatBio(consultation.id)"
+              >
+                Biologique
+              </button>
+            </div>
+
+            <div
+              *ngIf="!consultation.resultatsb"
+              class="flex items-center w-full gap-2"
+            >
+              <div class="text-gray-300 ">
+                Aucun résultat
+              </div>
+            </div>
+
+            <div
+              *ngIf="consultation.resultatsr"
+              class="flex items-center w-full gap-2"
+            >
+              <button
+                class="text-gray-500 hover:underline"
+                (click)="openModalResultatRadio(consultation.id)"
+              >
+                Radiologique
+              </button>
+            </div>
+
+            <div
+              *ngIf="!consultation.resultatsr"
+              class="flex items-center w-full gap-2"
+            >
+              <div class="text-gray-300 ">
+                Aucun résultat
+              </div>
+            </div>
+          </div>
+        </td>
+        <td class="td">
+          <div
+            *ngIf="consultation.resume"
+            class="flex items-center w-full gap-2"
+          >
+            <button
+              class="hover:underline text-primary-blue"
+              (click)="openModalAffichageResume(consultation.id)"
+            >
+              Voir details
+            </button>
+            <button
+              class="text-gray-300 hover:text-primary-blue"
+              (click)="download('resume', consultation)"
+            >
+              <download-icon/>
+            </button>
+          </div>
+
+          <div
+            *ngIf="!consultation.resume"
+            class="flex items-center w-full gap-2"
+          >
+            <div class="text-gray-300 ">
+              Aucun résultat
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="text-lg font-semibold"> 
+    Derniers soins prodigués
+    </div>
+
+    <table
+    class="w-full pb-4 overflow-hidden bg-white border-separate rounded-2xl"
+  >
+    <thead>
+      <tr>
+        <th
+          *ngFor="let column of displayedColumns2"
+          class="px-4 py-3 text-xs font-medium text-left uppercase bg-white border-b border-gray-200 text-dark-gray font-main"
+        >
+          {{ column }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let soin of listeSoins | slice:0:3"
+        class="text-sm text-black hover:bg-gray-50"
+      >
+        <td class="td">{{ soin.dateAjout }}</td>
+        <td class="td">
+          <div
+            
+            class="flex items-center w-full gap-2"
+          >
+            
+            <div
+            [ngClass]="{
+              'color: soin-admin-medicaments':(soin.typeSoin=='Administration de medicaments'),
+              'color: soin-changement-pansements':(soin.typeSoin == 'Changement de pensements'),
+              'color: soin-mesures-parametres-medicaux ':(soin.typeSoin=='Mesures de Parametres Medicaux'),
+              'rounded-[4px] py-[5px] px-2.5 flex items-center justify-center w-fit text-xs font-medium':true
+            }"
+              
+            >
+              {{soin.typeSoin}}
+        </div>
+            
+          </div>
+
+        </td>
+        <td class="td">
+          <div class="flex flex-col gap-2">
+            <div
+             
+              class="flex items-center w-full gap-2"
+            >
+              <button
+                class="text-black"
+                
+              >
+                {{soin.description.slice(0,40)+'...'}}
+              </button>
+            </div>
+
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="isModalVisible" class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+
