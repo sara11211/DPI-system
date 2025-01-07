@@ -344,15 +344,26 @@ def delete_ordonnance(request, ordonnance_id):
     ordonnance.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-
 @api_view(['GET'])
 def download_ordonnance_word(request, ordonnance_id):
     # Récupérer l'ordonnance, la consultation et les informations associées
     ordonnance = get_object_or_404(Ordonnance, id=ordonnance_id)
     consultation = ordonnance.consultation
     patient = consultation.patient
-    medecin = getattr(patient, 'medecin', None)
+
+    # Accéder au médecin associé au patient
+    medecin = patient.medecins
+    if medecin:
+        # Récupérer l'objet 'Personnel' du médecin
+        personnel_medecin = medecin.personnel
+        medecin_nom = personnel_medecin.nom
+        medecin_prenom = personnel_medecin.prenom
+        medecin_specialite = medecin.specialite or 'Médecin généraliste'
+    else:
+        # Si le médecin est inconnu, définir des valeurs par défaut
+        medecin_nom = 'Inconnu'
+        medecin_prenom = ''
+        medecin_specialite = 'Médecin inconnu'
 
     # Création du document Word
     doc = Document()
@@ -370,11 +381,8 @@ def download_ordonnance_word(request, ordonnance_id):
 
     # Informations du médecin dans la colonne droite
     doctor_info = row[1].paragraphs[0]
-    if medecin:
-        doctor_info.add_run(f"Dr {medecin.personnel.nom} {medecin.personnel.prenom}\n").bold = True
-        doctor_info.add_run(f"{medecin.specialite or 'Médecin généraliste'}\n")
-    else:
-        doctor_info.add_run("Médecin inconnu\n")
+    doctor_info.add_run(f"Dr {medecin_nom} {medecin_prenom}\n").bold = True
+    doctor_info.add_run(f"{medecin_specialite}\n")
 
     # Alignements et espacements
     for cell in row:
@@ -385,6 +393,7 @@ def download_ordonnance_word(request, ordonnance_id):
     date_paragraph = doc.add_paragraph()
     date_paragraph.add_run(f"Consulté le: {consultation.date_consultation.strftime('%d/%m/%Y') if consultation.date_consultation else 'Date non renseignée'}").bold = False
     doc.add_paragraph("\n")
+    
     # Ajouter le titre "Ordonnance"
     title = doc.add_paragraph()
     title_run = title.add_run("Ordonnance")
@@ -422,7 +431,52 @@ def download_ordonnance_word(request, ordonnance_id):
 
     return response
 
+@api_view(['GET'])
+def download_resume_consultation_word(request, consultation_id):
+    # Récupérer la consultation à partir de l'ID
+    consultation = get_object_or_404(Consultation, id=consultation_id)
+    
+    # Récupérer le résumé de consultation
+    resume = consultation.resume_consultation
+    if not resume:
+        return HttpResponse("Aucun résumé de consultation disponible", status=404)
+    
+    # Création du document Word
+    doc = Document()
 
+    # Ajouter les informations de consultation dans le document
+    doc.add_heading(f"Résumé de Consultation", 0)
+
+    # Informations du patient
+    doc.add_heading("Informations du patient", level=1)
+    doc.add_paragraph(f"Nom : {consultation.patient.nom}")
+    doc.add_paragraph(f"Prénom : {consultation.patient.prenom}")
+    doc.add_paragraph(f"NSS : {consultation.patient.nss}")
+    
+    # Informations de consultation
+    doc.add_heading("Détails de la consultation", level=1)
+    doc.add_paragraph(f"Date de la consultation : {consultation.date_consultation.strftime('%d/%m/%Y')}")
+    
+    # Résumé de la consultation
+    doc.add_heading("Résumé de consultation", level=1)
+    doc.add_paragraph(f"Diagnostic : {resume.diagnostic}")
+    doc.add_paragraph(f"Symptômes : {resume.symptomes}")
+    doc.add_paragraph(f"Mesures prises : {resume.mesure}")
+    doc.add_paragraph(f"Date de prochaine consultation : {resume.date_prochaine_consultation.strftime('%d/%m/%Y') if resume.date_prochaine_consultation else 'Non renseignée'}")
+    
+    # Ajouter des informations supplémentaires si disponibles
+    if resume.antecedents:
+        doc.add_paragraph(f"Antécédents : {resume.antecedents}")
+    if resume.info_supp:
+        doc.add_paragraph(f"Informations supplémentaires : {resume.info_supp}")
+
+    # Sauvegarder le document et le retourner en réponse HTTP
+    filename = f"{consultation.patient.nom}_{consultation.patient.prenom}_resume_{consultation.date_consultation.strftime('%d%m%Y')}.docx"
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    doc.save(response)
+
+    return response
 @api_view(['POST'])
 def valider_ordonnance(request, ordonnance_id):
     try:

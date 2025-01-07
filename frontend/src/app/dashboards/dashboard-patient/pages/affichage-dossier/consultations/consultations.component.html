@@ -19,7 +19,7 @@
         *ngFor="let consultation of consultations"
         class="text-sm text-black hover:bg-gray-50"
       >
-        <td class="td">{{ consultation.dateAjout }}</td>
+        <td class="td">{{ consultation.date_consultation }}</td>
         <td class="td">
           <div
             *ngIf="consultation.ordonnance"
@@ -33,6 +33,7 @@
             </button>
             <button
               class="text-gray-300 hover:text-primary-blue"
+              (click)=" openModaldownloadOrdonnance(consultation)"
             >
               <download-icon/>
             </button>
@@ -142,7 +143,7 @@
         </td>
         <td class="td">
           <div
-            *ngIf="consultation.resume"
+            *ngIf="consultation.resume_consultation"
             class="flex items-center w-full gap-2"
           >
             <button
@@ -153,14 +154,14 @@
             </button>
             <button
               class="text-gray-300 hover:text-primary-blue"
-              (click)="openPopup('resume', consultation)"
+              (click)=" openModaldownloadResume(consultation)"
             >
               <download-icon/>
             </button>
           </div>
 
           <div
-            *ngIf="!consultation.resume"
+            *ngIf="!consultation.resume_consultation"
             class="flex items-center w-full gap-2"
           >
             <div class="text-red-500">

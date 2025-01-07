@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { ConsultationService } from './consultations.service';
 import { ApiService } from '../../../../../services/api.service';
+
 interface Consultation {
   id: string;
   nom: string;
