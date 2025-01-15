@@ -21,9 +21,9 @@ export class RechercheDossierRadioComponent {
   // Navigate based on the selected option
   navigateToSelection() {
     if (this.selectedOption === 'nss') {
-      this.router.navigate(['/recherche-dossier/nss']);
+      this.router.navigate(['radiologue/recherche-dossier/nss']);
     } else if (this.selectedOption === 'qr') {
-      this.router.navigate(['/recherche-dossier/qr']);
+      this.router.navigate(['radiologue/recherche-dossier/qr']);
     } else {
       alert('Veuillez sélectionner une option.');
     }

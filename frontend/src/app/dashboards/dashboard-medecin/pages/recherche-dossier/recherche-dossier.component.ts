@@ -21,9 +21,9 @@ export class RechercheDossierComponent {
   // Navigate based on the selected option
   navigateToSelection() {
     if (this.selectedOption === 'nss') {
-      this.router.navigate(['/recherche-dossier/nss']);
+      this.router.navigate(['medecin/recherche-dossier/nss']);
     } else if (this.selectedOption === 'qr') {
-      this.router.navigate(['/recherche-dossier/qr']);
+      this.router.navigate(['medecin/recherche-dossier/qr']);
     } else {
       alert('Veuillez sélectionner une option.');
     }

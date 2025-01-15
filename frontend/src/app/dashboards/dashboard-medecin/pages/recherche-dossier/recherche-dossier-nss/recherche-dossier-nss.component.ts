@@ -51,6 +51,6 @@ export class RechercheDossierNssComponent {
 
   constructor(private router: Router) {}
   viewDossier() {
-    this.router.navigate(['/recherche-dossier', this.dossier.nss]);
+    this.router.navigate(['medecin/recherche-dossier', this.dossier.nss]);
   }
 }
