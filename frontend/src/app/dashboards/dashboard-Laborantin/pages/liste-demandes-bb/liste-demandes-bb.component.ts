@@ -2,12 +2,18 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ApiService } from '../../../../services/api.service';
 
 interface Demande {
+  id:string;
   nss: string;
   nomComplet: string;
   parDocteur: string;
   date: string;
+  synthese_bilan_bio?: string; // Optional synthesis property
+  date_bilan?: string; // Date when the report is completed
+  consultations?: string;
+  dpi: string;
 }
 
 @Component({
@@ -18,11 +24,7 @@ interface Demande {
   styleUrls: ['./liste-demandes-bb.component.css'],
 })
 export class ListeDemandesBbComponent implements OnInit {
-  demandes: Demande[] = [
-    { nss: '0700689232923', nomComplet: 'Braham Imad', parDocteur: 'D. Joseph Wheeler', date: '2023-04-06' },
-    { nss: '1234567890123', nomComplet: 'Sarah Ahmed', parDocteur: 'Dr. Sarah Taylor', date: '2023-03-15' },
-    { nss: '0987654321123', nomComplet: 'John Doe', parDocteur: 'Dr. Emily Clarke', date: '2023-01-22' },
-  ];
+  demandes: Demande[] = [];
 
   filteredDemandes = [...this.demandes];
   searchTerm: string = '';
@@ -30,10 +32,15 @@ export class ListeDemandesBbComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 10;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private apiService: ApiService) {}
 
-  ngOnInit(): void {}
-
+  ngOnInit(): void {
+    // diplay demands
+    this.apiService.getBilanBio().subscribe(response => {
+      this.demandes = response
+      console.log(this.demandes)
+    });
+  }
   applyFilters(): void {
     this.filteredDemandes = this.demandes.filter((demande) => {
       const matchesSearch =
@@ -46,7 +53,8 @@ export class ListeDemandesBbComponent implements OnInit {
 
   get paginatedDemandes() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredDemandes.slice(startIndex, startIndex + this.itemsPerPage);
+    return this.demandes
+    //return this.filteredDemandes.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
   get totalPages() {
@@ -59,7 +67,7 @@ export class ListeDemandesBbComponent implements OnInit {
 
   viewDetails(demande: Demande): void {
     this.router.navigate(['laborantin/historique-bilans'], {
-      state: { nss: demande.nss, nomComplet: demande.nomComplet },
+      state: { demande : demande },
     });
   }
    
@@ -70,7 +78,10 @@ export class ListeDemandesBbComponent implements OnInit {
       const globalIndex = (this.currentPage - 1) * this.itemsPerPage + index;
       this.demandes.splice(globalIndex, 1);
       this.applyFilters();
-      alert('Demande supprimée avec succès.');
+      this.apiService.deleteBilanBio(Number(this.demandes.splice(globalIndex, 1)[0].id)).subscribe(response => {
+        this.demandes = response
+        alert('Demande supprimée avec succès.');
+      });
     }
   }
 }

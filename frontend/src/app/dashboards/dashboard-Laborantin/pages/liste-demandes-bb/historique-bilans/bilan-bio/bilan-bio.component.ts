@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import Chart from 'chart.js/auto';
+import { ApiService } from '../../../../../../services/api.service';
 
 @Component({
   selector: 'app-bilan-bio',
@@ -12,31 +13,41 @@ import Chart from 'chart.js/auto';
   imports: [CommonModule, FormsModule],
 })
 export class BilanBioComponent implements OnInit {
+
+  id : string = '';
   nss: string = '';
   typeBilan: string = '';
   synthese: string = '';
-  examDate: string = '2023-04-07';
-  mesures: { mesure: string; valeur: string | null }[] = [
-    { mesure: 'Vitamine C', valeur: '120' },
-    { mesure: 'Hypertension', valeur: '140' },
-    { mesure: 'Cholestérol', valeur: '200' },
-  ];
+  examDate: string = '';
+  mesures: { id: number; mesure: string; valeur: number | null }[] = [];
   graphData: { labels: string[]; values: number[] } | null = null;
   isEditable: boolean = false;
   chart: Chart | null = null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private apiService: ApiService) {}
 
   ngOnInit(): void {
-    const state = history.state;
 
-    if (state && state.nss && state.typeBilan && state.synthese) {
+    const state = history.state;
+    console.log('this is the state ',state,'piw')
+    if (state && state.nss && state.synthese) {
+      this.id = state.id;
       this.nss = state.nss;
-      this.typeBilan = state.typeBilan;
+      this.typeBilan = 'Biologique';
       this.synthese = state.synthese;
       this.examDate = state.examDate || this.getTodayDate();
-      this.mesures = state.mesures || this.mesures;
-      this.graphData = state.graphData || null;
+
+      
+      this.apiService.getAnalyseBio(Number(state.consultation)).subscribe(response => {
+        response.forEach((element : { id:string, nom_analyse: string, quantite:string }, index : number) => {
+          if (!this.mesures[index]) {
+            this.mesures[index] = { id: 0, mesure: '', valeur: 0 };
+          }
+          this.mesures[index].mesure = element.nom_analyse;
+          this.mesures[index].valeur = Number(element.quantite);
+          this.mesures[index].id = Number(element.id);
+        });
+      });
 
       if (this.graphData) {
         this.generateGraph(this.graphData.labels, this.graphData.values);
@@ -125,7 +136,7 @@ export class BilanBioComponent implements OnInit {
       return;
     }
 
-    if (this.mesures.some((mesure) => mesure.valeur === null || String(mesure.valeur).trim() === '')) {
+    if (this.mesures.some((mesure) => mesure.valeur === 0)) {
       alert('Veuillez remplir toutes les mesures avant de soumettre.');
       return;
     }
@@ -136,13 +147,27 @@ export class BilanBioComponent implements OnInit {
       examDate: this.examDate,
       mesures: this.mesures,
     });
-    alert('Bilan sauvegardé avec succès!');
-    this.router.navigate(['/historique-bilans'], {
-      state: {
-        nss: this.nss,
-        nomComplet: history.state.nomComplet,
-      },
+
+    let data;
+
+    this.mesures.forEach((element : { id: number; mesure: string; valeur: number | null; } , index : number) => {
+      data = {
+        quantite : element.valeur
+      }
+      this.apiService.putAnalyseBio(element.id,data).subscribe(response => {
+        console.log(response);
     });
+    });
+
+
+    alert('Bilan sauvegardé avec succès!');
+    // this.router.navigate(['laborantin/historique-bilans'], {
+    //   state: {
+    //     nss: this.nss,
+    //     nomComplet: history.state.nomComplet,
+    //   },
+    // });
+    window.history.back();
   }
 
   goBack(): void {

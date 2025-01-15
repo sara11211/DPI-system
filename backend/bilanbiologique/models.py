@@ -92,6 +92,7 @@ class AnalysesBiologiques(models.Model):
         db_table = 'analyses_biologiques'
 
 class BilansBiologiques(models.Model):
+    id = models.IntegerField(primary_key=True)
     synthese_bilan_bio = models.TextField(blank=True, null=True)
     date_bilan = models.DateField(blank=True, null=True)
     laborantins = models.ForeignKey('Laborantins', models.DO_NOTHING, blank=True, null=True)

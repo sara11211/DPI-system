@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import BilansBiologiques,AnalysesBiologiques,Consultations,GraphiquesTendances
-from .serializers import BilansBiologiquesSerializer,AnalysesBiologiquesSerializer,GraphiquesTendancesSerializer
+from .serializers import BilansBiologiquesSerializer,AnalysesBiologiquesSerializer,GraphiquesTendancesSerializer,Dpis,Medecins,Personnel
 
 #.#################################
 #_fonctions de bilan biologique  #
@@ -18,9 +18,40 @@ from .serializers import BilansBiologiquesSerializer,AnalysesBiologiquesSerializ
 
 class bilan_bio(APIView):
     def get(self, request):
-        bilans = BilansBiologiques.objects.filter(date_bilan__isnull=True) #exams not yet done
-        serializer = BilansBiologiquesSerializer(bilans, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)  
+        bilans = BilansBiologiques.objects.all()
+        serializer1 = BilansBiologiquesSerializer(bilans, many=True)
+        response_data = []
+        for bilan in bilans:
+            consultation = bilan.consultations
+            if consultation:
+                dpis_id = consultation.dpis_id
+                date = consultation.date_consultation
+                patient = Dpis.objects.filter(id=dpis_id).first()
+                nss = patient.nss if patient else None
+                dpi_id = patient.id if patient else None
+                nomComplet = patient.nom+" "+patient.prenom
+                medecin_id = patient.medecins_id
+                medecin = Medecins.objects.filter(id=medecin_id).first()
+                personnel_id = medecin.personnel_id
+                personnel = Personnel.objects.filter(id=personnel_id).first()
+                parDocteur = personnel.nom+" "+personnel.prenom
+                
+                response_data.append({
+                    "status": "success",
+                    "id": bilan.id,
+                    "synthese_bilan_bio": bilan.synthese_bilan_bio,
+                    "date_bilan": bilan.date_bilan,
+                    "consultations": bilan.consultations.id if bilan.consultations else None,
+                    "laborantins": bilan.laborantins.id if bilan.laborantins else None,
+                    "nss": nss,
+                    "nomComplet": nomComplet,
+                    "parDocteur": parDocteur,
+                    "date" : date,
+                    "dpi" : dpi_id,
+                })
+                
+        return Response(response_data)
+    
     def post(self, request):
         serializer = BilansBiologiquesSerializer(data=request.data)
         if serializer.is_valid():
@@ -41,6 +72,13 @@ class bilan_bio(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     def delete(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
+        Analyses = AnalysesBiologiques.objects.filter(bilan_biologique = pk)
+        try :
+            for analyse in Analyses:
+                analyse.delete()
+        except AnalysesBiologiques.DoesNotExist :
+            pass
+            
         try:
             bilan = BilansBiologiques.objects.get(pk=pk)
         except BilansBiologiques.DoesNotExist:
@@ -53,10 +91,38 @@ class bilan_patient(APIView):
     def get(self, request, patient_id):
         consultations = Consultations.objects.filter(dpis=patient_id)
         bilans = BilansBiologiques.objects.filter(consultations__in=consultations)
-        
+        response_data = []
         if bilans.exists():
-            serializer = BilansBiologiquesSerializer(bilans, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            for bilan in bilans:
+                consultation = bilan.consultations
+                if consultation:
+                    dpis_id = consultation.dpis_id
+                    date = consultation.date_consultation
+                    patient = Dpis.objects.filter(id=dpis_id).first()
+                    nss = patient.nss if patient else None
+                    dpi_id = patient.id if patient else None
+                    nomComplet = patient.nom+" "+patient.prenom
+                    medecin_id = patient.medecins_id
+                    medecin = Medecins.objects.filter(id=medecin_id).first()
+                    personnel_id = medecin.personnel_id
+                    personnel = Personnel.objects.filter(id=personnel_id).first()
+                    parDocteur = personnel.nom+" "+personnel.prenom
+                    
+                    response_data.append({
+                        "status": "success",
+                        "id": bilan.id,
+                        "synthese_bilan_bio": bilan.synthese_bilan_bio,
+                        "date_bilan": bilan.date_bilan,
+                        "consultations": bilan.consultations.id if bilan.consultations else None,
+                        "laborantins": bilan.laborantins.id if bilan.laborantins else None,
+                        "nss": nss,
+                        "nomComplet": nomComplet,
+                        "parDocteur": parDocteur,
+                        "date" : date,
+                        "dpi" : dpi_id,
+                    })
+                
+            return Response(response_data)
         else:
             return Response({"detail": "Ce patient n'a effectué aucun bilan biologique"}, status=status.HTTP_404_NOT_FOUND)
 

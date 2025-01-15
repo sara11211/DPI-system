@@ -66,8 +66,15 @@ export class ApiService {
     return this.http.get<any>(`${this.apiUrl}/bilan-bio/bilan-consultation/${id}`);
   }
 
-  
+   // delete
+   deleteBilanBio(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/bilan-bio/delete/${id}/`);
+  }
 
+  //bilan d'un patient donné
+  getBilanPatient(id : number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/bilan-bio/bilan-patient/${id}/`);
+  }
 
   ////////////////////////////////////////////////////////////////////////////
   //analyse biologique :
@@ -80,5 +87,10 @@ export class ApiService {
   //create
   postAnalyseBio(data: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/bilan-bio/analysebio/create/`, data);
+  }
+
+  //update :
+  putAnalyseBio(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/bilan-bio/analysebio/update/${id}/`, data);
   }
 }

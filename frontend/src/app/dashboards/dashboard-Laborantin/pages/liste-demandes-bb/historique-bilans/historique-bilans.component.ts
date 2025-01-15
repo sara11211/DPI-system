@@ -2,6 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ApiService } from '../../../../../services/api.service';
+
+interface Bilan {
+  id : string;
+  date: string;
+  parDocteur: string;
+  mesures: { mesure : string, valeur: string };
+  typeBilan : string;
+  isProcessed : boolean;
+  graphData: {
+    labels: string[],
+    values: number[]
+  };
+  synthese_bilan_bio: string;
+}
 
 @Component({
   selector: 'app-historique-bilans',
@@ -14,55 +29,27 @@ export class HistoriqueBilansComponent implements OnInit {
   nss: string = '';
   nomComplet: string = '';
   origin: string = ''; // Tracks where the navigation originated from
-  bilans: any[] = [
-    {
-      date: '2023-04-06',
-      parDocteur: 'Dr. Joseph Wheeler',
-      mesures: [
-        { mesure: 'Vitamine C', valeur: '120' },
-        { mesure: 'Cholestérol', valeur: '180' },
-      ],
-      typeBilan: 'Biologique',
-      isProcessed: true,
-      graphData: {
-        labels: ['Vitamine C', 'Cholestérol'],
-        values: [120, 180],
-      },
-    },
-    {
-      date: '2023-03-20',
-      parDocteur: 'Dr. Emily Clark',
-      mesures: [
-        { mesure: 'Créatinine', valeur: '100' },
-        { mesure: 'Urée', valeur: '200' },
-        { mesure: 'Potassium', valeur: '30' },
-      ],
-      typeBilan: 'Biologique',
-      isProcessed: true,
-    },
-    {
-      date: '2023-02-14',
-      parDocteur: 'Dr. Sarah Johnson',
-      mesures: [
-        { mesure: 'Glycémie', valeur: '' },
-        { mesure: 'Insuline', valeur: '' },
-      ],
-      typeBilan: 'Biologique',
-      isProcessed: false,
-    },
-  ];
-
+  bilans: Bilan[] = [];
+  consultation: string = '';
   currentPage: number = 1;
   itemsPerPage: number = 2;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private apiService: ApiService) {}
 
   ngOnInit(): void {
     const state = history.state;
 
-    if (state && state.nss && state.nomComplet) {
-      this.nss = state.nss;
-      this.nomComplet = state.nomComplet;
+    if (state && state.demande.nss && state.demande.nomComplet) {
+      this.nss = state.demande.nss;
+      this.nomComplet = state.demande.nomComplet;
+      this.consultation = state.demande.consultations;
+      console.log(state.demande)
+      this.apiService.getBilanPatient(state.demande.dpi).subscribe(response => {
+        console.log(response);
+        this.bilans = response
+        console.log(this.bilans)
+      });
+
       this.origin = state.origin || ''; // Capture the origin if provided
     } else {
       console.error('Missing state information for NSS or Nom Complet.');
@@ -82,30 +69,19 @@ export class HistoriqueBilansComponent implements OnInit {
     this.currentPage = page;
   }
 
-  addBilan(bilan: any) {
-    this.router.navigate(['/nouveau-bb'], {
-      state: {
-        nss: this.nss,
-        nomComplet: this.nomComplet,
-        date: bilan.date,
-        parDocteur: bilan.parDocteur,
-        mesures: bilan.mesures,
-        typeBilan: bilan.typeBilan,
-        synthese: 'Synthesis for the selected bilan',
-      },
-    });
-  }
 
   editBilan(bilan: any) {
     this.router.navigate(['laborantin/bilan-bio'], {
       state: {
+        id: bilan.id,
         nss: this.nss,
         nomComplet: this.nomComplet,
         typeBilan: bilan.typeBilan,
-        synthese: 'Synthesis for the selected bilan',
+        synthese: bilan.synthese_bilan_bio,
         examDate: bilan.date,
         mesures: bilan.mesures,
         graphData: bilan.graphData || null,
+        consultation: this.consultation,
       },
     });
   }
@@ -116,7 +92,7 @@ export class HistoriqueBilansComponent implements OnInit {
 
   goBack() {
     if (this.origin === 'recherche-qr') {
-      this.router.navigate(['/recherche-dossier/qr'], {
+      this.router.navigate(['laborantin/recherche-dossier/qr'], {
         state: {
           dossier: {
             nss: this.nss,
@@ -126,7 +102,7 @@ export class HistoriqueBilansComponent implements OnInit {
       });
     } else {
       // Default to ListeDemandesBbComponent
-      this.router.navigate(['/liste-demandes-bb'], {
+      this.router.navigate(['laborantin/liste-demandes-bb'], {
         state: {
           nss: this.nss,
           nomComplet: this.nomComplet,

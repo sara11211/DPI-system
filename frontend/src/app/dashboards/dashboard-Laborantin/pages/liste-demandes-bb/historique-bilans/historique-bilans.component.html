@@ -51,18 +51,10 @@
         <td class="td">{{ bilan.parDocteur }}</td>
         <td class="td">
           <button
-            *ngIf="!bilan.isProcessed"
-            (click)="addBilan(bilan)"
-            class="hover:underline text-blue-500"
-          >
-            + Ajouter Bilan
-          </button>
-          <button
-            *ngIf="bilan.isProcessed"
             (click)="editBilan(bilan)"
             class="hover:underline text-green-600"
           >
-            + Modifier Bilan
+            + Remplire Bilan
           </button>
         </td>
       </tr>
