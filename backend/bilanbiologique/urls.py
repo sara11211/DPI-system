@@ -3,7 +3,7 @@ from .views import bilan_bio,analyse_bio,bilan_patient,graphique_laborantin,grap
 
 urlpatterns = [
     # bilan biologique
-    path('',bilan_bio.as_view()),
+    path('get',bilan_bio.as_view()),
     path('create/', bilan_bio.as_view()),
     path('update/<int:pk>/', bilan_bio.as_view()),
     path('delete/<int:pk>/', bilan_bio.as_view()),

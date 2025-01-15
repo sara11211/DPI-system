@@ -33,7 +33,7 @@ export class UnauthGuard implements CanActivate {
       return true;
     } else {
       //if the user is authenticated, redirect him to main page
-      this.router.navigate(['/radiologue/dashboard']);
+      //this.router.navigate(['/radiologue/dashboard']);
       return false;
     }
   }
