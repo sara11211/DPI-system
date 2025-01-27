@@ -62,6 +62,8 @@ export class DashboardPatientComponent {
     TypeCouverture: 'Complète',
     dateAjout: '2023-04-06',
   };
+
+
   consultations: Consultation[] = [
     {
       id: '1',
@@ -152,6 +154,25 @@ export class DashboardPatientComponent {
         this.router.url.includes('resultat-bio') ||
         this.router.url.includes('resultat-radio')
     });
+    // Retrieve the user object from localStorage
+    const userString: string | null = localStorage.getItem('user');
+
+    // Check if the user string exists and is not null
+    if (userString) {
+      // Parse the user object
+      const user = JSON.parse(userString);
+
+      // Check if the user object and the patient attribute exist
+      if (user && user.patient) {
+        // Extract the nom from the patient object
+        const nomFromLocalStorage = user.patient.nom;
+
+        // Update the nom in dossierData
+        this.dossierData.nom = nomFromLocalStorage;
+      }
+    } else {
+      console.error('No user data found in localStorage.');
+    }
   }
 
   closeModal() {

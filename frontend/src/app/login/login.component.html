@@ -29,6 +29,7 @@
 
       <div>
         <button
+          id="btn-1"
           (click)="selectPatient()"
           [ngClass]="{
             'bg-accent-blue border-primary-blue': selectedProfile === 'patient'
@@ -63,6 +64,7 @@
       </div>
 
       <button
+        id="btn-2"
         (click)="goToNextForm()"
         [disabled]="selectedProfile === null"
         class="w-full px-6 py-3 text-sm font-semibold text-white rounded-md cursor-pointer bg-primary-blue hover:bg-blue-700"
@@ -158,6 +160,7 @@
         </div>
         <div class="flex flex-col gap-2">
           <button
+            id="login-button"
             type="submit"
             class="w-full px-6 py-2.5 text-sm font-semibold text-white border rounded-md cursor-pointer border-primary-blue bg-primary-blue hover:bg-blue-700"
           >
@@ -303,6 +306,7 @@
         </div>
         <div class="flex flex-col gap-2">
           <button
+            id="login-button"
             type="submit"
             class="w-full px-6 py-2.5 mt-4 text-sm font-semibold text-white rounded-md cursor-pointer bg-primary-blue border border-primary-blue hover:bg-blue-700"
           >
