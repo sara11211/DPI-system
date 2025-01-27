@@ -294,9 +294,10 @@ fetchMedecins(): void {
             next: (response) => {
               console.log('Dossier successfully submitted:', response);
               alert("Dossier crée avec succés !");
-              this.dossierForm.reset();
               const dpiId = response.id;
+              console.log("dpi idd : ", dpiId)
               this.createMutuelle(dpiId);
+              this.dossierForm.reset();
             },
             error: (error) => {
               console.error('An error occurred during submission:', error);
@@ -317,6 +318,7 @@ fetchMedecins(): void {
         num_adherent: this.dossierForm.value.numAdherent,
         dpis_id: dpiId, 
       };
+      console.log(mutuelleData)
     
       this.http
         .post(this.endpointCreateMutuelle, mutuelleData, {

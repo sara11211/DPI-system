@@ -35,4 +35,6 @@ export class AffichageDossierComponentPatient implements OnInit {
     this.nss = this.route.snapshot.paramMap.get('nss');
   }
 
+
+
 }

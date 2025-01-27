@@ -28,13 +28,13 @@ interface Dossier {
 
 @Component({
   selector: 'app-modifier-dossier',
+  templateUrl: './modifier-dossier.component.html',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule],
-  templateUrl: './modifier-dossier.component.html',
   styleUrls: ['./modifier-dossier.component.css']
 })
 export class ModifierDossierComponent implements OnInit {
-  // Dans votre classe ModifierDossierComponent
+  nss: string = '';
   readonly httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -69,9 +69,9 @@ export class ModifierDossierComponent implements OnInit {
 
     ngOnInit(): void {
       this.fetchMedecins();
-      const nss = this.route.snapshot.paramMap.get('nss');
-      if (nss) {
-        this.fetchDossierData(nss);
+      this.nss = this.route.snapshot.paramMap.get('nss') || '';
+      if (this.nss) {
+        this.fetchDossierData(this.nss);
       }
     }
 
@@ -80,7 +80,6 @@ export class ModifierDossierComponent implements OnInit {
       this.http.get<{ id: number; nom: string; prenom: string }[]>(this.endpointGetDoctors)
         .subscribe({
           next: (data) => {
-            console.log(data);
             this.medecins = data;
           },
           error: (error) => {
@@ -95,19 +94,12 @@ export class ModifierDossierComponent implements OnInit {
     readonly endpointGetContact = 'http://127.0.0.1:8000/api/get_contact/'
 
       fetchDossierData(nss: string) {
-        console.log("nss : ", nss);
         const endpointWithParam = `${this.endpointFetchDossiers}${nss}/`;
         
         // First API call to get dossier
         this.http.get<any>(endpointWithParam, this.httpOptions).subscribe({
           next: (data) => {
-            console.log("Initial API Response:", data); // Check the full response
-      
-            const dossierInfo = Array.isArray(data) ? data[0] : data;
-            console.log("Medecin ID:", dossierInfo.medecins_id);
-            console.log("Contact ID:", dossierInfo.personnes_contact_id);
-            console.log("DPI ID:", dossierInfo.id);
-      
+            const dossierInfo = Array.isArray(data) ? data[0] : data;      
             const dossierData = {
               nss: dossierInfo.nss || '',
               nom: dossierInfo.nom || '',
@@ -125,13 +117,10 @@ export class ModifierDossierComponent implements OnInit {
               dateAjout: '2023-04-06'
             };
       
-            // Get doctor info
             if (dossierInfo.medecins_id) {
-              console.log("Fetching doctor info...");
               this.http.get<any>(`${this.endpointGetDoctor}${dossierInfo.medecins_id}`)
                 .subscribe({
                   next: (doctorData) => {
-                    console.log("Doctor data received:", doctorData);
                     dossierData.medecinTraitant = `${doctorData.nom} ${doctorData.prenom}`;
                     this.dossierForm.patchValue({ medecinTraitant: dossierData.medecinTraitant });
                   },
@@ -139,13 +128,10 @@ export class ModifierDossierComponent implements OnInit {
                 });
             }
       
-            // Get contact info
             if (dossierInfo.personnes_contact_id) {
-              console.log("Fetching contact info...");
               this.http.get<any>(`${this.endpointGetContact}${dossierInfo.personnes_contact_id}`)
                 .subscribe({
                   next: (contactData) => {
-                    console.log("Contact data received:", contactData);
                     dossierData.nomContact = contactData.nom_contact;
                     dossierData.prenomContact = contactData.prenom_contact;
                     dossierData.numTelContact = contactData.numero_telephone;
@@ -159,13 +145,10 @@ export class ModifierDossierComponent implements OnInit {
                 });
             }
       
-            // Get mutuelle info
             if (dossierInfo.id) {
-              console.log("Fetching mutuelle info...");
               this.http.get<any>(`${this.endpointGetMutuelle}${dossierInfo.id}`)
                 .subscribe({
                   next: (mutuelleData) => {
-                    console.log("Mutuelle data received:", mutuelleData);
                     dossierData.nomMutuelle = mutuelleData.nom_mutuelle;
                     dossierData.numAdherent = mutuelleData.num_adherent;
                     dossierData.typeCouverture = mutuelleData.type_couverture;
@@ -181,7 +164,6 @@ export class ModifierDossierComponent implements OnInit {
       
             // Update form with initial data
             this.dossierForm.patchValue(dossierData);
-            console.log("FINAL VERSION ", dossierData)
           },
           error: (error) => {
             console.error('Initial fetch error:', error);

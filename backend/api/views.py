@@ -58,8 +58,8 @@ class DPIUpdateView(APIView):
 # DELETE: Delete a DPI (functionality for admin)
 class DPIDeleteView(APIView):
     #@user_passes_test(is_admin)  --> we don't have an admin (we need authentification)
-    def delete(self, request, dpi_id):
-        dpi = get_object_or_404(DPI, id=dpi_id)
+    def delete(self, request, nss):
+        dpi = get_object_or_404(DPI, nss=nss)
         dpi.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

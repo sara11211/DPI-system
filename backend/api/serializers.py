@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import DPI, Mutuelle, PersonneContact, Medecin
 from django.contrib.auth.models import User
 import qrcode, io
+from django.core.exceptions import ValidationError
+from django.shortcuts import get_object_or_404
 
 # Handles the creation of the DPI object to put in the database 
 class DPISerializer(serializers.ModelSerializer):
@@ -61,14 +63,18 @@ class MUTUELLESerializer(serializers.ModelSerializer):
         model = Mutuelle
         fields = ['nom_mutuelle', 'num_adherent', 'type_couverture', 'dpis_id']
 
-    def create(self, validated_data):
-        try:
-            return super().create(validated_data)
-        except Exception as e:
-            print("Create error:", str(e)) 
-            raise
-            
-        
+        def validate_dpis_id(self, value):
+                # Check if the dpis_id exists in the Dpis table
+                if not DPI.objects.filter(id=value).exists():
+                    raise ValidationError(f"DPIS with id {value} does not exist.")
+                return value
+
+        def create(self, validated_data):
+                try:
+                    return super().create(validated_data)
+                except Exception as e:
+                    print("Create error:", str(e))
+                    raise
 
 
 # Handles the creation of the MUTUELLE object to put in the database 

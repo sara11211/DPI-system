@@ -23,7 +23,7 @@ export class AffichageDossierComponent implements OnInit {
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;
-    this.router.navigate([`./${tab}`], { relativeTo: this.route });
+    this.router.navigate([`./${tab}/`], { relativeTo: this.route });
 }
 
   nss: string | null = null;

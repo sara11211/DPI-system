@@ -122,7 +122,7 @@ export class ListeDossiersComponent implements OnInit {
     return `${year}-${month}-${day}`; 
   }
   editDossier(nss: string) {
-    this.router.navigate(['/modifier-dossier', nss]);
+    this.router.navigate(['/admin/modifier-dossier', nss]);
   }
 
   openPopup(dossier: Dossier) {
