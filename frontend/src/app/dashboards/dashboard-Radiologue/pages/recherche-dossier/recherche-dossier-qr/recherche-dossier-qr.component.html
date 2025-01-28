@@ -60,18 +60,13 @@
         </div>
         <!-- User Infos -->
         <div class="flex flex-col gap-2 text-left">
-          <span class="font-semibold">{{ dossier.name }}</span>
+          <span class="font-semibold">{{ dossier.nom }} {{ dossier.prenom }}</span>
           <span class="font-light text-dark-gray">{{ dossier.nss }}</span>
         </div>
       </div>
 
       <!-- Details Button -->
-      <button
-        (click)="viewDossier()"
-        class="px-8 py-2 border text-primary-blue border-primary-blue rounded-xl hover:bg-accent-blue"
-      >
-      Voir Compte Rendu
-      </button>
+      
     </div>
   </div>
 </div>

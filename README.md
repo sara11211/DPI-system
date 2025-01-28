@@ -51,6 +51,10 @@ Assurez-vous que les variables d'environnement associés à l'accès à la base 
 La base de données utilisée est MySQL. Les données nécessaires à l'accès à la base de données ont été fournies pour faciliter les choses.
 
 # Documentation de l'API
+vous pouvez consulter la documentation du backend via ce lien (generé avec swagger)
+'http://127.0.0.1:8000/swagger/'
+la documentation d'angular est generé avec Compodoc
+'http://127.0.0.1:8080/'
 
 # Considérations de Sécurité
 --> Mettez régulièrement à jour les dépendances pour éviter les vulnérabilités.
