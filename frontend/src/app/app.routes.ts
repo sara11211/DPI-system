@@ -26,7 +26,7 @@ import { AffichageBilanRadioComponent } from './dashboards/dashboard-medecin/pag
 import { AffichageResumeComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/resume/affichage-resume/affichage-resume.component';
 import { VisualisationComponent } from './dashboards/dashboard-medecin/pages/affichage-dossier/bilans-bio/visualisation/visualisation.component';
 import { ListeDossiersComponent } from './dashboards/dashboard-administratif/pages/liste-dossiers/liste-dossiers.component';
-import { NouvelleConsultationComponent } from './dashboards/dashboard-medecin/pages/nouvelle-consultation/nouvelle-consultation.component';
+//import { NouvelleConsultationComponent } from './dashboards/dashboard-medecin/pages/nouvelle-consultation/nouvelle-consultation.component';
 //import laborantin
 import { DashboardLaboComponent } from './dashboards/dashboard-Laborantin/pages/dashboard/dashboard.component';
 import { HistoriqueGraphiquesComponent } from './dashboards/dashboard-Laborantin/pages/historique-graphiques/historique-graphiques.component';
@@ -61,6 +61,7 @@ import { SoinsProdiguesComponentPatient } from './dashboards/dashboard-patient/p
 import { DashboardPatientComponent } from './dashboards/dashboard-patient/dashboard-patient.component';
 import { InformationsPersonellesPatientComponent } from './dashboards/dashboard-patient/pages/informations-personelles/informations-personelles.component';
 
+export type DashboardType = 'medical' | 'admin' | 'patient' | 'infirmier';
 
 
 //::::::::::::::::::: ALL THE ROUTES :::::::::::::::::::::::
@@ -149,7 +150,34 @@ export const routes: Routes = [
     canActivate: [AuthGuard] },
   /////////////////////////////////////////////infirmier routes///////////////////////////////////////////////////////
     { path: 'infirmier', children:[
-      { path: 'dashboard', component: TestComponent },
+      { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: MedecinDashboardComponent },
+      { path: 'recherche-dossier', component: RechercheDossierComponent },
+      { path: 'recherche-dossier/nss', component: RechercheDossierNssComponent },
+      { path: 'recherche-dossier/qr', component: RechercheDossierQrComponent },
+      { path: 'nouveau-soin', component: NouveauSoinComponent},
+      
+      {
+        path: 'recherche-dossier/:nss',
+        component: AffichageDossierComponentInfirmier,
+        children: [
+          { path: '', redirectTo: 'personal-info', pathMatch: 'full' },
+          { path: 'personal-info', component: InformationsPersonellesComponent },
+          {
+            path: 'soins-prodigues',
+            component: SoinsProdiguesComponentInfirmier,
+            children: [
+              { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
+              { path: 'affichage-soin/:id', component: AffichageSoinComponent },
+              { path: 'modifier-soin/:id', component: ModifierSoinComponent },
+              { path: 'visualisation/:id', component: VisualisationComponent },
+            ],
+          },
+        ],
+      },
+      { path: 'liste-ordonnances', component: ListeOrdonnancesComponent, children:[
+        { path: 'affichage-ordonnance/:id', component: AffichageOrdonnanceComponent },
+      ] },
       ],
       canActivate: [AuthGuard] },
   ///////////////////////////////////////////////////////patient routes///////////////////////////////////////////////
@@ -187,8 +215,35 @@ export const routes: Routes = [
 
 
 
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { NouvelleConsultationComponent } from './dashboards/dashboard-medecin/pages/nouvelle-consultation/nouvelle-consultation.component';
+import { DashboardAdministratifComponent } from './dashboards/dashboard-administratif/dashboard-administratif.component';
+import { NouveauSoinComponent } from './dashboards/dashboard-infirmier/pages/nouveau-soin/nouveau-soin.component';
+import { SoinsProdiguesComponentInfirmier } from './dashboards/dashboard-infirmier/pages/affichage-dossier/soins-prodigues/soins-prodigues.component';
+import { AffichageDossierComponentInfirmier } from './dashboards/dashboard-infirmier/pages/affichage-dossier/affichage-dossier.component';
+import { AffichageSoinComponent } from './dashboards/dashboard-infirmier/pages/affichage-dossier/soins-prodigues/affichage-soin/affichage-soin.component';
+import { ModifierSoinComponent } from './dashboards/dashboard-infirmier/pages/affichage-dossier/soins-prodigues/modifier-soin/modifier-soin.component';
+
+  //setDashboard(type: DashboardType) {
+  //  console.log('Setting dashboard to', type);  // Add this line
+   // this.currentDashboard.next(type);
+   // this.updateRoutes();
+  //}
+  
+ // private updateRoutes() {
+    //const routes = this.currentDashboard.value === 'medical' ? medecinRoutes : administratifRoutes;
+   // let r;
+   // switch (this.currentDashboard.value){
+    //  default: case 'medical':  r = medecinRoutes; break;
+    //  case 'admin':  r = administratifRoutes; break;
+     // case 'patient':  r = patientRoutes; break;
+     // case 'infirmier': r=infirmierRoutes; break;
 
 
+
+  //  }}
 
 
 

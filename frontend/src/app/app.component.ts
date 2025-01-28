@@ -31,11 +31,14 @@ import { AuthService } from './login/auth.service';
 //   }
 // }
 
+import { DashboardRouteService } from './app.routes';
+import { SidebarInfirmierComponent } from './dashboards/dashboard-infirmier/sidebar-infirmier/sidebar-infirmier.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SidebarComponent,SidebarPatientComponent,SidebarRadioComponent,RouterOutlet, LoginComponent, TestComponent,SidebarComponentMedecin, SidebarLaboComponent],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SidebarComponent,SidebarPatientComponent,SidebarInfirmierComponent],
   templateUrl: './app.component.html',
  
 })
@@ -45,6 +48,12 @@ export class AppComponent {
 
   showSidebarRadio(): boolean {
     return this.authService.getUser()?.fonction === 'Radiologue';
+  constructor(private dashboardService: DashboardRouteService) {}
+  
+  ngOnInit() {
+    // change userrole here 
+    const userRole = 'infirmier'; 
+    this.dashboardService.setDashboard(userRole as 'medical' | 'admin'|'patient'|'infirmier');
   }
 
   showSidebarAdmin(): boolean {
@@ -68,4 +77,5 @@ export class AppComponent {
   }
 
   
+}
 }
