@@ -140,7 +140,8 @@ export class LoginComponent {
             console.log("no fonction found");
         }
         let route = path+'/dashboard'
-        this.router.navigate([route]);
+        // this.router.navigate([route]);
+        this.router.navigate([route], { replaceUrl: true });
       } else {
         console.log('Login failed: ' + response.message); // Adjust based on your backend response
       }

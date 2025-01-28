@@ -29,7 +29,7 @@
 }
 
 .header {
-    @apply w-full p-5 text-lg font-semibold leading-6 bg-white border-b font-main
+    @apply w-full p-[21px] text-lg font-semibold bg-white border-b font-main
 }
 
 .td {
@@ -44,7 +44,6 @@
     @apply flex items-center gap-5 p-4 bg-white border shadow-sm rounded-xl hover:bg-accent-blue hover:border-primary-blue active:border-primary-blue focus:border-primary-blue active:bg-accent-blue focus:bg-accent-blue
 }
 
-/* modal-wrapper.component.css */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -102,7 +101,7 @@
   }
   
   .mesure-input {
-    width: 150px;/* Small width for one-word inputs */
+    width: 150px;
     padding: 0.4rem;
     border: 1px solid #ccc;
     border-radius: 4px;

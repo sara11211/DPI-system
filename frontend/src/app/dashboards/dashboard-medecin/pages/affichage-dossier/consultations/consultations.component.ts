@@ -40,7 +40,7 @@ export class ConsultationsComponent {
     'Resume',
   ];
 
-  itemsPerPage = 8;
+  itemsPerPage = 5;
   currentPage = 1;
   searchTerm: string = '';
   selectedDate: string | null = null;

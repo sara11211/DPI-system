@@ -26,7 +26,7 @@ export class ListeOrdonnancesComponent implements OnInit {
 
   ordonnances: Ordonnance[] = []; // Liste des ordonnances récupérées
   displayedColumns: string[] = ['Date', 'NSS', 'Etat', 'Details'];
-  itemsPerPage = 8;
+  itemsPerPage = 7;
   currentPage = 1;
   searchTerm: string = ''; // Critère de recherche par NSS
   selectedDate: string | null = null; // Critère de filtre par date

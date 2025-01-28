@@ -56,21 +56,21 @@
           <!-- Affichage des états avec les bons boutons -->
           <button
             *ngIf="mapEtat(ordonnance.etat) === 'Validée'"
-            class="rounded-full bg-[#28C76F10] text-[#28C76F] px-4 py-1 text-xs font-semibold"
+            class="rounded-[4px] bg-[#28C76F10] text-[#28C76F] px-4 py-1 text-xs font-semibold"
           >
             Validée
           </button>
 
           <button
             *ngIf="mapEtat(ordonnance.etat) === 'En attente'"
-            class="rounded-full bg-[#0FB7FF10] text-[#0FB7FF] px-4 py-1 text-xs font-semibold"
+            class="rounded-[4px] bg-[#0FB7FF10] text-[#0FB7FF] px-4 py-1 text-xs font-semibold"
           >
             En attente
           </button>
 
           <button
             *ngIf="mapEtat(ordonnance.etat) === 'Rejetée'"
-            class="rounded-full bg-[#EA545510] text-[#EA5455] px-4 py-1 text-xs font-semibold"
+            class="rounded-[4px] bg-[#EA545510] text-[#EA5455] px-4 py-1 text-xs font-semibold"
           >
             Rejetée
           </button>
