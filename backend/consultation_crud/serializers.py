@@ -74,9 +74,37 @@ class SoinsInfirmierSerializer(serializers.ModelSerializer):
     infirmiers_id = serializers.PrimaryKeyRelatedField(queryset=Infirmiers.objects.all(), write_only=True)
     patient = serializers.PrimaryKeyRelatedField(queryset=Dpis.objects.all(), write_only=True)
 
+    heure_soin = serializers.SerializerMethodField()  # Champ virtuel
+    type_soin = serializers.SerializerMethodField()   # Champ virtuel
+
     class Meta:
         model = SoinsInfirmier
-        fields = ['id', 'infirmiers_id', 'date_soin', 'description_soin', 'patient']
+        fields = ['id', 'infirmiers_id', 'date_soin', 'heure_soin', 'type_soin', 'description_soin', 'patient']
+
+    def get_heure_soin(self, obj):
+        # Retourne une heure par défaut ou None si l'heure n'est pas stockée dans la base
+        return "00:00"  # Modifier si nécessaire
+
+    def get_type_soin(self, obj):
+        # Retourne un type par défaut ou None si le type n'est pas stocké dans la base
+        return "Type inconnu"  # Modifier si nécessaire
+
+    def create(self, validated_data):
+        """
+        Personnalisation de la création de l'objet sans modifier le modèle.
+        """
+        heure_soin = self.context['request'].data.get('heure_soin', "00:00")  # Récupérer l'heure du frontend
+        type_soin = self.context['request'].data.get('type_soin', "Type inconnu")  # Récupérer le type du frontend
+
+        # Créer l'instance de soin (sans stocker `heure_soin` et `type_soin` dans la base)
+        soin = SoinsInfirmier.objects.create(**validated_data)
+
+        # Ajouter ces valeurs au serializer en les stockant temporairement
+        soin.heure_soin = heure_soin
+        soin.type_soin = type_soin
+
+        return soin
+
 class ResumeConsultationSerializer(serializers.ModelSerializer):
     consultationId = serializers.IntegerField(write_only=True)  # Ajouter un champ pour l'ID de consultation
     

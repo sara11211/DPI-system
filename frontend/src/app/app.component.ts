@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 // change sidebar component path to change the dashboard 
 import { SidebarComponent } from './dashboards/dashboard-administratif/sidebar/sidebar.component';
 import { SidebarComponentMedecin } from './dashboards/dashboard-medecin/sidebar/sidebar.component';
+import { SidebarInfirmierComponent } from './dashboards/dashboard-infirmier/sidebar-infirmier/sidebar-infirmier.component';
 import { SidebarPatientComponent } from './dashboards/dashboard-patient/sidebar/sidebar.component';
 import { SidebarRadioComponent } from './dashboards/dashboard-Radiologue/sidebar/sidebar.component';
 import { SidebarLaboComponent } from './dashboards/dashboard-Laborantin/sidebar/sidebar.component';
@@ -35,7 +36,7 @@ import { AuthService } from './login/auth.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SidebarComponent,SidebarPatientComponent,SidebarRadioComponent,RouterOutlet, LoginComponent, TestComponent,SidebarComponentMedecin, SidebarLaboComponent],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive,SidebarInfirmierComponent, SidebarComponent,SidebarPatientComponent,SidebarRadioComponent,RouterOutlet, LoginComponent, TestComponent,SidebarComponentMedecin, SidebarLaboComponent],
   templateUrl: './app.component.html',
  
 })

@@ -2,18 +2,19 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { DownloadIconComponent } from '../../../../../../assets/icons/download-icon/download-icon.component';
-
+import { ApiService } from '../../../../../services/api.service';
+import { ConsultationService } from '../../../patient.service';
 interface Consultation {
   id: string;
   nom: string;
-  nss: string;
-  dateAjout: string;
+  date_consultation: string;
   ordonnance: string;
-  bilanb: string;
-  bilanr: string;
-  resultatsb: string;
-  resultatsr: string;
-  resume: string;
+  resume_consultation: string;
+  bilanb: boolean;
+  bilanr: boolean;
+  resultatsb: boolean;
+  resultatsr: boolean;
+  nss: string;
 }
 
 @Component({
@@ -28,45 +29,7 @@ export class ConsultationsComponentPatient implements OnInit {
   deleteType: string = '';
   consultationToDelete: Consultation | null = null;
 
-  consultations: Consultation[] = [
-    { 
-      id: '1',
-      nom: 'Braham Imad', 
-      nss: '0673222612', 
-      dateAjout: '2023-04-06', 
-      ordonnance: 'Ordonnance A', 
-      bilanb: 'Bilan A', 
-      bilanr: 'Bilan A', 
-      resultatsb: 'Resultats A', 
-      resultatsr: 'Resultats A', 
-      resume: 'Résumé A'
-    },
-    { 
-      id: '2',
-      nom: 'Sarah Ali', 
-      nss: '0233222612', 
-      dateAjout: '2023-05-10', 
-      ordonnance: 'Ordonnance B', 
-      bilanb: '', 
-      bilanr: 'Bilan A', 
-      resultatsb: 'Resultats B',
-      resultatsr: '',  
-      resume: 'Résumé B'
-    },
-    { 
-      id: '3',  
-      nom: 'Ahmed Karim', 
-      nss: '0783222612', 
-      dateAjout: '2023-06-12', 
-      ordonnance: '', 
-      bilanb: 'Bilan C', 
-      bilanr: '', 
-      resultatsb: 'Resultats C', 
-      resultatsr: 'Resultats B', 
-      resume: ''
-    },
-    // Add more consultations as needed
-  ];
+  consultations: Consultation[] = [];
 
   // Updated displayed columns for consultations
   displayedColumns: string[] = ['Date', 'Ordonnance', 'Bilan', 'Resultats', 'Resume'];
@@ -79,20 +42,72 @@ export class ConsultationsComponentPatient implements OnInit {
 
   filteredConsultations: Consultation[] = [...this.consultations]; // Filtered list
 
-  constructor(public router: Router, public route: ActivatedRoute) {}
+  
+    constructor(public router: Router, 
+                public route: ActivatedRoute,
+                private apiService: ApiService,
+                private consultationService: ConsultationService
+              ) {}
 
-  ngOnInit(): void {
-    this.router.events.subscribe(() => {
-      // Check if the current route matches the modal route
-      this.isModalVisible =
-        this.router.url.includes('affichage-ordonnance') ||
-        this.router.url.includes('affichage-resume') ||
-        this.router.url.includes('affichage-bilan-bio') ||
-        this.router.url.includes('affichage-bilan-radio') ||
-        this.router.url.includes('resultat-bio') ||
-        this.router.url.includes('resultat-radio')
-    });
-  }
+  
+              ngOnInit(): void {
+
+                const nss = '418626877306';//Jai besoin de recuperer dynamiquement le nss de ce dossier :
+            
+                this.consultationService.getConsultationsForPatient(nss).subscribe((data) => {
+                  this.consultations = data;
+                  for(const item of this.consultations)
+                  {
+                    this.apiService.getbilanradioconsultation(Number(item.id)).subscribe((data) => {
+                      item.bilanr = data[0].id;
+                      console.log(data);
+                      if ( data[0].date_radiologie !== null )
+                      {
+                        item.resultatsr = true;
+                      }
+                    });
+                    
+                    this.apiService.getAnalyseBio(Number(item.id)).subscribe((data) => {
+                      item.bilanb = data[0].id;
+                      console.log(data);
+                      if ( data[0].quantite !== null )
+                        {
+                          item.resultatsb =true;
+                        }
+                    });
+                  }
+                  this.filteredConsultations = [...this.consultations];
+                  console.log(this.consultations)
+                });
+            
+                
+            
+            
+                this.router.events.subscribe(() => {
+                  // Check if the current route matches the modal route
+                  this.isModalVisible =
+                    this.router.url.includes('nouvelle-ordonnance') ||
+                    this.router.url.includes('affichage-ordonnance') ||
+                    this.router.url.includes('resultat-bio') ||
+                    this.router.url.includes('nouveau-bilan-bio') ||
+                    this.router.url.includes('affichage-bilan-bio') ||
+                    this.router.url.includes('resultat-radio') ||
+                    this.router.url.includes('nouveau-bilan-radio') ||
+                    this.router.url.includes('affichage-bilan-radio') ||
+                    this.router.url.includes('nouveau-resume') ||
+                    this.router.url.includes('affichage-resume') ||
+                    this.router.url.includes('visualisation')
+                    ;
+                });
+             
+             
+             
+             
+             
+             
+             
+              }
+            
 
   closeModal() {
     this.router.navigate(['../consultations'], { relativeTo: this.route });
@@ -122,7 +137,7 @@ export class ConsultationsComponentPatient implements OnInit {
         this.searchTerm.trim() === '' ||
         consultation.nss.toLowerCase().includes(this.searchTerm.toLowerCase());
       const matchesDate =
-        !this.selectedDate || consultation.dateAjout === this.selectedDate;
+        !this.selectedDate || consultation.date_consultation === this.selectedDate;
       return matchesSearch && matchesDate;
     });
 
@@ -145,7 +160,7 @@ export class ConsultationsComponentPatient implements OnInit {
       if (this.deleteType === 'ordonnance') {
         this.consultationToDelete.ordonnance = '';  // Clear ordonnance
       } else if (this.deleteType === 'resume') {
-        this.consultationToDelete.resume = '';  // Clear resume
+        this.consultationToDelete.resume_consultation = '';  // Clear resume
       }
     }
     this.popupVisible = false;  // Hide the popup after deletion
@@ -185,4 +200,44 @@ export class ConsultationsComponentPatient implements OnInit {
   openModalResultatRadio(id: string): void {
     this.router.navigate(['resultat-radio', id], { relativeTo: this.route });
   }
+  
+  openModalVisualisation(id: string): void {
+    this.router.navigate(['visualisation', id], { relativeTo: this.route });
+  }
+  openModaldownloadOrdonnance(consultation: Consultation) {
+    // Assurez-vous que l'ordonnance existe
+    if (consultation.ordonnance) {
+      const ordonnanceId = consultation.ordonnance;  // Récupérer l'ID de l'ordonnance depuis la consultation
+      this.consultationService.telechargerOrdonnance(Number(ordonnanceId)).subscribe((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `ordonnance_${ordonnanceId}.docx`; // Nom du fichier basé sur l'ID de l'ordonnance
+        a.click();
+        window.URL.revokeObjectURL(url);  // Libérer l'URL du Blob après le téléchargement
+      });
+    } else {
+      console.error("Aucune ordonnance disponible pour cette consultation");
+    }
+  }
+  openModaldownloadResume(consultation: Consultation) {
+    // Assurez-vous que la consultation existe
+    if (consultation) {
+      const consultationId = consultation.id;  // Récupérer l'ID de la consultation
+  
+      // Appeler le service pour télécharger le résumé de la consultation
+      this.consultationService.telechargerResume(Number(consultationId)).subscribe((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Resume_consultation_${consultationId}.docx`; // Nom du fichier basé sur l'ID de la consultation
+        a.click();
+        window.URL.revokeObjectURL(url);  // Libérer l'URL du Blob après le téléchargement
+      });
+    } else {
+      console.error("Aucune consultation disponible pour télécharger le résumé");
+    }
+  }
+  
+  
 }
