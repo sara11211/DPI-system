@@ -32,8 +32,6 @@ export class UnauthGuard implements CanActivate {
     if (!this.authService.isLoggedIn()) {
       return true;
     } else {
-      //if the user is authenticated, redirect him to main page
-      //this.router.navigate(['/radiologue/dashboard']);
       return false;
     }
   }
