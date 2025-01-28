@@ -80,8 +80,9 @@ export class LoginComponent {
           
           if(response.patient)
           {
-            console.log("je suis un patient");
-            this.router.navigate(['patient/dashboard']);
+            this.router.navigate(['patient/dashboard']).then(() => {
+              window.location.reload(); // Reload after successful navigation
+            });
           }else{
             //this case must not be present or else I'll shot myself
           }
@@ -140,7 +141,9 @@ export class LoginComponent {
             console.log("no fonction found");
         }
         let route = path+'/dashboard'
-        this.router.navigate([route]);
+        this.router.navigate([route]).then(() => {
+          window.location.reload(); // Reload after successful navigation
+        });
       } else {
         console.log('Login failed: ' + response.message); // Adjust based on your backend response
       }

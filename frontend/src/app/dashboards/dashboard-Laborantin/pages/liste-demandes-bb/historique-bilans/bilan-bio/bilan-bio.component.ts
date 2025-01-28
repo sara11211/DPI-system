@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import Chart from 'chart.js/auto';
 import { ApiService } from '../../../../../../services/api.service';
+import { AuthService } from '../../../../../../login/auth.service';
 
 @Component({
   selector: 'app-bilan-bio',
@@ -19,12 +20,13 @@ export class BilanBioComponent implements OnInit {
   typeBilan: string = '';
   synthese: string = '';
   examDate: string = '';
+  dpi: string = '';
   mesures: { id: number; mesure: string; valeur: number | null }[] = [];
   graphData: { labels: string[]; values: number[] } | null = null;
   isEditable: boolean = false;
   chart: Chart | null = null;
 
-  constructor(private router: Router, private apiService: ApiService) {}
+  constructor(private router: Router, private apiService: ApiService, private authservice : AuthService) {}
 
   ngOnInit(): void {
 
@@ -36,6 +38,7 @@ export class BilanBioComponent implements OnInit {
       this.typeBilan = 'Biologique';
       this.synthese = state.synthese;
       this.examDate = state.examDate || this.getTodayDate();
+      this.dpi = state.dpi;
 
       
       this.apiService.getAnalyseBio(Number(state.consultation)).subscribe(response => {
@@ -77,7 +80,7 @@ export class BilanBioComponent implements OnInit {
           label: mesure.mesure,
           value: +mesure.valeur!, // Ensure numeric values
         }));
-
+  
       if (data.length > 0) {
         labels = data.map((item) => item.label);
         values = data.map((item) => item.value);
@@ -86,11 +89,11 @@ export class BilanBioComponent implements OnInit {
         return;
       }
     }
-
+  
     if (this.chart) {
       this.chart.destroy();
     }
-
+  
     const ctx = document.getElementById('graphCanvas') as HTMLCanvasElement;
     this.chart = new Chart(ctx, {
       type: 'bar',
@@ -113,12 +116,35 @@ export class BilanBioComponent implements OnInit {
             display: false,
           },
         },
+        animation: {
+          onComplete: () => {
+            const base64Image = ctx.toDataURL('image/png'); 
+  
+            console.log(base64Image);
+            
+            const formData = new FormData();
+            formData.append('image', base64Image);  // Send the base64 image
+            formData.append('id_laborantin', this.authservice.getUser().id);  // Example ID, replace with actual value
+            formData.append('id_dpis', this.dpi);       // Example ID
+            formData.append('id_bilan', this.id);      // Example ID
+            formData.append('date', this.examDate);   // Example date
+            formData.append('type_graphe', 'simple'); // Example type
+  
+            console.log(this.dpi);
+            this.apiService.postImageGraphique(formData).subscribe(response => {
+              console.log("Graphique saved successfully");
+            });
+          
+            alert('Graphique généré avec succès!');
+          },
+        },
       },
     });
-
-    alert('Graphique généré avec succès!');
+  
+    // Call update to ensure any changes to the chart are applied
+    this.chart.update();
   }
-
+  
   downloadGraph(): void {
     if (this.chart) {
       const link = document.createElement('a');

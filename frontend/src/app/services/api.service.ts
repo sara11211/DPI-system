@@ -93,4 +93,10 @@ export class ApiService {
   putAnalyseBio(id: number, data: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/bilan-bio/analysebio/update/${id}/`, data);
   }
+
+  ///////////////////////////////////////////////////////////////////////////////
+  // graphique tendances :
+  postImageGraphique(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/bilan-bio/save-graph/`, data);
+  }
 }
