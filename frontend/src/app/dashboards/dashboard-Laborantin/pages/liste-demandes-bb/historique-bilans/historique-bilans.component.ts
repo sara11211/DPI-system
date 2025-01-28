@@ -27,6 +27,7 @@ interface Bilan {
 })
 export class HistoriqueBilansComponent implements OnInit {
   nss: string = '';
+  dpi: string = '';
   nomComplet: string = '';
   origin: string = ''; // Tracks where the navigation originated from
   bilans: Bilan[] = [];
@@ -43,6 +44,7 @@ export class HistoriqueBilansComponent implements OnInit {
       this.nss = state.demande.nss;
       this.nomComplet = state.demande.nomComplet;
       this.consultation = state.demande.consultations;
+      this.dpi = state.demande.dpi;
       console.log(state.demande)
       this.apiService.getBilanPatient(state.demande.dpi).subscribe(response => {
         console.log(response);
@@ -82,6 +84,7 @@ export class HistoriqueBilansComponent implements OnInit {
         mesures: bilan.mesures,
         graphData: bilan.graphData || null,
         consultation: this.consultation,
+        dpi: this.dpi,
       },
     });
   }

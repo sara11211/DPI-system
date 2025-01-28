@@ -258,6 +258,7 @@ class SaveImageAPIView(APIView):
                 date = request.POST.get('date')
                 type_graphe = request.POST.get('type_graphe')
                 file_path = os.path.join(directory, 'graph_patient'+str(id_dpis)+'_bilan'+str(id_bilan)+ str(type_graphe) +'.png')
+                print(file_path)
 
                 # Save the image to the directory
                 with open(file_path, 'wb') as f:
