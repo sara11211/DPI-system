@@ -1,0 +1,125 @@
+<div class="w-full max-w-4xl px-8 py-2 mx-auto rounded-md shadow-md">
+  <form (ngSubmit)="onSave()" class="flex flex-col gap-4">
+    <!-- NSS -->
+    <div>
+      <label for="nss" class="text-sm font-semibold text-gray-700">NSS</label>
+      <input
+        id="nss"
+        [(ngModel)]="soin.nss"
+        name="nss"
+        type="text"
+        class="w-full p-2 border border-gray-300 rounded-md"
+        required
+      />
+    </div>
+
+    <!-- Nom et Prénom -->
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label for="nomPatient" class="text-sm font-semibold text-gray-700"
+          >Nom Patient</label
+        >
+        <input
+          id="nomPatient"
+          [(ngModel)]="soin.nomPatient"
+          name="nomPatient"
+          type="text"
+          class="w-full p-2 border border-gray-300 rounded-md"
+          required
+        />
+      </div>
+      <div>
+        <label for="prenomPatient" class="text-sm font-semibold text-gray-700"
+          >Prénom Patient</label
+        >
+        <input
+          id="prenomPatient"
+          [(ngModel)]="soin.prenomPatient"
+          name="prenomPatient"
+          type="text"
+          class="w-full p-2 border border-gray-300 rounded-md"
+          required
+        />
+      </div>
+    </div>
+
+    <!-- Date et Heure -->
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label for="dateSoin" class="text-sm font-semibold text-gray-700"
+          >Date du soin</label
+        >
+        <input
+          id="dateSoin"
+          [(ngModel)]="soin.dateSoin"
+          name="dateSoin"
+          type="date"
+          class="w-full p-2 border border-gray-300 rounded-md"
+          required
+        />
+      </div>
+      <div>
+        <label for="heureSoin" class="text-sm font-semibold text-gray-700"
+          >Heure du soin</label
+        >
+        <input
+          id="heureSoin"
+          [(ngModel)]="soin.heureSoin"
+          name="heureSoin"
+          type="time"
+          class="w-full p-2 border border-gray-300 rounded-md"
+          required
+        />
+      </div>
+    </div>
+
+    <!-- Type de soin -->
+    <div>
+      <label for="typeSoin" class="text-sm font-semibold text-gray-700"
+        >Type de soin</label
+      >
+      <select
+        id="typeSoin"
+        [(ngModel)]="soin.typeSoin"
+        name="typeSoin"
+        class="w-full p-2 border border-gray-300 rounded-md"
+        required
+      >
+        <option value="Administration de medicaments">
+          Administration de medicaments
+        </option>
+        <option value="Soin de plaie">Soin de plaie</option>
+        <option value="Vaccination">Vaccination</option>
+      </select>
+    </div>
+
+    <!-- Description -->
+    <div>
+      <label for="description" class="text-sm font-semibold text-gray-700"
+        >Description</label
+      >
+      <textarea
+        id="description"
+        [(ngModel)]="soin.description"
+        name="description"
+        rows="4"
+        class="w-full p-2 border border-gray-300 rounded-md"
+        required
+      ></textarea>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex justify-end gap-4">
+      <button
+        type="button"
+        (click)="onCancel()"
+        class="px-6 py-2 bg-gray-300 rounded-md"
+      >
+        Annuler
+      </button>
+      <button type="submit" class="px-6 py-2 text-white bg-blue-600 rounded-md">
+        Sauvegarder
+      </button>
+    </div>
+  </form>
+</div>

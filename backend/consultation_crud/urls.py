@@ -29,7 +29,7 @@ urlpatterns = [
     path('resume-consultation/create/', views.create_resume_consultation, name='create_resume_consultation'), 
     path('resume-consultation/<int:resume_consultation_id>/update/', views.update_resume_consultation, name='update_resume_consultation'),  
     path('resume-consultation/<int:resume_consultation_id>/delete/', views.delete_resume_consultation, name='delete_resume_consultation'),  
-
+    path('resume-consultation/<int:consultation_id>/word/', views.download_resume_consultation_word, name='download_resume_consultation_word'),  
     ## 5. Ordonnances CRUD  ##
     path('ordonnance/create/<int:consultation_id>/', views.create_ordonnance, name='create_ordonnance'),
     path('ordonnance/<int:ordonnance_id>/', views.get_ordonnance, name='get_ordonnance'),
@@ -45,7 +45,7 @@ urlpatterns = [
     path('ordonnances/patient/<int:patient_id>/', views.list_ordonnances_by_patient, name='list_ordonnances_by_patient'),
     path('ordonnance/consultation/<int:consultation_id>/', views.get_ordonnance_id_by_consultation, name='get_ordonnance_id_by_consultation'),
 
-
+    path('patient/id/<str:nss>/', views.get_patient_id_by_nss, name='get_patient_id_by_nss'),
 
 
 ]
