@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 // change sidebar component path to change the dashboard 
 import { SidebarComponent } from './dashboards/dashboard-administratif/sidebar/sidebar.component';
 import { SidebarComponentMedecin } from './dashboards/dashboard-medecin/sidebar/sidebar.component';
+import { SidebarInfirmierComponent } from './dashboards/dashboard-infirmier/sidebar-infirmier/sidebar-infirmier.component';
 import { SidebarPatientComponent } from './dashboards/dashboard-patient/sidebar/sidebar.component';
 import { SidebarRadioComponent } from './dashboards/dashboard-Radiologue/sidebar/sidebar.component';
 import { SidebarLaboComponent } from './dashboards/dashboard-Laborantin/sidebar/sidebar.component';
@@ -31,14 +32,11 @@ import { AuthService } from './login/auth.service';
 //   }
 // }
 
-import { DashboardRouteService } from './app.routes';
-import { SidebarInfirmierComponent } from './dashboards/dashboard-infirmier/sidebar-infirmier/sidebar-infirmier.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SidebarComponent,SidebarPatientComponent,SidebarRadioComponent,RouterOutlet, LoginComponent, TestComponent,SidebarComponentMedecin, SidebarLaboComponent],
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, SidebarComponent,SidebarPatientComponent,SidebarInfirmierComponent],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive,SidebarInfirmierComponent, SidebarComponent,SidebarPatientComponent,SidebarRadioComponent,RouterOutlet, LoginComponent, TestComponent,SidebarComponentMedecin, SidebarLaboComponent],
   templateUrl: './app.component.html',
  
 })
@@ -48,12 +46,6 @@ export class AppComponent {
 
   showSidebarRadio(): boolean {
     return this.authService.getUser()?.fonction === 'Radiologue';
-  constructor(private dashboardService: DashboardRouteService) {}
-  
-  ngOnInit() {
-    // change userrole here 
-    const userRole = 'infirmier'; 
-    this.dashboardService.setDashboard(userRole as 'medical' | 'admin'|'patient'|'infirmier');
   }
 
   showSidebarAdmin(): boolean {
@@ -77,5 +69,4 @@ export class AppComponent {
   }
 
   
-}
 }

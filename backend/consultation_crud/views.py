@@ -580,14 +580,20 @@ def list_ordonnances_by_patient(request, patient_id):
 
 ## crud soins_infermier ##
 
-# Créer un soin
 @api_view(['POST'])
 def create_soin(request):
     if request.method == 'POST':
-        serializer = SoinsInfirmierSerializer(data=request.data)
+        serializer = SoinsInfirmierSerializer(data=request.data, context={'request': request})  # Passer `request`
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            soin = serializer.save()  # Sauvegarde en base
+            
+            # Ajouter `heure_soin` et `type_soin` à la réponse
+            response_data = serializer.data
+            response_data['heure_soin'] = request.data.get('heure_soin', "00:00")
+            response_data['type_soin'] = request.data.get('type_soin', "Type inconnu")
+
+            return Response(response_data, status=status.HTTP_201_CREATED)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Liste des soins
@@ -620,3 +626,16 @@ def delete_soin(request, SoinsInfirmier_id):
     soin = get_object_or_404(SoinsInfirmier, id=SoinsInfirmier_id)
     soin.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET'])
+def get_patient_id_by_nss(request, nss):
+    """
+    Récupère l'ID du patient à partir du NSS.
+    """
+    try:
+        # Recherche du patient par NSS
+        patient = Dpis.objects.get(nss=nss)
+        return Response({"patient_id": patient.id}, status=status.HTTP_200_OK)
+    except Dpis.DoesNotExist:
+        return Response({"message": "Aucun patient trouvé avec ce NSS."}, status=status.HTTP_404_NOT_FOUND)
