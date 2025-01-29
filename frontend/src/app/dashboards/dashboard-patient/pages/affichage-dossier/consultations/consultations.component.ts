@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { DownloadIconComponent } from '../../../../../../assets/icons/download-icon/download-icon.component';
 import { ApiService } from '../../../../../services/api.service';
 import { ConsultationService } from '../../../patient.service';
+import { AuthService } from '../../../../../login/auth.service';
 interface Consultation {
   id: string;
   nom: string;
@@ -46,13 +47,15 @@ export class ConsultationsComponentPatient implements OnInit {
     constructor(public router: Router, 
                 public route: ActivatedRoute,
                 private apiService: ApiService,
-                private consultationService: ConsultationService
+                private consultationService: ConsultationService,
+                private authService: AuthService,
               ) {}
 
   
               ngOnInit(): void {
 
-                const nss = '418626877306';//Jai besoin de recuperer dynamiquement le nss de ce dossier :
+                const nss = this.authService.getUser().patient.nss;
+                console.log(nss);
             
                 this.consultationService.getConsultationsForPatient(nss).subscribe((data) => {
                   this.consultations = data;
