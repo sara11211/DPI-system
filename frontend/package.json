@@ -39,6 +39,10 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.15",
+<<<<<<< HEAD
     "typescript": "^5.4.2"
+=======
+    "typescript": "^5.4.5"
+>>>>>>> dd624da5b477b109938b62fbfd122a71ab2f4221
   }
 }
