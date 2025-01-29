@@ -54,6 +54,9 @@ La base de données utilisée est MySQL. Les données nécessaires à l'accès �
 vous pouvez consulter la documentation du backend via ce lien (generé avec swagger)
 'http://127.0.0.1:8000/swagger/'
 la documentation d'angular est generé avec Compodoc
+executez la commande : 
+compodoc -s
+Naviguez vers
 'http://127.0.0.1:8080/'
 
 # Considérations de Sécurité
