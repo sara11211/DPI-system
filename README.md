@@ -13,15 +13,6 @@ DPI-system/
 └── tests/       # Frontend and backend tests
 ```
 
-## Technologies
-
-* **Frontend:** Angular
-* **Backend:** Django
-* **Database:** MySQL
-* **Testing:** Postman, Selenium
-* **API Documentation:** Swagger
-* **Angular Documentation:** Compodoc
-
 ## Prerequisites
 
 Make sure the following are installed before running the project:
