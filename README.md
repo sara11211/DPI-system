@@ -1,63 +1,120 @@
-# Application Web de Gestion du Dossier Patient Informatisé
-Cette application web est conçue pour gérer les dossiers médicaux informatisés des patients. Elle est utilisée par des professionnels de santé tels que des médecins, pharmaciens, infirmiers, radiologues et techniciens et un corps d'administration pour suivre les antécédents médicaux, les traitements et autres informations pertinentes de leurs patients.
+# Patient Electronic Medical Record Management System
 
-# Structure du Projet
-Le projet est organisé en trois dossiers principaux :
+A web application for managing **Electronic Medical Records** and patient medical information. The system is designed for healthcare professionals, including doctors, pharmacists, nurses, radiologists, and technicians, as well as administrative staff. 
 
---> frontend : Contient l'application Angular pour l'interface utilisateur.
+## Project Structure
 
---> backend : Contient l'application Django pour le backend.
+The project is organized into three main directories:
 
---> tests : Contient tous les tests pour le frontend et le backend.
+```text
+DPI-system/
+├── frontend/    # Angular frontend application
+├── backend/     # Django backend application
+└── tests/       # Frontend and backend tests
+```
 
-# Technologies Utilisées
---> Frontend : Angular
+## Technologies
 
---> Backend : Django
+* **Frontend:** Angular
+* **Backend:** Django
+* **Database:** MySQL
+* **Testing:** Postman, Selenium
+* **API Documentation:** Swagger
+* **Angular Documentation:** Compodoc
 
---> Tests : Postman, Selenium
+## Prerequisites
 
-# Prérequis
-Avant de commencer, assurez-vous d'avoir les éléments suivants installés :
+Make sure the following are installed before running the project:
 
---> Node.js et npm pour le frontend Angular.
+* [Node.js](https://nodejs.org/) and npm
+* Python and pip
+* Angular CLI
+* Django
 
---> Python et pip pour le backend Django.
+Install Angular CLI:
 
---> Angular CLI installé globalement (npm install -g @angular/cli).
+```bash
+npm install -g @angular/cli
+```
 
---> Django installé globalement (pip install django).
+Install Django:
 
-# Installation
---> Cloner le dépôt :
+```bash
+pip install django
+```
+
+## Installation & Setup
+
+### 1. Clone the repository
+
+```bash
 git clone https://github.com/sara11211/DPI-system.git
+cd DPI-system
+```
 
---> Lancer l'application :
+### 2. Configure environment variables
 
-==> Exécutez le script start_app.bat situé dans le dossier principal. 
-    (Lancez la commande ".\start_app.bat)
+Create or configure the `.env` file located in the `backend/` directory.
 
-==> Ouvrez votre navigateur et accédez à http://localhost:4200 pour utiliser l'application.
+The environment variables should contain the required configuration for connecting to the MySQL database.
 
-# Tests
-Pour exécuter les tests, naviguez vers le dossier tests et exécutez les scripts de test.
+### 3. Start the application
 
+On Windows, run the `start_app.bat` script from the project root:
 
-# Informations Supplémentaires
-Variables d'Environnement
-Assurez-vous que les variables d'environnement associés à l'accès à la base de données existent (fichier .env au niveau du répértoire "backend").
+```powershell
+.\start_app.bat
+```
 
-# Configuration de la Base de Données
-La base de données utilisée est MySQL. Les données nécessaires à l'accès à la base de données ont été fournies pour faciliter les choses.
+Once the application is running, open:
 
-# Documentation de l'API
-vous pouvez consulter la documentation du backend via ce lien (generé avec swagger)
-'http://127.0.0.1:8000/swagger/'
-la documentation d'angular est generé avec Compodoc
-executez la commande : 
+```text
+http://localhost:4200
+```
+
+## Database
+
+The application uses **MySQL** as its database management system.
+
+The required database access configuration should be provided through the environment variables in the backend `.env` file.
+
+## Testing
+
+Tests for both the frontend and backend are located in the `tests/` directory.
+
+Navigate to the directory and run the appropriate test scripts:
+
+```bash
+cd tests
+```
+
+Testing tools used in the project include:
+
+* **Postman** for API testing
+* **Selenium** for automated web testing
+
+## API Documentation
+
+The backend API documentation is generated using **Swagger**.
+
+Once the Django backend is running, access the documentation at:
+
+```text
+http://127.0.0.1:8000/swagger/
+```
+
+## Angular Documentation
+
+The Angular project documentation is generated using **Compodoc**.
+
+Run:
+
+```bash
 compodoc -s
-Naviguez vers
-'http://127.0.0.1:8080/'
+```
 
-# Considérations de Sécurité
---> Mettez régulièrement à jour les dépendances pour éviter les vulnérabilités.
+Then open:
+
+```text
+http://127.0.0.1:8080/
+```
